@@ -299,12 +299,6 @@ paths:
       responses:
         '200':
           description: 성공적으로 처리됨
-        '400':
-          description: 잘못된 요청
-        '404':
-          description: 이메일을 찾을 수 없음
-  
-  
   /emails/{id}/content:
     get:
       tags:
