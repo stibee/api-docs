@@ -746,6 +746,102 @@ paths:
                   value:
                     code: "stberror.Errors.List.InvalidData"
                     httpStatusCode: 400
+    get:
+      summary: 구독자 목록 조회
+      tags:
+        - "주소록 - 구독자"
+      parameters:
+        - name: listId
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          required: false
+          description: 페이징 처리를 위한 인덱스
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: limit
+          in: query
+          required: false
+          description: |
+            offset부터 보여질 아이템 최대 개수
+            * 조회된 아이템의 최대 개수는 1000을 넘을 수 없다.
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+      responses:
+        '200':
+          description: 성공적으로 조회됨
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GetSubscribersResponse'
+              example:
+                - email: "gildong@stibee.com"
+                  status: "subscribed"
+                  fields:
+                    $ad_agreed: ""
+                    age: "45"
+                    name: "고길동"
+                  createdTime: "2024-11-12 17:09:13 +0900 KST"
+                  modifiedTime: "2024-11-17 20:01:11 +0900 KST"
+        '400':
+          description: 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                InvalidSubscriberVar:
+                  description: "한번에 요청할 수 있는 범위를 초과하였음.."
+                  value:
+                    code: "stberror.Errors.Data.LimitExceeded"
+                    httpStatusCode: 400
+    delete:
+      summary: 구독자 완전 삭제
+      tags:
+        - "주소록 - 구독자"
+      parameters:
+        - name: listid
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteSubscribersRequest'
+      responses:
+        '200':
+          description: 구독자 삭제 성공
+        '400':
+          description: 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                LimitExceeded:
+                  description: "한번에 너무 많은 구독자를 요청함. (최대 1,000명)"
+                  value:
+                    code: "stberror.Errors.List.LimitExceeded"
+                    httpStatusCode: 400
+                TooLongData:
+                  description: "한번에 너무 많은 본문을 요청함. (최대 10MB)"
+                  value:
+                    code: "stberror.Errors.List.TooLongData"
+                    httpStatusCode: 400
   /lists/{id}/subscribers/double-optin:
     post:
       summary: 구독자 추가 - 구독 확인 이메일 발송
@@ -846,103 +942,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchSubscriberErrorResponse'
-  /lists/{id}/subscribers:
-    get:
-      summary: 구독자 목록 조회
-      tags:
-        - "주소록 - 구독자"
-      parameters:
-        - name: listId
-          in: path
-          required: true
-          description: 주소록 아이디
-          schema:
-            type: integer
-        - name: offset
-          in: query
-          required: false
-          description: 페이징 처리를 위한 인덱스
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - name: limit
-          in: query
-          required: false
-          description: |
-            offset부터 보여질 아이템 최대 개수
-            * 조회된 아이템의 최대 개수는 1000을 넘을 수 없다.
-          schema:
-            type: integer
-            default: 100
-            maximum: 1000
-      responses:
-        '200':
-          description: 성공적으로 조회됨
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/GetSubscribersResponse'
-              example:
-                - email: "gildong@stibee.com"
-                  status: "subscribed"
-                  fields:
-                    $ad_agreed: ""
-                    age: "45"
-                    name: "고길동"
-                  createdTime: "2024-11-12 17:09:13 +0900 KST"
-                  modifiedTime: "2024-11-17 20:01:11 +0900 KST"
-        '400':
-          description: 실패
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                InvalidSubscriberVar:
-                  description: "한번에 요청할 수 있는 범위를 초과하였음.."
-                  value:
-                    code: "stberror.Errors.Data.LimitExceeded"
-                    httpStatusCode: 400
-    delete:
-      summary: 구독자 완전 삭제
-      tags:
-        - "주소록 - 구독자"
-      parameters:
-        - name: listid
-          in: path
-          required: true
-          description: 주소록 아이디
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeleteSubscribersRequest'
-      responses:
-        '200':
-          description: 구독자 삭제 성공
-        '400':
-          description: 실패
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                LimitExceeded:
-                  description: "한번에 너무 많은 구독자를 요청함. (최대 1,000명)"
-                  value:
-                    code: "stberror.Errors.List.LimitExceeded"
-                    httpStatusCode: 400
-                TooLongData:
-                  description: "한번에 너무 많은 본문을 요청함. (최대 10MB)"
-                  value:
-                    code: "stberror.Errors.List.TooLongData"
-                    httpStatusCode: 400
+    
   /lists/{id}/subscribers/{subscriber}:
     put:
       summary: 구독자 정보 수정
