@@ -1880,27 +1880,27 @@ components:
       properties:
         subject:
           type: string
-          description: 메일 제목
+          description: 이메일 제목
         senderEmail:
           type: string
           format: email
-          description: 발신자 메일 주소
+          description: 발신자 이메일 주소
         senderName:
           type: string
           description: 발신자명
         listId:
           type: integer
-          description: 메일 발송에 사용될 주소록 아이디
+          description: 이메일 발송에 사용될 주소록 아이디
         segmentIds:
           type: array
           items:
             type: integer
-          description: 메일 발송에 사용될 세그먼트 아이디
+          description: 이메일 발송에 사용될 세그먼트 아이디
         groupIds:
           type: array
           items:
             type: integer
-          description: 메일 발송에 사용될 그룹 아이디
+          description: 이메일 발송에 사용될 그룹 아이디
     AddSubscriberRequest:
       type: object
       required:
