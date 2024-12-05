@@ -495,7 +495,7 @@ paths:
                 useSubscriberAutoDelete: true
                 canSendToUnsubscribed: false
                 
-  /lists/{listId}/subscribers/count:
+  /lists/{id}/subscribers/count:
     get:
       summary: 주소록 구독자 수 조회
       tags:
@@ -514,7 +514,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetSubscriberCountResponse'
-  /lists/{listId}:
+  /lists/{id}:
     put:
       summary: 주소록 정보 수정
       tags:
@@ -665,7 +665,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListSenderVerificationErrorResponse'
-  /lists/{listId}/senders:
+  /lists/{id}/senders:
     get:
       summary: 발신자 이메일 주소 목록 조회
       tags:
@@ -847,7 +847,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchSubscriberErrorResponse'
-  /lists/{listId}/subscribers:
+  /lists/{id}/subscribers:
     get:
       summary: 구독자 목록 조회
       tags:
@@ -969,7 +969,7 @@ paths:
       responses:
         '200':
           description: 성공적으로 수신거부 처리됨
-  /lists/{listId}/groups/{groupId}/assign:
+  /lists/{id}/groups/{groupId}/assign:
     post:
       summary: 구독자 그룹 할당
       tags:
@@ -996,7 +996,7 @@ paths:
       responses:
         '200':
           description: 그룹 할당 성공
-  /lists/{listId}/groups/{groupId}/release:
+  /lists/{id}/groups/{groupId}/release:
     post:
       summary: 구독자 그룹 해제
       tags:
@@ -1023,7 +1023,7 @@ paths:
       responses:
         '200':
           description: 그룹 해제 성공
-  /lists/{listid}/subscribers:
+  /lists/{id}/subscribers:
     delete:
       summary: 구독자 완전 삭제
       tags:
@@ -1083,7 +1083,7 @@ paths:
       responses:
         '200':
           description: 발신자 이메일 주소 삭제 성공
-  /lists/{listId}/groups:
+  /lists/{id}/groups:
     post:
       summary: 그룹 생성
       tags:
@@ -1144,7 +1144,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetGroupResponse'
-  /lists/{listId}/groups/{groupId}:
+  /lists/{id}/groups/{groupId}:
     put:
       summary: 그룹 정보 수정
       tags:
