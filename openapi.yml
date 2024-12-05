@@ -143,6 +143,7 @@ paths:
         - name: id
           in: path
           required: true
+          description: 이메일 아이디
           schema:
             type: integer
             format: int
@@ -487,7 +488,7 @@ paths:
                 $ref: '#/components/schemas/GetListResponse'
               example:
                 id: 1234
-                owner: "0d819e34-41b3-4afa-89cb-a7c5e4cd37a7"
+                owner: "hello@stibee.com"
                 name: "스티비 뉴스레터"
                 senderName: "스티비"
                 companyName: "스티비 주식회사"
@@ -1291,7 +1292,7 @@ components:
         owner:
           type: string
           description: ""
-          example: "0d819e34-41b3-4afa-89cb-a7c5e4cd37a7"
+          example: "hello@stibee.com"
         name:
           type: string
           description: 주소록 이름
@@ -1378,7 +1379,7 @@ components:
         subject:
           type: string
           description: 이메일 제목
-          example: "스티비 이메일 에디터를 체험해보세요"
+          example: "이메일 제목"
         subjectA:
           type: string
           description: A/B 테스트의 A 제목
@@ -1446,7 +1447,7 @@ components:
           type: string
           format: uuid
           description: 이메일 소유자 UU아이디
-          example: "0d819e34-41b3-4afa-89cb-a7c5e4cd37a7"
+          example: "hello@stibee.com"
         abRatio:
           type: integer
           description: A/B 테스트의 비율
