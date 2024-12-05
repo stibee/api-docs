@@ -1244,28 +1244,28 @@ components:
           example: 스티비 뉴스레터
         senderName:
           type: string
-          description: 발신자 이름
+          description: 기본 발신자 이름
           example: 스티비
         companyName:
           type: string
-          description: 회사 이름
+          description: 회사명 또는 이름
           example: 스티비 주식회사
         companyContact:
           type: string
-          description: 회사 연락처
+          description: 전화번호
           example: support@stibee.com
         companyAddress:
           type: string
-          description: 회사 주소
+          description: 주소
           example: 서울시 중구 동호로17길 13, 4층
         useSubscriberAutoDelete:
           type: boolean
-          description: 하드바운드 시 구독자 자동삭제 여부
+          description: 자동삭제 기능 사용 여부
           default: true
           example: true
         canSendToUnsubscribed:
           type: boolean
-          description: "이메일 발송 시 수신거부 구독자 포함 가능 여부"
+          description: "수신거부 구독자 발송 대상 포함 여부"
           default: false
           example: false
     CreateListResponse:
@@ -1292,28 +1292,28 @@ components:
           example: 1234
         senderName:
           type: string
-          description: 발신자 이름
+          description: 기본 발신자 이름
           example: 스티비
         companyName:
           type: string
-          description: 회사 이름
+          description: 회사명 또는 이름
           example: 스티비 주식회사
           default: 스티비
         companyContact:
           type: string
-          description: 회사 연락처
+          description: 전화번호
           example: support@stibee.com
         companyAddress:
           type: string
-          description: 회사 주소
+          description: 주소
           example: 서울시 중구 동호로17길 13, 4층
         useSubscriberAutoDelete:
           type: boolean
-          description: 하드바운드 시 구독자 자동삭제 여부
+          description: 자동삭제 기능 사용 여부
           example: true
         canSendToUnsubscribed:
           type: boolean
-          description: "이메일 발송 시 수신거부 구독자 포함 가능 여부"
+          description: "수신거부 구독자 발송 대상 포함 여부"
           example: false
           
     GetEmailsResponse:
@@ -1953,22 +1953,22 @@ components:
           description: 주소록 이름
         senderName:
           type: string
-          description: 발신자 이름
+          description: 기본 발신자 이름
         companyName:
           type: string
-          description: 회사 이름
+          description: 회사명 또는 이름
         companyContact:
           type: string
-          description: 회사 연락처
+          description: 전화번호
         companyAddress:
           type: string
-          description: 회사 주소
+          description: 주소
         useSubscriberAutoDelete:
           type: boolean
-          description: 하드바운드 시 구독자 자동삭제 여부
+          description: 자동삭제 기능 사용 여부
         canSendToUnsubscribed:
           type: boolean
-          description: 이메일 발송 시 수신거부 구독자 포함 가능 여부
+          description: 수신거부 구독자 발송 대상 포함 여부
     UpdateListRequest:
       type: object
       required:
@@ -1983,23 +1983,23 @@ components:
           description: 주소록 이름
         senderName:
           type: string
-          description: 발신자 이름
+          description: 기본 발신자 이름
         companyName:
           type: string
-          description: 회사 이름
+          description: 회사명 또는 이름
         companyContact:
           type: string
-          description: 회사 연락처
+          description: 전화번호
         companyAddress:
           type: string
-          description: 회사 주소
+          description: 주소
         useSubscriberAutoDelete:
           type: boolean
-          description: 하드바운드 시 구독자 자동삭제 여부
+          description: 자동삭제 기능 사용 여부
           default: true
         canSendToUnsubscribed:
           type: boolean
-          description: 이메일 발송 시 수신거부 구독자 포함 가능 여부
+          description: 수신거부 구독자 발송 대상 포함 여부
           default: false
     SendDoubleOptinRequest:
       type: object
