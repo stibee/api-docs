@@ -161,7 +161,7 @@ paths:
       description: |
         작성 중 상태인 이메일의 정보(이메일 제목, 발신자 이름, 세그먼트, 그룹 등)를 수정할 수 있습니다.
       parameters:
-        - name: emailId
+        - name: id
           in: path
           required: true
           description: 수정할 이메일 아이디
