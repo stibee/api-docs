@@ -1207,7 +1207,7 @@ components:
       description: |
         정렬 기준
         * id: 그룹 아이디
-        * name: 그룹명
+        * name: 그룹 이름
       schema:
         type: string
         enum: [id, name]
@@ -1347,7 +1347,7 @@ components:
         id:
           type: integer
           description: 이메일 아이디
-          example: 59978
+          example: 123456
         status:
           type: integer
           description: |
@@ -1366,7 +1366,7 @@ components:
         listId:
           type: integer
           description: 주소록 아이디
-          example: 123123
+          example: 123456
         type:
           type: integer
           description: 이메일의 타입
@@ -1391,18 +1391,18 @@ components:
           type: string
           format: uri
           description: 이메일 콘텐츠 링크(웹에서 보기)
-          example: "https://stib.ee/A123"
+          example: "https://stib.ee/2eYF"
         permanentLinkSecondary:
           type: string
           format: uri
           description: ""
-          example: "https://stib.ee/B123"
+          example: "https://stib.ee/2eYF"
         segmentIds:
           type: array
           description: "" 
           items:
             type: integer
-          example: [2433]
+          example: [1234]
         groupIds:
           type: array
           description: ""
@@ -1883,20 +1883,20 @@ components:
           description: 발신자 이메일 주소
         senderName:
           type: string
-          description: 발신자명
+          description: 발신자 이름
         listId:
           type: integer
-          description: 이메일 발송에 사용될 주소록 아이디
+          description: 발송 대상 주소록
         segmentIds:
           type: array
           items:
             type: integer
-          description: 이메일 발송에 사용될 세그먼트 아이디
+          description: 발송 대상 세그먼트
         groupIds:
           type: array
           items:
             type: integer
-          description: 이메일 발송에 사용될 그룹 아이디
+          description: 발송 대상 그룹
     AddSubscriberRequest:
       type: object
       required:
