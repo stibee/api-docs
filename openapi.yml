@@ -2150,7 +2150,7 @@ components:
             type: string
             format: email
           maxItems: 100
-          example: ["email1", "email2"]
+          example: ["gildong.go@stibee.com", "dooly@stibee.com"]
     GetListSenderResponse:
       type: object
       properties:
@@ -2171,7 +2171,7 @@ components:
         name:
           type: string
           description: 그룹 이름
-          example: "그룹A"
+          example: "그룹 이름"
     CreateGroupResponse:
       type: object
       required:
@@ -2205,4 +2205,4 @@ components:
         name:
           type: string
           description: 그룹 이름
-          example: "그룹A"
+          example: "그룹 이름"
