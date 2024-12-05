@@ -187,7 +187,7 @@ paths:
       tags:
         - 이메일
       parameters:
-        - name: deletedEmailId
+        - name: id
           in: path
           required: true
           description: 삭제할 이메일 아이디
@@ -501,7 +501,7 @@ paths:
       tags:
         - 주소록
       parameters:
-        - name: listId
+        - name: id
           in: path
           required: true
           description: 주소록 아이디
@@ -530,7 +530,7 @@ paths:
       summary: 주소록 삭제
       description: 특정 아이디의 주소록을 삭제합니다
       parameters:
-        - name: listId
+        - name: id
           in: path
           required: true
           schema:
@@ -544,7 +544,7 @@ paths:
       tags:
         - 주소록
       parameters:
-        - name: listId
+        - name: id
           in: path
           required: true
           description: 주소록 아이디
@@ -605,7 +605,7 @@ paths:
     post:
       tags:
         - "주소록 - 발신자 이메일 주소"
-      summary: 밣신자 이메일 주소 추가
+      summary: 발신자 이메일 주소 추가
       description: |
         발신자 이메일 주소를 추가합니다. 
         인증 이메일이 발송되고, 그 이메일에서 인증을 하면 추가됩니다. 
@@ -641,7 +641,7 @@ paths:
       tags:
         - "주소록 - 발신자 이메일 주소"
       parameters:
-        - name: listId
+        - name: id
           in: path
           required: true
           description: 주소록 아이디
@@ -752,7 +752,7 @@ paths:
       tags:
         - "주소록 - 구독자"
       parameters:
-        - name: listId
+        - name: id
           in: path
           required: true
           description: 주소록 아이디
@@ -811,7 +811,7 @@ paths:
       tags:
         - "주소록 - 구독자"
       parameters:
-        - name: listid
+        - name: id
           in: path
           required: true
           description: 주소록 아이디
@@ -1012,7 +1012,7 @@ paths:
       tags:
        - "주소록 - 구독자"
       parameters:
-        - name: listId
+        - name: id
           in: path
           required: true
           description: 주소록 아이디
@@ -1039,7 +1039,7 @@ paths:
       tags:
        - "주소록 - 구독자"
       parameters:
-        - name: listId
+        - name: id
           in: path
           required: true
           description: 주소록 아이디
@@ -1088,7 +1088,7 @@ paths:
       tags:
         - "주소록 - 그룹"
       parameters:
-        - name: listId
+        - name: id
           in: path
           required: true
           description: 주소록 아이디
@@ -1112,7 +1112,7 @@ paths:
       tags:
         - "주소록 - 그룹"
       parameters:
-        - name: listId
+        - name: id
           in: path
           required: true
           description: 주소록 아이디
@@ -1149,7 +1149,7 @@ paths:
       tags:
         - "주소록 - 그룹"
       parameters:
-        - name: listId
+        - name: id
           in: path
           required: true
           description: 주소록 아이디
@@ -1175,7 +1175,7 @@ paths:
       tags:
         - "주소록 - 그룹"
       parameters:
-        - name: listId
+        - name: id
           in: path
           required: true
           description: 주소록 아이디
@@ -1447,7 +1447,7 @@ components:
           type: string
           format: uuid
           description: 이메일 소유자 UU아이디
-          example: "hello@stibee.com"
+          example: "gildong.go@stibee.com"
         abRatio:
           type: integer
           description: A/B 테스트의 비율
