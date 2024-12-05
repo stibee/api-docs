@@ -707,13 +707,12 @@ paths:
                 status: "subscribed"
                 fields:
                   name: "고길동"
-                  age: 45
               updateEnabled: true
       responses:
         '200':
-          description: 구독자 업데이트 성공
-        '201':
           description: 구독자 추가 성공
+        '201':
+          description: 구독자 업데이트 성공
         '400':
           description: 실패
           content:
@@ -1603,23 +1602,23 @@ components:
         - $status
         - email
       properties:
-        $status:
-          type: string
-          enum: [S, D]
-          description: |
-            구독자 상태
-            - S: 구독 중
-            - D: 수신거부
         email:
           type: string
           format: email
           description: 구독자 이메일 주소
-        name:
+        status:
           type: string
-          description: 구독자 이름 (사용자 정의 필드)
-        age:
-          type: integer
-          description: 구독자 나이 (사용자 정의 필드)
+          enum: [subscribed, unsubscribed]
+          description: |
+            구독자 상태
+            * subscribed: 구독 중
+            * unsubscribed: 수신거부
+        fields:
+          type: object
+          description: 주소록에 생성된 사용자 정의 필드별 값 (주소록에 생성되어있는 필드만 값을 입력할 수 있음)
+          example:
+            name: "고길동"
+            age: 45
       additionalProperties:
         description: 주소록에 생성된 기타 사용자 정의 필드별 값
     BatchSubscriberRequest:
@@ -2117,7 +2116,6 @@ components:
           description: 주소록에 생성된 사용자 정의 필드별 값 (주소록에 생성되어있는 필드만 값을 입력할 수 있음)
           example:
             name: "고길동"
-            age: 45
     AssignGroupRequest:
       type: object
       required:
