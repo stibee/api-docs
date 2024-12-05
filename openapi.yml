@@ -340,7 +340,7 @@ paths:
         - name: id
           in: path
           required: true
-          description: 이메일 ID
+          description: 이메일 아이디
           schema:
             type: integer
       requestBody:
@@ -527,7 +527,7 @@ paths:
       tags:
         - 주소록
       summary: 주소록 삭제
-      description: 특정 ID의 주소록을 삭제합니다
+      description: 특정 아이디의 주소록을 삭제합니다
       parameters:
         - name: listId
           in: path
@@ -697,7 +697,7 @@ paths:
         - name: id
           in: path
           required: true
-          description: 주소록 ID
+          description: 주소록 아이디
           schema:
             type: integer
       requestBody:
@@ -855,7 +855,7 @@ paths:
         - name: id
           in: path
           required: true
-          description: 주소록 ID
+          description: 주소록 아이디
           schema:
             type: integer
       requestBody:
@@ -1773,17 +1773,17 @@ components:
           example: "Sender Name B"
         listId:
           type: integer
-          description: 주소록 ID
+          description: 주소록 아이디
           example: 123
         segmentIds:
           type: array
-          description: 세그먼트 ID 목록
+          description: 세그먼트 아이디 목록
           items:
             type: integer
           example: [1, 2, 3]
         groupIds:
           type: array
-          description: 그룹 ID 목록
+          description: 그룹 아이디 목록
           items:
             type: integer
           example: [4, 5, 6]
@@ -1953,7 +1953,7 @@ components:
         owner:
           type: string
           format: uuid
-          description: 주소록 소유자 ID
+          description: 주소록 소유자 아이디
         name:
           type: string
           description: 주소록 이름
