@@ -846,7 +846,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchSubscriberErrorResponse'
-  /lists/{listId}/subscribers:
+  /lists/{id}/subscribers:
     get:
       summary: 구독자 목록 조회
       tags:
@@ -905,6 +905,43 @@ paths:
                   description: "한번에 요청할 수 있는 범위를 초과하였음.."
                   value:
                     code: "stberror.Errors.Data.LimitExceeded"
+                    httpStatusCode: 400
+    delete:
+      summary: 구독자 완전 삭제
+      tags:
+        - "주소록 - 구독자"
+      parameters:
+        - name: listid
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteSubscribersRequest'
+      responses:
+        '200':
+          description: 구독자 삭제 성공
+        '400':
+          description: 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                LimitExceeded:
+                  description: "한번에 너무 많은 구독자를 요청함. (최대 1,000명)"
+                  value:
+                    code: "stberror.Errors.List.LimitExceeded"
+                    httpStatusCode: 400
+                TooLongData:
+                  description: "한번에 너무 많은 본문을 요청함. (최대 10MB)"
+                  value:
+                    code: "stberror.Errors.List.TooLongData"
                     httpStatusCode: 400
   /lists/{id}/subscribers/{subscriber}:
     put:
@@ -968,7 +1005,7 @@ paths:
       responses:
         '200':
           description: 성공적으로 수신거부 처리됨
-  /lists/{listId}/groups/{groupId}/assign:
+  /lists/{id}/groups/{groupId}/assign:
     post:
       summary: 구독자 그룹 할당
       tags:
@@ -995,7 +1032,7 @@ paths:
       responses:
         '200':
           description: 그룹 할당 성공
-  /lists/{listId}/groups/{groupId}/release:
+  /lists/{id}/groups/{groupId}/release:
     post:
       summary: 구독자 그룹 해제
       tags:
@@ -1022,44 +1059,6 @@ paths:
       responses:
         '200':
           description: 그룹 해제 성공
-  /lists/{listid}/subscribers:
-    delete:
-      summary: 구독자 완전 삭제
-      tags:
-        - "주소록 - 구독자"
-      parameters:
-        - name: listid
-          in: path
-          required: true
-          description: 주소록 아이디
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeleteSubscribersRequest'
-      responses:
-        '200':
-          description: 구독자 삭제 성공
-        '400':
-          description: 실패
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                LimitExceeded:
-                  description: "한번에 너무 많은 구독자를 요청함. (최대 1,000명)"
-                  value:
-                    code: "stberror.Errors.List.LimitExceeded"
-                    httpStatusCode: 400
-                TooLongData:
-                  description: "한번에 너무 많은 본문을 요청함. (최대 10MB)"
-                  value:
-                    code: "stberror.Errors.List.TooLongData"
-                    httpStatusCode: 400
   /lists/{id}/senders/{email}:
     delete:
       summary: 발신자 이메일 주소 삭제
