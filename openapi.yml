@@ -129,6 +129,10 @@ paths:
       responses:
         '200':
           description: "200 OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEmailsResponse'
 
   /emails/{id}:
     get:
@@ -1429,7 +1433,7 @@ components:
         senderName:
           type: string
           description: 발신자 이름
-          example: "Dooly"
+          example: "Gildong"
         senderNameA:
           type: string
           description: A/B 테스트의 A 발신자 이름
