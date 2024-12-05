@@ -79,7 +79,6 @@ tags:
 paths:
   /emails:
     post:
-      x-order: 2
       summary: 이메일 생성
       tags:
         - 이메일
@@ -97,7 +96,6 @@ paths:
         '200':
           description: "200 OK"
     get:
-      x-order: 1
       summary: 이메일 목록 조회
       tags:
         - 이메일
@@ -689,7 +687,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/GetListSenderResponse'
               example:
-                - email: "dooly@stibee.com"
+                - email: "gildong.go@stibee.com"
                   authorized: false
   /lists/{id}/subscribers:
     post:
@@ -711,10 +709,10 @@ paths:
               $ref: '#/components/schemas/AddSubscriberRequest'
             example:
               subscriber:
-                email: "hakjin@stibee.com"
+                email: "gildong.go@stibee.com"
                 status: "subscribed"
                 fields:
-                  name: "이학진"
+                  name: "고길동"
                   age: 39
               updateEnabled: true
       responses:
@@ -773,9 +771,9 @@ paths:
               $ref: '#/components/schemas/SendDoubleOptinRequest'
             example:
               subscriber:
-                email: "hakjin@stibee.com"
+                email: "gildong.go@stibee.com"
                 fields:
-                  name: "이학진"
+                  name: "고길동"
                   age: 39
       responses:
         '200':
@@ -1433,7 +1431,7 @@ components:
           type: string
           format: email
           description: 발신자 이메일 주소
-          example: "dooly@stibee.com"
+          example: "gildong.go@stibee.com"
         senderName:
           type: string
           description: 발신자 이름
@@ -1573,7 +1571,7 @@ components:
           type: string
           description: 발신자 이메일 주소
           format: email
-          example: "dooly@stibee.com"
+          example: "gildong.go@stibee.com"
     AddSenderResponse:
       type: object
       required:
@@ -1826,7 +1824,7 @@ components:
             $ref: '#/components/schemas/EmailLogItem'
           example:
             - id: 1
-              subscriber: "hakjin+3@stibee.com"
+              subscriber: "gildong.go@stibee.com"
               action: "P"
               value: ""
               value2: "250\nok"
@@ -1842,7 +1840,7 @@ components:
           type: string
           format: email
           description: 구독자 이메일
-          example: "hakjin+3@stibee.com"
+          example: "gildong.go@stibee.com"
         action:
           type: string
           description: |
@@ -1928,7 +1926,7 @@ components:
               type: object
               description: 주소록에 생성된 사용자 정의 필드별 값 (주소록에 생성되어있는 필드만 값을 입력할 수 있음)
               example:
-                name: "이학진"
+                name: "고길동"
                 age: 39
         updateEnabled:
           type: boolean
@@ -2030,7 +2028,7 @@ components:
               type: object
               description: 주소록에 생성된 사용자 정의 필드별 값 (주소록에 생성되어있는 필드만 값을 입력할 수 있음)
               example:
-                name: "이학진"
+                name: "고길동"
                 age: 39
     GetSubscribersResponse:
       type: object
@@ -2125,7 +2123,7 @@ components:
           type: object
           description: 주소록에 생성된 사용자 정의 필드별 값 (주소록에 생성되어있는 필드만 값을 입력할 수 있음)
           example:
-            name: "이학진"
+            name: "고길동"
             age: 39
     AssignGroupRequest:
       type: object
@@ -2136,7 +2134,7 @@ components:
           type: string
           format: email
           description: 구독자 이메일
-          example: "dooly@stibee.com"
+          example: "gildong.go@stibee.com"
     ReleaseGroupRequest:
       type: object
       required:
@@ -2146,7 +2144,7 @@ components:
           type: string
           format: email
           description: 구독자 이메일
-          example: "dooly@stibee.com"
+          example: "gildong.go@stibee.com"
     DeleteSubscribersRequest:
       type: object
       required:
@@ -2169,7 +2167,7 @@ components:
           type: string
           format: email
           description: 발신자 이메일 주소
-          example: "dooly@stibee.com"
+          example: "gildong.go@stibee.com"
         authorized:
           type: boolean
           description: "발신자 이메일의 인증 여부. false 이면 “email”로 수신된 인증메일을 통해 발신자 인증을 수행해야한다."
