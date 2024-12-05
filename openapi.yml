@@ -494,27 +494,6 @@ paths:
                 companyAddress: "서울시 중구 동호로17길 13, 4층"
                 useSubscriberAutoDelete: true
                 canSendToUnsubscribed: false
-                
-  /lists/{listId}/subscribers/count:
-    get:
-      summary: 주소록 구독자 수 조회
-      tags:
-        - 주소록
-      parameters:
-        - name: listId
-          in: path
-          required: true
-          description: 주소록 아이디
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: 성공적으로 조회됨
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetSubscriberCountResponse'
-  /lists/{listId}:
     put:
       summary: 주소록 정보 수정
       tags:
@@ -557,6 +536,26 @@ paths:
       responses:
         '200':
           description: 성공적으로 삭제됨
+  /lists/{id}/subscribers/count:
+    get:
+      summary: 주소록 구독자 수 조회
+      tags:
+        - 주소록
+      parameters:
+        - name: listId
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 성공적으로 조회됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSubscriberCountResponse'
+    
     
                 
   # /lists/{id}/fields:
