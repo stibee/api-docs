@@ -705,6 +705,7 @@ paths:
               subscriber:
                 email: "gildong.go@stibee.com"
                 status: "subscribed"
+                marketingAllowed: true
                 fields:
                   name: "고길동"
               updateEnabled: true
@@ -1916,6 +1917,10 @@ components:
                 구독자 상태
                 * subscribed: 구독 중
                 * unsubscribed: 수신거부
+            marketingAllowed:
+              type: boolean
+              default: false
+              description: "광고성 정보 수신동의 여부"
             fields:
               type: object
               description: 주소록에 생성된 사용자 정의 필드별 값 (주소록에 생성되어있는 필드만 값을 입력할 수 있음)
