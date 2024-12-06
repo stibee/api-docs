@@ -886,7 +886,6 @@ paths:
                 email: "gildong.go@stibee.com"
                 fields:
                   name: "고길동"
-                  age: 45
       responses:
         '200':
           description: 구독 확인 이메일 발송 성공
