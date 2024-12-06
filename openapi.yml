@@ -816,6 +816,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/DeleteSubscribersRequest'
+            example:
+              subscribers: ["email1", "email2"]
       responses:
         '200':
           description: 구독자 삭제 성공
@@ -2150,7 +2152,6 @@ components:
             type: string
             format: email
           maxItems: 100
-          example: ["gildong.go@stibee.com", "dooly@stibee.com"]
     GetListSenderResponse:
       type: object
       properties:
