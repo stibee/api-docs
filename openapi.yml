@@ -817,7 +817,7 @@ paths:
             schema:
               $ref: '#/components/schemas/DeleteSubscribersRequest'
             example:
-              subscribers: ["email1", "email2"]
+              subscribers: ["gildong.go@stibee.com", "dooly@stibee.com"]
       responses:
         '200':
           description: 구독자 삭제 성공
