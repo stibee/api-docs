@@ -929,16 +929,6 @@ paths:
           description: 주소록 아이디
           schema:
             type: integer
-        - name: update
-          in: query
-          required: false
-          description: |
-            구독자가 이미 존재할 경우 업데이트 여부
-            - false: 업데이트하지 않음
-            - true: 이메일 주소 외 다른 값들을 새로 요청한 값으로 업데이트함
-          schema:
-            type: boolean
-            default: false
       requestBody:
         required: true
         content:
@@ -1641,8 +1631,6 @@ components:
           example:
             name: "고길동"
             age: 45
-      additionalProperties:
-        description: 주소록에 생성된 기타 사용자 정의 필드별 값
     BatchSubscriberRequest:
       type: object
       required:
@@ -1654,6 +1642,10 @@ components:
             $ref: '#/components/schemas/Subscriber'
           maxItems: 1000
           description: 추가할 구독자 목록 (최대 1,000명)
+        updateEnabled:
+          type: boolean
+          default: false
+          description: "구독자가 이미 존재할 경우 fields 값들의 업데이트 여부. false이면 업데이트하지 않음. true이면 새로 요청한 값으로 업데이트함."
     BatchSubscriberResponse:
       type: object
       properties:
