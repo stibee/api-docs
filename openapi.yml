@@ -552,25 +552,6 @@ paths:
       responses:
         '200':
           description: 성공적으로 삭제됨
-  /lists/{id}/subscribers/count:
-    get:
-      summary: 주소록 구독자 수 조회
-      tags:
-        - 주소록
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: 주소록 아이디
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: 성공적으로 조회됨
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetSubscriberCountResponse'
     
     
                 
@@ -989,6 +970,25 @@ paths:
                 failInvalidFields: null
                 failInvalidSubscriberStatus: null
                 failAlreadyExists: null
+  /lists/{id}/subscribers/count:
+    get:
+      summary: 주소록 구독자 수 조회
+      tags:
+        - 주소록
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 성공적으로 조회됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSubscriberCountResponse'
   /lists/{id}/subscribers/{subscriberEmail}/unsubscribe:
     post:
       summary: 구독자 수신거부
