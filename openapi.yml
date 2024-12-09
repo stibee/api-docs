@@ -1895,6 +1895,11 @@ components:
           
     CreateEmailRequest:
       type: object
+      required: 
+        - subject
+        - senderEmail
+        - senderName
+        - listId
       properties:
         subject:
           type: string
