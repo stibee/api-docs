@@ -381,7 +381,7 @@ paths:
       tags:
         - "이메일 - 발송"
       summary: 이메일 발송
-      description: 특정 이메일을 발송합니다
+      description: 이메일을 발송합니다
       parameters:
         - name: id
           in: path
@@ -398,9 +398,9 @@ paths:
         - "이메일 - 발송"
       summary: 이메일 발송 예약
       description: |
-        발송 시간을 YYYYMMDDhhmmss 형식으로 지정해 예약합니다.
-        대한민국 표준시(UTC+9)를 따릅니다.
-        예시: 2024년 7월 22일 11시 30분 00초 → 20240722113000
+        이메일을 예약합니다. 
+        예약 시, 발송 시간을 YYYYMMDDhhmmss 형식으로 지정해야 하며, 대한민국 표준시(UTC+9)를 따릅니다.
+        예시: 2025년 5월 1일 11시 30분 00초 → 20250501113000
       parameters:
         - name: id
           in: path
