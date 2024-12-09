@@ -1617,6 +1617,7 @@ components:
           type: string
           format: email
           description: 구독자 이메일 주소
+          example: gildong.go@stibee.com
         status:
           type: string
           enum: [subscribed, unsubscribed]
@@ -1629,7 +1630,6 @@ components:
           description: 주소록에 생성된 사용자 정의 필드별 값 (주소록에 생성되어있는 필드만 값을 입력할 수 있음)
           example:
             name: "고길동"
-            age: 45
     BatchSubscriberRequest:
       type: object
       required:
