@@ -112,6 +112,7 @@ paths:
               subject: "Email Subject"
               senderEmail: "sender@example.com"
               senderName: "Sender Name"
+              listId: 1234
       responses:
         '200':
           description: "200 OK"
@@ -1805,7 +1806,7 @@ components:
         senderName: "Sender Name"
         senderNameA: "Sender Name A"
         senderNameB: "Sender Name B"
-        listId: 123,
+        listId: 123
         segmentIds: [1, 2, 3]
         groupIds: [4, 5, 6]
     UpdateEmailErrorResponse:
