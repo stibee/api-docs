@@ -974,7 +974,7 @@ paths:
     get:
       summary: 주소록 구독자 수 조회
       tags:
-        - 주소록
+        - "주소록 - 구독자"
       parameters:
         - name: id
           in: path
