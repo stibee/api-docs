@@ -53,7 +53,7 @@ externalDocs:
   description: webhook api 문서
   url: https://help.stibee.com/hc/ko/articles/4756496712079-%EC%A3%BC%EC%86%8C%EB%A1%9D-%EC%9B%B9%ED%9B%85-Webhook-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
 servers:
-  - url:  https://qa-api.stibee.com/v2
+  - url:  https://api.stibee.com/v2
 security:
   - AccessToken: []
 tags:
