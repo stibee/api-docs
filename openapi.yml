@@ -1265,7 +1265,7 @@ components:
         companyContact:
           type: string
           description: 전화번호
-          example: 0212341234
+          example: "0212341234"
         companyAddress:
           type: string
           description: 주소
@@ -1314,7 +1314,7 @@ components:
         companyContact:
           type: string
           description: 전화번호
-          example: 0212341234
+          example: "0212341234"
         companyAddress:
           type: string
           description: 주소
