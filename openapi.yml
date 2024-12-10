@@ -109,9 +109,9 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateEmailRequest'
             example:
-              subject: "Email Subject"
-              senderEmail: "sender@example.com"
-              senderName: "Sender Name"
+              subject: "이메일 제목"
+              senderEmail: "gildong.go@stibee.com"
+              senderName: "고길동"
               listId: 1234
       responses:
         '200':
@@ -532,7 +532,7 @@ paths:
               name: "스티비 뉴스레터"
               senderName: "스티비"
               companyName: "스티비 주식회사"
-              companyContact: "support@stibee.com"
+              companyContact: "hello@stibee.com"
               companyAddress: "서울시 중구 동호로17길 13, 4층"
               useSubscriberAutoDelete: true
               canSendToUnsubscribed: false
@@ -1265,7 +1265,7 @@ components:
         companyContact:
           type: string
           description: 전화번호
-          example: support@stibee.com
+          example: 0212341234
         companyAddress:
           type: string
           description: 주소
@@ -1314,7 +1314,7 @@ components:
         companyContact:
           type: string
           description: 전화번호
-          example: support@stibee.com
+          example: 0212341234
         companyAddress:
           type: string
           description: 주소
@@ -1654,7 +1654,7 @@ components:
           items:
             type: string
           description: 추가 성공한 이메일 주소 목록
-          example: ["0@monitor.stibee.com"]
+          example: ["gildong.go@stibee.com"]
         updatedSubscribers:
           type: array
           items:
@@ -1662,7 +1662,7 @@ components:
           description: |
             (update가 true인 경우) 업데이트 성공
             주소록에 이미 추가된 구독자임. 이메일 주소와 구독 상태 외의 다른 정보를 업데이트함
-          example: ["1@monitor.stibee.com"]
+          example: ["dooly@stibee.com"]
         failAlreadyExists:
           type: array
           items:
@@ -1766,7 +1766,7 @@ components:
           type: string
           format: email
           description: 발신자 이메일
-          example: "sender@example.com"
+          example: "gildong.go@stibee.com"
         senderName:
           type: string
           description: 발신자 이름
@@ -1799,13 +1799,13 @@ components:
         type: 1
         subType: 2
         abRatio: 60
-        subject: "Email Subject"
-        subjectA: "Subject A"
-        subjectB: "Subject B"
-        senderEmail: "sender@example.com"
-        senderName: "Sender Name"
-        senderNameA: "Sender Name A"
-        senderNameB: "Sender Name B"
+        subject: "이메일 제목"
+        subjectA: "이메일 제목 A"
+        subjectB: "이메일 제목 B"
+        senderEmail: "gildong.go@stibee.com"
+        senderName: "고길동"
+        senderNameA: "둘리"
+        senderNameB: "희동이"
         listId: 123
         segmentIds: [1, 2, 3]
         groupIds: [4, 5, 6]
