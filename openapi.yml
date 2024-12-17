@@ -976,19 +976,6 @@ paths:
       responses:
         '200':
           description: 성공적으로 수정됨
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UpdateSubscriberResponse'
-              example:
-                createdSubscribers: ["0@monitor.stibee.com"]
-                updatedSubscribers: ["1@monitor.stibee.com"]
-                failNoEmails: null
-                failInvalidEmails: null
-                failDuplicatedEmails: null
-                failInvalidFields: null
-                failInvalidSubscriberStatus: null
-                failAlreadyExists: null
   /lists/{id}/subscribers/{subscriberEmail}/unsubscribe:
     post:
       summary: 구독자 수신거부
