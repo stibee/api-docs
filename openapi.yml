@@ -23,7 +23,7 @@ info:
     |--------------------------------|------------------------|
     | <a href="#tag/주소록---구독자/POST/lists/{id}/subscribers/batch">주소록 구독자 대량 추가</a>         | 최대 10회/분          |
     | <a href="#tag/주소록---구독자/GET/lists/{id}/subscribers">구독자 목록 조회</a>               | 최대 100회/분         |
-    | 그 외 API | 최대 1000회/분        |
+    | 그 외 모든 API | 최대 1000회/분        |
 
     ### Base URL
     모든 API 요청의 base URL은 https://api.stibee.com/v2 입니다.
