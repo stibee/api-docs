@@ -34,7 +34,7 @@ info:
     ### 인증
     모든 API 요청은 인증을 위해 AccessToken 헤더를 필요로 합니다.<br/>
     AccessToken은 스티비 서비스의 [워크스페이스 설정] > [API 키]에서 생성할 수 있습니다. ([스티비 도움말> 주소록 API 사용하기 > API 키 만들기](https://help.stibee.com/api-webhook/list-api#id-1-api))<br/>
-    2025년 1월 21일 이후 생성한 토큰만 인증 가능합니다.
+    2025년 1월 21일 이후 생성한 API 키로 인증 가능합니다.
 
     ```HTML
     GET /emails
