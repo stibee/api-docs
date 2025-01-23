@@ -511,11 +511,11 @@ paths:
               example:
                 id: 1234
                 owner: "hello@stibee.com"
-                name: "스티비 뉴스레터"
-                senderName: "스티비"
-                companyName: "스티비 주식회사"
+                name: "주소록 이름"
+                senderName: "발신자 이름"
+                companyName: "회사명"
                 companyContact: "hello@stibee.com"
-                companyAddress: "서울시 중구 동호로17길 13, 4층"
+                companyAddress: "서울시 중구 동호로"
                 useSubscriberAutoDelete: true
                 canSendToUnsubscribed: false
     put:
@@ -536,11 +536,11 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateListRequest'
             example:
-              name: "스티비 뉴스레터"
-              senderName: "스티비"
-              companyName: "스티비 주식회사"
+              name: "주소록 이름"
+              senderName: "발신자 이름"
+              companyName: "회사명"
               companyContact: "hello@stibee.com"
-              companyAddress: "서울시 중구 동호로17길 13, 4층"
+              companyAddress: "서울시 중구 동호로"
               useSubscriberAutoDelete: true
               canSendToUnsubscribed: false
       responses:
@@ -1247,15 +1247,15 @@ components:
         name:
           type: string
           description: 주소록 이름
-          example: 스티비 뉴스레터
+          example: 주소록 이름
         senderName:
           type: string
           description: 기본 발신자 이름
-          example: 스티비
+          example: 고길동
         companyName:
           type: string
           description: 회사명 또는 이름
-          example: 스티비 주식회사
+          example: 회사명
         companyContact:
           type: string
           description: 전화번호
@@ -1263,7 +1263,7 @@ components:
         companyAddress:
           type: string
           description: 주소
-          example: 서울시 중구 동호로17길 13, 4층
+          example: 서울시 중구 동호로
         useSubscriberAutoDelete:
           type: boolean
           description: 자동삭제 기능 사용 여부
@@ -1299,12 +1299,12 @@ components:
         senderName:
           type: string
           description: 기본 발신자 이름
-          example: 스티비
+          example: 고길동
         companyName:
           type: string
           description: 회사명 또는 이름
-          example: 스티비 주식회사
-          default: 스티비
+          example: 회사명
+          default: 회사명
         companyContact:
           type: string
           description: 전화번호
@@ -1312,7 +1312,7 @@ components:
         companyAddress:
           type: string
           description: 주소
-          example: 서울시 중구 동호로17길 13, 4층
+          example: 서울시 중구 동호로
         useSubscriberAutoDelete:
           type: boolean
           description: 자동삭제 기능 사용 여부
