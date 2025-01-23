@@ -425,7 +425,7 @@ paths:
           schema:
             type: string
             pattern: '^\d{14}$'
-            example: "20240722113000"
+            example: "20260101000000"
       responses:
         '200':
           description: 이메일 발송이 성공적으로 예약됨
