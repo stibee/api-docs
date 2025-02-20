@@ -762,6 +762,15 @@ paths:
           description: 주소록 아이디
           schema:
             type: integer
+        - name: statuses
+          in: query
+          required: false
+          description: |
+            조회할 구독자 상태 목록
+            * 여러 상태를 조회할 경우 콤마로 구분
+          schema:
+            type: string
+            example: "subscribed,unsubscribed,archived"
         - name: offset
           in: query
           required: false
