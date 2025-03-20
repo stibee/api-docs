@@ -770,7 +770,7 @@ paths:
             * 여러 상태를 조회할 경우 콤마로 구분
           schema:
             type: string
-            example: "subscribed,unsubscribed,archived"
+            example: "subscribed,unsubscribed,archived,ready"
         - name: offset
           in: query
           required: false
