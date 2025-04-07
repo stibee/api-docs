@@ -5,7 +5,7 @@
         "name": "My awesome documentation",
         "sidebar": [
           {
-            "path": "docs/introduction.md",
+            "path": "introduction.md",
             "type": "page"
           }
         ]
@@ -14,7 +14,7 @@
     "references": [    
       {
         "name": "API Reference",
-        "path": "docs/openapi.yml"
+        "path": "openapi.yml"
       }
     ],
     "publishOnMerge": true
