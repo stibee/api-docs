@@ -1,5 +1,16 @@
 {
     "subdomain": "developers",
+    "guides": [
+      {
+        "name": "Guides",
+        "sidebar": [
+          {
+            "path": "introduction.md",
+            "type": "page"
+          }
+        ]
+      }
+    ],
     "references": [    
       {
         "name": "API Reference",
