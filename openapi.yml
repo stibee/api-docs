@@ -129,7 +129,7 @@ paths:
       tags:
         - 이메일
       parameters:
-        - name: tagId
+        - name: tagIds
           in: query
           required: false
           schema:
