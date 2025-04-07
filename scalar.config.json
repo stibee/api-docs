@@ -1,16 +1,5 @@
 {
     "subdomain": "developers",
-    "guides": [
-      {
-        "name": "My awesome documentation",
-        "sidebar": [
-          {
-            "path": "introduction.md",
-            "type": "page"
-          }
-        ]
-      }
-    ],
     "references": [    
       {
         "name": "API Reference",
