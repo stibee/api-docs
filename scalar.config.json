@@ -1,0 +1,21 @@
+{
+    "subdomain": "developers",
+    "guides": [
+      {
+        "name": "My awesome documentation",
+        "sidebar": [
+          {
+            "path": "docs/introduction.md",
+            "type": "page"
+          }
+        ]
+      }
+    ],
+    "references": [    
+      {
+        "name": "API Reference",
+        "path": "docs/openapi.yml"
+      }
+    ],
+    "publishOnMerge": true
+  }
