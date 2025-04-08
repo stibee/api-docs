@@ -6,6 +6,7 @@
       "description":"스티비에서 제공하는 API에 대한 요청 및 응답 방법을 확인할 수 있는 문서입니다.",
       "ogImage": "https://resource.stibee.com/assets/api/og_image.jpeg"
     },
+    "guides": [],
     "references": [    
       {
         "name": "API Reference",
