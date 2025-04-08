@@ -9,7 +9,7 @@
     "guides": [],
     "references": [    
       {
-        "name": "API Reference",
+        "name": "Docs",
         "path": "openapi.yml"
       }
     ],
@@ -20,6 +20,8 @@
         "darkMode": "https://resource.stibee.com/assets/api/logo_dark.png",
         "lightMode": "https://resource.stibee.com/assets/api/logo_light.png"
       },
-      "footer": ""
+      "footer": "",
+      "cssString": ".header-item-link {opacity:0;} .header-item-link:hover {cursor: default;}"
     }
   }
+  
