@@ -1,10 +1,10 @@
 {
     "subdomain": "developers",
     "siteMeta": {
-      "favicon": "https://api.scalar.com/cdn/images/AyFIdCcnbv0aTaYr9ixYE/8BGgza_SIwVJq7i9aUMJg.png",
+      "favicon": "https://resource.stibee.com/assets/api/favicon.png",
       "title": "STIBEE API",
       "description":"스티비에서 제공하는 API에 대한 요청 및 응답 방법을 확인할 수 있는 문서입니다.",
-      "ogImage": "https://api.scalar.com/cdn/images/AyFIdCcnbv0aTaYr9ixYE/yo6mlOQ6Zv5FvLLWRoGjB.jpeg"
+      "ogImage": "https://resource.stibee.com/assets/api/og_image.jpeg"
     },
     "guides": [
       {
@@ -25,7 +25,7 @@
     ],
     "publishOnMerge": true,
     "logo": {
-      "darkMode": "https://api.scalar.com/cdn/images/AyFIdCcnbv0aTaYr9ixYE/rk8wZNwb_u4FRjw7Z8COn.png",
-      "lightMode": "https://api.scalar.com/cdn/images/AyFIdCcnbv0aTaYr9ixYE/IxLe24fJFcM3xJuBDM_XJ.png"
+      "darkMode": "https://resource.stibee.com/assets/api/logo_dark.png",
+      "lightMode": "https://resource.stibee.com/assets/api/logo_light.png"
     },
   }
