@@ -23,9 +23,13 @@
         "path": "openapi.yml"
       }
     ],
+    "theme": "default",
     "publishOnMerge": true,
-    "logo": {
-      "darkMode": "https://resource.stibee.com/assets/api/logo_dark.png",
-      "lightMode": "https://resource.stibee.com/assets/api/logo_light.png"
-    },
+    "siteConfig": {
+      "logo": {
+        "darkMode": "https://resource.stibee.com/assets/api/logo_dark.png",
+        "lightMode": "https://resource.stibee.com/assets/api/logo_light.png"
+      },
+      "footer": ""
+    }
   }
