@@ -7,10 +7,15 @@
       "ogImage": "https://resource.stibee.com/assets/api/og_image.jpeg"
     },
     "guides": [
-      {"slug": "introduction", "title": "시작하기", "file": "introduction.md"},
-      {"slug": "api-guide", "title": "API 사용 가이드", "file": "api.md"},
-      {"slug": "webhook-guide", "title": "웹훅 사용 가이드", "file": "webhook.md"},
-      {"slug": "full-guide", "title": "전체 가이드", "file": "README.md"}
+      {
+        "name": "Docs",
+        "sidebar": [
+          {
+            "path": "docs/introduction.md",
+            "type": "page"
+          }
+        ]
+      }
     ],
     "references": [    
       {
@@ -25,19 +30,8 @@
         "darkMode": "https://resource.stibee.com/assets/api/logo_dark.png",
         "lightMode": "https://resource.stibee.com/assets/api/logo_light.png"
       },
-      "nav": {
-        "links": [
-          {
-            "name": "스티비 홈페이지",
-            "href": "https://stibee.com"
-          },
-          {
-            "name": "스티비 도움말",
-            "href": "https://help.stibee.com"
-          }
-        ]
-      },
-      "footer": "© 2024 Stibee Inc. All rights reserved."
+      "footer": "",
+      "cssString": ".header-item-link {opacity:0;} .header-item-link:hover {cursor: default;}"
     }
   }
   
