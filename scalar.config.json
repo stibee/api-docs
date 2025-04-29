@@ -11,7 +11,7 @@
         "name": "Docs",
         "sidebar": [
           {
-            "path": "docs/introduction.md",
+            "path": "introduction.md",
             "type": "page"
           }
         ]
