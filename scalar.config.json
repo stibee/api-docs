@@ -7,22 +7,10 @@
       "ogImage": "https://resource.stibee.com/assets/api/og_image.jpeg"
     },
     "guides": [
-      {
-        "name": "시작하기",
-        "path": "introduction.md"
-      },
-      {
-        "name": "API 사용 가이드",
-        "path": "api.md"
-      },
-      {
-        "name": "웹훅 사용 가이드",
-        "path": "webhook.md"
-      },
-      {
-        "name": "전체 가이드",
-        "path": "README.md"
-      }
+      {"slug": "introduction", "title": "시작하기", "file": "introduction.md"},
+      {"slug": "api-guide", "title": "API 사용 가이드", "file": "api.md"},
+      {"slug": "webhook-guide", "title": "웹훅 사용 가이드", "file": "webhook.md"},
+      {"slug": "full-guide", "title": "전체 가이드", "file": "README.md"}
     ],
     "references": [    
       {
@@ -49,9 +37,7 @@
           }
         ]
       },
-      "footer": {
-        "copyright": "© 2024 Stibee Inc. All rights reserved."
-      }
+      "footer": "© 2024 Stibee Inc. All rights reserved."
     }
   }
   
