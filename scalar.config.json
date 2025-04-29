@@ -30,8 +30,7 @@
         "darkMode": "https://resource.stibee.com/assets/api/logo_dark.png",
         "lightMode": "https://resource.stibee.com/assets/api/logo_light.png"
       },
-      "footer": "",
-      "cssString": ".header-item-link {opacity:0;} .header-item-link:hover {cursor: default;}"
+      "footer": ""
     }
   }
   
