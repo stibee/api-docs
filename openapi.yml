@@ -39,8 +39,10 @@ info:
     자세한 내용은 [스티비 도움말 > 주소록 API 사용하기 > API 키 만들기](https://help.stibee.com/api-webhook/api#id-1-api-2)를 참고하세요.<br/>
     2025년 1월 21일 이후에 생성된 API 키로만 인증할 수 있습니다.
 
+    #### 인증 확인    
+    `/auth-check`는 발급된 API 키를 사용해 인증이 정상적으로 작동하는지 확인할 수 있는 테스트용 요청입니다.
+    
     ```http
-    API키 인증 예시
     GET /auth-check
     AccessToken: abcdefg1234
     ```
