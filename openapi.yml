@@ -2346,3 +2346,4 @@ components:
           type: string
           description: 그룹 이름
           example: 그룹 이름
+
