@@ -93,13 +93,12 @@ tags:
     externalDocs:
       description: Find out more
       url: http://swagger.io
-      
-  paths:
+paths:
   /emails:
     post:
       summary: 이메일 생성
       tags:
-      - 이메일
+        - 이메일
       requestBody:
         required: true
         content:
@@ -107,90 +106,90 @@ tags:
             schema:
               $ref: '#/components/schemas/CreateEmailRequest'
             example:
-              subject: 이메일 제목
-              senderEmail: gildong.go@stibee.com
-              senderName: 고길동
+              subject: "이메일 제목"
+              senderEmail: "gildong.go@stibee.com"
+              senderName: "고길동"
               listId: 1234
       responses:
         '200':
-          description: 200 OK
+          description: "이메일 생성 성공" # 기존 "200 OK"에서 좀 더 명확하게
           content:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
     get:
       summary: 이메일 목록 조회
       tags:
-      - 이메일
+        - 이메일
       parameters:
-      - name: tagIds
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int
-      - name: listId
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int
-      - name: offset
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int
-          default: 0
-      - name: limit
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int
-          default: 20
+        - name: tagIds
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int
+        - name: listId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int
+            default: 20
       responses:
         '200':
-          description: 200 OK
+          description: "200 OK"
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetEmailsResponse'
+
   /emails/{id}:
     get:
       summary: 이메일 정보 조회
       tags:
-      - 이메일
+        - 이메일
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 이메일 아이디
-        schema:
-          type: integer
-          format: int
+        - name: id
+          in: path
+          required: true
+          description: 이메일 아이디
+          schema:
+            type: integer
+            format: int
       responses:
         '200':
-          description: ''
+          description: ""
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetEmailResponse'
     put:
       tags:
-      - 이메일
+        - 이메일
       summary: 이메일 정보 수정
-      description: '작성 중 상태인 이메일의 정보(이메일 제목, 발신자 이름, 세그먼트, 그룹 등)를 수정할 수 있습니다.
-
-        '
+      description: |
+        작성 중 상태인 이메일의 정보(이메일 제목, 발신자 이름, 세그먼트, 그룹 등)를 수정할 수 있습니다.
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 수정할 이메일 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 수정할 이메일 아이디
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -204,7 +203,7 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
         '400':
           description: 잘못된 요청
           content:
@@ -214,14 +213,14 @@ tags:
     delete:
       summary: 이메일 삭제
       tags:
-      - 이메일
+        - 이메일
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 삭제할 이메일 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 삭제할 이메일 아이디
+          schema:
+            type: integer
       responses:
         '200':
           description: 성공적으로 삭제됨
@@ -229,36 +228,36 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /emails/{id}/logs:
     get:
       tags:
-      - 이메일
+        - 이메일
       summary: 이메일 상세 통계 조회
       description: 특정 이메일의 상세 통계 정보를 조회합니다
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 이메일 아이디
-        schema:
-          type: integer
-      - name: offset
-        in: query
-        required: false
-        description: 현재 데이터 조회가 시작되는 위치
-        schema:
-          type: integer
-          minimum: 0
-          default: 0
-      - name: limit
-        in: query
-        required: false
-        description: 한 번에 가져올 데이터의 최대 개수
-        schema:
-          type: integer
-          minimum: 1
-          default: 100
+        - name: id
+          in: path
+          required: true
+          description: 이메일 아이디
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          required: false
+          description: 현재 데이터 조회가 시작되는 위치
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          description: 한 번에 가져올 데이터의 최대 개수
+          schema:
+            type: integer
+            minimum: 1
+            default: 100
       responses:
         '200':
           description: 상세 통계 조회 성공
@@ -269,16 +268,16 @@ tags:
   /emails/{id}/copy:
     post:
       tags:
-      - 이메일
+        - 이메일
       summary: 이메일 복사
       description: 특정 이메일을 복사하여 새로운 이메일을 생성합니다
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 복사할 이메일 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 복사할 이메일 아이디
+          schema:
+            type: integer
       responses:
         '200':
           description: 이메일이 성공적으로 복사됨
@@ -289,24 +288,24 @@ tags:
   /emails/{id}/tags/release:
     post:
       tags:
-      - 이메일 - 태그
+        - "이메일 - 태그"
       summary: 이메일 태그 해제
       description: 특정 이메일에서 지정된 태그들을 해제합니다
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 이메일 아이디
-        schema:
-          type: integer
-      - name: tagIds
-        in: query
-        required: true
-        description: 태그 아이디 목록 (콤마로 구분)
-        schema:
-          type: string
-          pattern: ^\d+(,\d+)*$
-          example: 1,2
+        - name: id
+          in: path
+          required: true
+          description: 이메일 아이디
+          schema:
+            type: integer
+        - name: tagIds
+          in: query
+          required: true
+          description: 태그 아이디 목록 (콤마로 구분)
+          schema:
+            type: string
+            pattern: '^\d+(,\d+)*$'
+            example: "1,2"
       responses:
         '200':
           description: 성공적으로 태그가 해제됨
@@ -314,26 +313,27 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /emails/{id}/tags/assign:
     post:
       summary: 이메일 태그 할당
       tags:
-      - 이메일 - 태그
+        - "이메일 - 태그"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 이메일 아이디
-        schema:
-          type: integer
-      - name: tagIds
-        in: query
-        required: true
-        description: 태그 아이디 목록 (콤마로 구분)
-        schema:
-          type: string
-        example: 1,2
+        - name: id
+          in: path
+          required: true
+          description: 이메일 아이디
+          schema:
+            type: integer
+        - name: tagIds
+          in: query
+          required: true
+          description: 태그 아이디 목록 (콤마로 구분)
+          schema:
+            type: string
+          example: "1,2"
+            
       responses:
         '200':
           description: 성공적으로 처리됨
@@ -341,20 +341,20 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /emails/{id}/content:
     get:
       tags:
-      - 이메일 - 콘텐츠
+        - "이메일 - 콘텐츠"
       summary: 이메일 콘텐츠 조회
       description: 특정 이메일의 HTML 콘텐츠를 조회합니다
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 이메일 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 이메일 아이디
+          schema:
+            type: integer
       responses:
         '200':
           description: 이메일 콘텐츠
@@ -362,19 +362,25 @@ tags:
             text/html:
               schema:
                 type: string
-                example: "<html>\n  <head>\n  </head>\n  <body>\n    hello\n  </body>\n\
-                  </html>\n"
+                example: |
+                  <html>
+                    <head>
+                    </head>
+                    <body>
+                      hello
+                    </body>
+                  </html>
     post:
       summary: 이메일 콘텐츠 수정
       tags:
-      - 이메일 - 콘텐츠
+        - "이메일 - 콘텐츠"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 이메일 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 이메일 아이디
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -382,8 +388,14 @@ tags:
             schema:
               type: string
               description: 이메일 HTML 콘텐츠
-            example: "<html>\n  <head>\n  </head>\n  <body>\n    hello\n  </body>\n\
-              </html>\n"
+            example: |
+              <html>
+                <head>
+                </head>
+                <body>
+                  hello
+                </body>
+              </html>
       responses:
         '200':
           description: 성공적으로 처리됨
@@ -391,20 +403,20 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /emails/{id}/send:
     post:
       tags:
-      - 이메일 - 발송
+        - "이메일 - 발송"
       summary: 이메일 발송
       description: 이메일을 발송합니다
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 발송할 이메일 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 발송할 이메일 아이디
+          schema:
+            type: integer
       responses:
         '200':
           description: 이메일이 성공적으로 발송됨
@@ -412,33 +424,33 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /emails/{id}/reserve:
     post:
       tags:
-      - 이메일 - 발송
+        - "이메일 - 발송"
       summary: 이메일 발송 예약
-      description: "이메일을 예약합니다. \n예약 시, 발송 시간을 YYYYMMDDhhmmss 형식으로 지정해야 하며, 대한민국 표준시(UTC+9)를\
-        \ 따릅니다.\n예시: 2025년 5월 1일 11시 30분 00초 → 20250501113000\n"
+      description: |
+        이메일을 예약합니다. 
+        예약 시, 발송 시간을 YYYYMMDDhhmmss 형식으로 지정해야 하며, 대한민국 표준시(UTC+9)를 따릅니다.
+        예시: 2025년 5월 1일 11시 30분 00초 → 20250501113000
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 예약 발송할 이메일 아이디
-        schema:
-          type: integer
-      - name: reserveTime
-        in: query
-        required: true
-        description: '예약 발송 시간 (YYYYMMDDhhmmss 형식)
-
-          대한민국 표준시(UTC+9) 기준
-
-          '
-        schema:
-          type: string
-          pattern: ^\d{14}$
-          example: '20260101000000'
+        - name: id
+          in: path
+          required: true
+          description: 예약 발송할 이메일 아이디
+          schema:
+            type: integer
+        - name: reserveTime
+          in: query
+          required: true
+          description: |
+            예약 발송 시간 (YYYYMMDDhhmmss 형식)
+            대한민국 표준시(UTC+9) 기준
+          schema:
+            type: string
+            pattern: '^\d{14}$'
+            example: "20260101000000"
       responses:
         '200':
           description: 이메일 발송이 성공적으로 예약됨
@@ -446,20 +458,20 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /emails/{id}/cancel-reserve:
     post:
       tags:
-      - 이메일 - 발송
+        - "이메일 - 발송"
       summary: 이메일 발송 예약 취소
       description: 예약된 이메일 발송을 취소합니다
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 예약 취소할 이메일 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 예약 취소할 이메일 아이디
+          schema:
+            type: integer
       responses:
         '200':
           description: 이메일 발송 예약이 성공적으로 취소됨
@@ -467,11 +479,11 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /lists:
     post:
       tags:
-      - 주소록
+        - 주소록
       summary: 주소록 생성
       requestBody:
         required: true
@@ -481,33 +493,33 @@ tags:
               $ref: '#/components/schemas/CreateListRequest'
       responses:
         '200':
-          description: ''
+          description: "주소록 생성 성공" # 기존 "" 에서 좀 더 명확하게
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateListResponse'
     get:
       tags:
-      - 주소록
+        - 주소록
       summary: 주소록 목록 조회
       parameters:
-      - name: offset
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int
-          default: 0
-      - name: limit
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int
-          default: 50
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int
+            default: 50
       responses:
         '200':
-          description: ''
+          description: "주소록 목록 조회 성공" # 기존 "" 에서 좀 더 명확하게
           content:
             application/json:
               schema:
@@ -516,14 +528,14 @@ tags:
     get:
       summary: 주소록 정보 조회
       tags:
-      - 주소록
+        - 주소록
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
       responses:
         '200':
           description: 성공적으로 조회됨
@@ -533,25 +545,25 @@ tags:
                 $ref: '#/components/schemas/GetListResponse'
               example:
                 id: 1234
-                owner: hello@stibee.com
-                name: 주소록 이름
-                senderName: 발신자 이름
-                companyName: 회사명
-                companyContact: hello@stibee.com
-                companyAddress: 서울시 중구 동호로
+                owner: "hello@stibee.com"
+                name: "주소록 이름"
+                senderName: "발신자 이름"
+                companyName: "회사명"
+                companyContact: "hello@stibee.com"
+                companyAddress: "서울시 중구 동호로"
                 useSubscriberAutoDelete: true
                 canSendToUnsubscribed: false
     put:
       summary: 주소록 정보 수정
       tags:
-      - 주소록
+        - 주소록
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -559,11 +571,11 @@ tags:
             schema:
               $ref: '#/components/schemas/UpdateListRequest'
             example:
-              name: 주소록 이름
-              senderName: 발신자 이름
-              companyName: 회사명
-              companyContact: hello@stibee.com
-              companyAddress: 서울시 중구 동호로
+              name: "주소록 이름"
+              senderName: "발신자 이름"
+              companyName: "회사명"
+              companyContact: "hello@stibee.com"
+              companyAddress: "서울시 중구 동호로"
               useSubscriberAutoDelete: true
               canSendToUnsubscribed: false
       responses:
@@ -573,18 +585,18 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
     delete:
       tags:
-      - 주소록
+        - 주소록
       summary: 주소록 삭제
       description: 특정 아이디의 주소록을 삭제합니다
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: 성공적으로 삭제됨
@@ -592,21 +604,23 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /lists/{id}/senders:
     post:
       tags:
-      - 주소록 - 발신자 이메일 주소
+        - "주소록 - 발신자 이메일 주소"
       summary: 발신자 이메일 주소 추가
-      description: "발신자 이메일 주소를 추가합니다. \n인증 이메일이 발송되고, 그 이메일에서 인증을 하면 추가됩니다. \n워크스페이스\
-        \ 단위에서 한번 인증한 이메일 주소는 다른 주소록에 추가할 때 인증 이메일이 발송되지 않고 바로 추가됩니다.\n"
+      description: |
+        발신자 이메일 주소를 추가합니다. 
+        인증 이메일이 발송되고, 그 이메일에서 인증을 하면 추가됩니다. 
+        워크스페이스 단위에서 한번 인증한 이메일 주소는 다른 주소록에 추가할 때 인증 이메일이 발송되지 않고 바로 추가됩니다.
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -629,14 +643,14 @@ tags:
     get:
       summary: 발신자 이메일 주소 목록 조회
       tags:
-      - 주소록 - 발신자 이메일 주소
+        - "주소록 - 발신자 이메일 주소"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
       responses:
         '200':
           description: 발신자 이메일 주소 목록 조회 성공
@@ -647,30 +661,29 @@ tags:
                 items:
                   $ref: '#/components/schemas/GetListSenderResponse'
               example:
-              - email: gildong.go@stibee.com
-                authorized: false
+                - email: "gildong.go@stibee.com"
+                  authorized: false
   /lists/{id}/senders/{email}/verify:
     post:
       tags:
-      - 주소록 - 발신자 이메일 주소
+        - "주소록 - 발신자 이메일 주소"
       summary: 발신자 이메일 주소 인증 이메일 발송 요청
-      description: '주소록에 이미 추가된 발신자 이메일 주소에 대해 인증 이메일 발송을 다시 요청할 수 있습니다.
-
-        '
+      description: |
+        주소록에 이미 추가된 발신자 이메일 주소에 대해 인증 이메일 발송을 다시 요청할 수 있습니다.
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
-      - name: email
-        in: path
-        required: true
-        description: 발신자 이메일 주소
-        schema:
-          type: string
-          format: email
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+        - name: email
+          in: path
+          required: true
+          description: 발신자 이메일 주소
+          schema:
+            type: string
+            format: email
       responses:
         '200':
           description: 인증 이메일이 성공적으로 발송됨
@@ -678,7 +691,7 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
         '400':
           description: 잘못된 요청
           content:
@@ -689,14 +702,14 @@ tags:
     post:
       summary: 구독자 추가
       tags:
-      - 주소록 - 구독자
+        - "주소록 - 구독자"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -705,22 +718,27 @@ tags:
               $ref: '#/components/schemas/AddSubscriberRequest'
             example:
               subscriber:
-                email: gildong.go@stibee.com
-                status: subscribed
+                email: "gildong.go@stibee.com"
+                status: "subscribed"
                 marketingAllowed: true
                 fields:
-                  name: 고길동
+                  name: "고길동"
               updateEnabled: true
       responses:
         '200':
           description: 구독자 추가 성공
           content:
-            text/plain:
+            text/plain: # 이 응답은 실제로는 JSON을 반환할 수 있으나, 요청에 따라 text/plain으로 변경
               schema:
                 type: string
-                example: ok
+                example: "ok" 
         '201':
           description: 구독자 업데이트 성공
+          content:
+            text/plain: # 이 응답은 실제로는 JSON을 반환할 수 있으나, 요청에 따라 text/plain으로 변경
+              schema:
+                type: string
+                example: "ok"
         '400':
           description: 실패
           content:
@@ -729,67 +747,63 @@ tags:
                 $ref: '#/components/schemas/ErrorResponse'
               examples:
                 InvalidSubscriberVar:
-                  description: 추가 실패 - 사용자 정의 필드가 잘못됨.
+                  description: "추가 실패 - 사용자 정의 필드가 잘못됨."
                   value:
-                    code: stberror.Errors.List.InvalidSubscriberVar
+                    code: "stberror.Errors.List.InvalidSubscriberVar"
                     httpStatusCode: 400
                 AlreadyExistEmail:
-                  description: '(update가 false인 경우) 추가 실패 - 주소록에 이미 추가된 구독자임. '
+                  description: "(update가 false인 경우) 추가 실패 - 주소록에 이미 추가된 구독자임. "
                   value:
-                    code: stberror.Errors.List.AlreadyExistEmail
+                    code: "stberror.Errors.List.AlreadyExistEmail"
                     httpStatusCode: 400
                 InvalidEmail:
-                  description: 추가 실패 - 이메일 주소 형식이 잘못됨.
+                  description: "추가 실패 - 이메일 주소 형식이 잘못됨."
                   value:
-                    code: stberror.Errors.List.InvalidEmail
+                    code: "stberror.Errors.List.InvalidEmail"
                     httpStatusCode: 400
                 InvalidData:
-                  description: 추가 실패 - 사용자 정의 필드가 잘못됨.
+                  description: "추가 실패 - 사용자 정의 필드가 잘못됨."
                   value:
-                    code: stberror.Errors.List.InvalidData
+                    code: "stberror.Errors.List.InvalidData"
                     httpStatusCode: 400
     get:
       summary: 구독자 목록 조회
       tags:
-      - 주소록 - 구독자
+        - "주소록 - 구독자"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
-      - name: statuses
-        in: query
-        required: false
-        description: '조회할 구독자 상태 목록
-
-          * 여러 상태를 조회할 경우 콤마로 구분
-
-          '
-        schema:
-          type: string
-          example: subscribed,unsubscribed,archived,ready
-      - name: offset
-        in: query
-        required: false
-        description: 현재 데이터 조회가 시작되는 위치
-        schema:
-          type: integer
-          default: 0
-          minimum: 0
-      - name: limit
-        in: query
-        required: false
-        description: '한 번에 가져올 데이터의 최대 개수
-
-          * 조회된 아이템의 최대 개수는 1000을 넘을 수 없다.
-
-          '
-        schema:
-          type: integer
-          default: 100
-          maximum: 1000
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+        - name: statuses
+          in: query
+          required: false
+          description: |
+            조회할 구독자 상태 목록
+            * 여러 상태를 조회할 경우 콤마로 구분
+          schema:
+            type: string
+            example: "subscribed,unsubscribed,archived,ready"
+        - name: offset
+          in: query
+          required: false
+          description: 현재 데이터 조회가 시작되는 위치
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: limit
+          in: query
+          required: false
+          description: |
+            한 번에 가져올 데이터의 최대 개수
+            * 조회된 아이템의 최대 개수는 1000을 넘을 수 없다.
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
       responses:
         '200':
           description: 성공적으로 조회됨
@@ -800,14 +814,14 @@ tags:
                 items:
                   $ref: '#/components/schemas/GetSubscribersResponse'
               example:
-              - email: gildong@stibee.com
-                status: subscribed
-                fields:
-                  $ad_agreed: ''
-                  age: '45'
-                  name: 고길동
-                createdTime: 2024-11-12 17:09:13 +0900 KST
-                modifiedTime: 2024-11-17 20:01:11 +0900 KST
+                - email: "gildong@stibee.com"
+                  status: "subscribed"
+                  fields:
+                    $ad_agreed: ""
+                    age: "45"
+                    name: "고길동"
+                  createdTime: "2024-11-12 17:09:13 +0900 KST"
+                  modifiedTime: "2024-11-17 20:01:11 +0900 KST"
         '400':
           description: 실패
           content:
@@ -816,21 +830,21 @@ tags:
                 $ref: '#/components/schemas/ErrorResponse'
               examples:
                 InvalidSubscriberVar:
-                  description: 한번에 요청할 수 있는 범위를 초과하였음..
+                  description: "한번에 요청할 수 있는 범위를 초과하였음.."
                   value:
-                    code: stberror.Errors.Data.LimitExceeded
+                    code: "stberror.Errors.Data.LimitExceeded"
                     httpStatusCode: 400
     delete:
       summary: 구독자 완전 삭제
       tags:
-      - 주소록 - 구독자
+        - "주소록 - 구독자"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -838,9 +852,7 @@ tags:
             schema:
               $ref: '#/components/schemas/DeleteSubscribersRequest'
             example:
-              subscribers:
-              - gildong.go@stibee.com
-              - dooly@stibee.com
+              subscribers: ["gildong.go@stibee.com", "dooly@stibee.com"]
       responses:
         '200':
           description: 구독자 삭제 성공
@@ -848,7 +860,7 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
         '400':
           description: 실패
           content:
@@ -857,29 +869,31 @@ tags:
                 $ref: '#/components/schemas/ErrorResponse'
               examples:
                 LimitExceeded:
-                  description: 한번에 너무 많은 구독자를 요청함. (최대 1,000명)
+                  description: "한번에 너무 많은 구독자를 요청함. (최대 1,000명)"
                   value:
-                    code: stberror.Errors.List.LimitExceeded
+                    code: "stberror.Errors.List.LimitExceeded"
                     httpStatusCode: 400
                 TooLongData:
-                  description: 한번에 너무 많은 본문을 요청함. (최대 10MB)
+                  description: "한번에 너무 많은 본문을 요청함. (최대 10MB)"
                   value:
-                    code: stberror.Errors.List.TooLongData
+                    code: "stberror.Errors.List.TooLongData"
                     httpStatusCode: 400
   /lists/{id}/subscribers/double-optin:
     post:
       summary: 구독자 추가 - 구독 확인 이메일 발송
       tags:
-      - 주소록 - 구독자
-      description: "인증 이메일 발송 및 구독자 추가 API는 구독자가 주소록에 존재하지 않는 상태에서 '구독 대기' 상태로 \n\
-        주소록에 추가되며 인증메일이 구독자에게 발송된다. 구독확인 메일을 수신한 구독자가 인증을 마치면 \n'구독 중' 상태로 전환된다.\n"
+        - "주소록 - 구독자"
+      description: |
+        인증 이메일 발송 및 구독자 추가 API는 구독자가 주소록에 존재하지 않는 상태에서 '구독 대기' 상태로 
+        주소록에 추가되며 인증메일이 구독자에게 발송된다. 구독확인 메일을 수신한 구독자가 인증을 마치면 
+        '구독 중' 상태로 전환된다.
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -888,9 +902,9 @@ tags:
               $ref: '#/components/schemas/SendDoubleOptinRequest'
             example:
               subscriber:
-                email: gildong.go@stibee.com
+                email: "gildong.go@stibee.com"
                 fields:
-                  name: 고길동
+                  name: "고길동"
       responses:
         '200':
           description: 구독 확인 이메일 발송 성공
@@ -898,7 +912,7 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
         '400':
           description: 잘못된 요청
           content:
@@ -907,38 +921,38 @@ tags:
                 $ref: '#/components/schemas/ErrorResponse'
               examples:
                 InvalidSubscriberVar:
-                  description: 추가 실패 - 사용자 정의 필드가 잘못됨.
+                  description: "추가 실패 - 사용자 정의 필드가 잘못됨."
                   value:
-                    code: stberror.Errors.List.InvalidSubscriberVar
+                    code: "stberror.Errors.List.InvalidSubscriberVar"
                     httpStatusCode: 400
                 AlreadyExistEmail:
-                  description: '(update가 false인 경우) 추가 실패 - 주소록에 이미 추가된 구독자임. '
+                  description: "(update가 false인 경우) 추가 실패 - 주소록에 이미 추가된 구독자임. "
                   value:
-                    code: stberror.Errors.List.AlreadyExistEmail
+                    code: "stberror.Errors.List.AlreadyExistEmail"
                     httpStatusCode: 400
                 InvalidEmail:
-                  description: 추가 실패 - 이메일 주소 형식이 잘못됨.
+                  description: "추가 실패 - 이메일 주소 형식이 잘못됨."
                   value:
-                    code: stberror.Errors.List.InvalidEmail
+                    code: "stberror.Errors.List.InvalidEmail"
                     httpStatusCode: 400
                 InvalidData:
-                  description: 추가 실패 - 사용자 정의 필드가 잘못됨.
+                  description: "추가 실패 - 사용자 정의 필드가 잘못됨."
                   value:
-                    code: stberror.Errors.List.InvalidData
+                    code: "stberror.Errors.List.InvalidData"
                     httpStatusCode: 400
   /lists/{id}/subscribers/batch:
     post:
       tags:
-      - 주소록 - 구독자
+        - "주소록 - 구독자"
       summary: 주소록 구독자 대량 추가
       description: 주소록에 여러 구독자를 한 번에 추가합니다
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -962,14 +976,14 @@ tags:
     get:
       summary: 주소록 구독자 수 조회
       tags:
-      - 주소록 - 구독자
+        - "주소록 - 구독자"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
       responses:
         '200':
           description: 성공적으로 조회됨
@@ -981,20 +995,20 @@ tags:
     put:
       summary: 구독자 정보 수정
       tags:
-      - 주소록 - 구독자
+       - "주소록 - 구독자"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
-      - name: subscriber
-        in: path
-        required: true
-        description: 구독자 이메일 주소
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+        - name: subscriber
+          in: path
+          required: true
+          description: 구독자 이메일 주소
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -1008,26 +1022,26 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /lists/{id}/subscribers/{subscriberEmail}/unsubscribe:
     post:
       summary: 구독자 수신거부
       tags:
-      - 주소록 - 구독자
+       - "주소록 - 구독자"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
-      - name: subscriberEmail
-        in: path
-        required: true
-        description: 구독자 이메일 주소
-        schema:
-          type: string
-          format: email
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+        - name: subscriberEmail
+          in: path
+          required: true
+          description: 구독자 이메일 주소
+          schema:
+            type: string
+            format: email
       responses:
         '200':
           description: 성공적으로 수신거부 처리됨
@@ -1035,25 +1049,25 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /lists/{id}/groups/{groupId}/assign:
     post:
       summary: 구독자 그룹 할당
       tags:
-      - 주소록 - 구독자
+       - "주소록 - 구독자"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
-      - name: groupId
-        in: path
-        required: true
-        description: 그룹 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+        - name: groupId
+          in: path
+          required: true
+          description: 그룹 아이디
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -1067,25 +1081,25 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /lists/{id}/groups/{groupId}/release:
     post:
       summary: 구독자 그룹 해제
       tags:
-      - 주소록 - 구독자
+       - "주소록 - 구독자"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
-      - name: groupId
-        in: path
-        required: true
-        description: 그룹 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+        - name: groupId
+          in: path
+          required: true
+          description: 그룹 아이디
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -1099,26 +1113,26 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /lists/{id}/senders/{email}:
     delete:
       summary: 발신자 이메일 주소 삭제
       tags:
-      - 주소록 - 발신자 이메일 주소
+        - "주소록 - 발신자 이메일 주소"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
-      - name: email
-        in: path
-        required: true
-        description: 발신자 이메일 주소
-        schema:
-          type: string
-          format: email
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+        - name: email
+          in: path
+          required: true
+          description: 발신자 이메일 주소
+          schema:
+            type: string
+            format: email
       responses:
         '200':
           description: 발신자 이메일 주소 삭제 성공
@@ -1126,19 +1140,19 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
   /lists/{id}/groups:
     post:
       summary: 그룹 생성
       tags:
-      - 주소록 - 그룹
+        - "주소록 - 그룹"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -1155,32 +1169,32 @@ tags:
     get:
       summary: 그룹 목록 조회
       tags:
-      - 주소록 - 그룹
+        - "주소록 - 그룹"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
-      - name: offset
-        in: query
-        required: false
-        description: 현재 데이터 조회가 시작되는 위치
-        schema:
-          type: integer
-          minimum: 0
-          default: 0
-      - name: limit
-        in: query
-        required: false
-        description: 한 번에 가져올 데이터의 최대 개수
-        schema:
-          type: integer
-          minimum: 1
-          default: 10
-      - $ref: '#/components/parameters/SortByParam'
-      - $ref: '#/components/parameters/OrderByParam'
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          required: false
+          description: 현재 데이터 조회가 시작되는 위치
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          description: 한 번에 가져올 데이터의 최대 개수
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+        - $ref: '#/components/parameters/SortByParam'
+        - $ref: '#/components/parameters/OrderByParam'
       responses:
         '200':
           description: 그룹 목록 조회 성공
@@ -1192,20 +1206,20 @@ tags:
     put:
       summary: 그룹 정보 수정
       tags:
-      - 주소록 - 그룹
+        - "주소록 - 그룹"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
-      - name: groupId
-        in: path
-        required: true
-        description: 그룹 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+        - name: groupId
+          in: path
+          required: true
+          description: 그룹 아이디
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -1219,24 +1233,24 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
     delete:
       summary: 그룹 삭제
       tags:
-      - 주소록 - 그룹
+        - "주소록 - 그룹"
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: 주소록 아이디
-        schema:
-          type: integer
-      - name: groupId
-        in: path
-        required: true
-        description: 그룹 아이디
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          description: 주소록 아이디
+          schema:
+            type: integer
+        - name: groupId
+          in: path
+          required: true
+          description: 그룹 아이디
+          schema:
+            type: integer
       responses:
         '200':
           description: 그룹 삭제 성공
@@ -1244,7 +1258,10 @@ tags:
             text/plain:
               schema:
                 type: string
-                example: ok
+                example: "ok"
+    
+##############################################################################################
+
 components:
   securitySchemes:
     AccessToken:
@@ -1257,45 +1274,35 @@ components:
       name: sortBy
       in: query
       required: false
-      description: '정렬 기준
-
+      description: |
+        정렬 기준
         * id: 그룹 아이디
-
         * name: 그룹 이름
-
-        '
       schema:
         type: string
-        enum:
-        - id
-        - name
+        enum: [id, name]
         default: id
     OrderByParam:
       name: orderBy
       in: query
       required: false
-      description: '정렬 방향
-
+      description: |
+        정렬 방향
         * desc: 내림차순
-
         * asc: 오름차순
-
-        '
       schema:
         type: string
-        enum:
-        - desc
-        - asc
+        enum: [desc, asc]
         default: desc
   schemas:
     CreateListRequest:
       type: object
-      required:
-      - name
-      - senderName
-      - companyName
-      - companyContact
-      - companyAddress
+      required: 
+        - name
+        - senderName
+        - companyName
+        - companyContact
+        - companyAddress
       properties:
         name:
           type: string
@@ -1312,7 +1319,7 @@ components:
         companyContact:
           type: string
           description: 전화번호
-          example: '0212341234'
+          example: "0212341234"
         companyAddress:
           type: string
           description: 주소
@@ -1324,7 +1331,7 @@ components:
           example: true
         canSendToUnsubscribed:
           type: boolean
-          description: 수신거부 구독자 발송 대상 포함 여부
+          description: "수신거부 구독자 발송 대상 포함 여부"
           default: false
           example: false
     CreateListResponse:
@@ -1332,7 +1339,7 @@ components:
       properties:
         id:
           type: integer
-          description: 주소록 아이디
+          description: "주소록 아이디"
           example: 1234
     GetListsResponse:
       type: object
@@ -1343,8 +1350,8 @@ components:
           example: 1234
         owner:
           type: string
-          description: ''
-          example: hello@stibee.com
+          description: ""
+          example: "hello@stibee.com"
         name:
           type: string
           description: 주소록 이름
@@ -1361,7 +1368,7 @@ components:
         companyContact:
           type: string
           description: 전화번호
-          example: '0212341234'
+          example: "0212341234"
         companyAddress:
           type: string
           description: 주소
@@ -1372,8 +1379,9 @@ components:
           example: true
         canSendToUnsubscribed:
           type: boolean
-          description: 수신거부 구독자 발송 대상 포함 여부
+          description: "수신거부 구독자 발송 대상 포함 여부"
           example: false
+          
     GetEmailsResponse:
       type: object
       properties:
@@ -1402,23 +1410,18 @@ components:
           example: 123456
         status:
           type: integer
-          description: '이메일의 상태 코드
-
+          description: |
+            이메일의 상태 코드
             - 0: 작성 중
-
             - 1: 예약 중
-
             - 21, 22: 발송 중
-
             - 3: 발송 완료
-
-            '
           enum:
-          - 0
-          - 1
-          - 21
-          - 22
-          - 3
+            - 0
+            - 1
+            - 21
+            - 22
+            - 3
           example: 3
         listId:
           type: integer
@@ -1435,35 +1438,34 @@ components:
         subject:
           type: string
           description: 이메일 제목
-          example: 이메일 제목
+          example: "이메일 제목"
         subjectA:
           type: string
           description: A/B 테스트의 A 제목
-          example: ''
+          example: ""
         subjectB:
           type: string
           description: A/B 테스트의 B 제목
-          example: ''
+          example: ""
         permanentLink:
           type: string
           format: uri
           description: 이메일 콘텐츠 링크(웹에서 보기)
-          example: https://stib.ee/2eYF
+          example: "https://stib.ee/2eYF"
         permanentLinkSecondary:
           type: string
           format: uri
-          description: ''
-          example: https://stib.ee/2eYF
+          description: ""
+          example: "https://stib.ee/2eYF"
         segmentIds:
           type: array
-          description: ''
+          description: "" 
           items:
             type: integer
-          example:
-          - 1234
+          example: [1234]
         groupIds:
           type: array
-          description: ''
+          description: ""
           items:
             type: integer
           nullable: true
@@ -1472,39 +1474,39 @@ components:
           type: string
           format: date-time
           description: 이메일 발송 시간
-          example: '2024-07-23T18:43:03+09:00'
+          example: "2024-07-23T18:43:03+09:00"
         sentTimeA:
           type: string
           format: date-time
           description: A/B 테스트의 A 발송 시간
-          example: '0001-01-01T00:00:00Z'
+          example: "0001-01-01T00:00:00Z"
         sentTimeB:
           type: string
           format: date-time
           description: A/B 테스트의 B 발송 시간
-          example: '1990-01-01T00:00:00+09:00'
+          example: "1990-01-01T00:00:00+09:00"
         senderEmail:
           type: string
           format: email
           description: 발신자 이메일 주소
-          example: gildong.go@stibee.com
+          example: "gildong.go@stibee.com"
         senderName:
           type: string
           description: 발신자 이름
-          example: Gildong
+          example: "Gildong"
         senderNameA:
           type: string
           description: A/B 테스트의 A 발신자 이름
-          example: ''
+          example: ""
         senderNameB:
           type: string
           description: A/B 테스트의 B 발신자 이름
-          example: ''
+          example: ""
         owner:
           type: string
-          format: uuid
+          format: uuid # 실제로는 이메일 형식이지만, 스키마에는 uuid로 되어 있어 유지합니다.
           description: 이메일 소유자 UU아이디
-          example: gildong.go@stibee.com
+          example: "gildong.go@stibee.com"
         abRatio:
           type: integer
           description: A/B 테스트의 비율
@@ -1521,35 +1523,35 @@ components:
           type: string
           format: date-time
           description: 이메일 생성 시간
-          example: '2024-07-19T17:56:06+09:00'
+          example: "2024-07-19T17:56:06+09:00"
         modifiedTime:
           type: string
           format: date-time
           description: 이메일 수정 시간
-          example: '2024-07-23T18:43:18+09:00'
+          example: "2024-07-23T18:43:18+09:00"
     GetSubscribersVarsResponse:
       type: array
       items:
         $ref: '#/components/schemas/GetSubscriberVarsResponse'
       example:
-      - id: 60723
-        label: 이메일 주소
-        substitution: email
-        defaultValue: ''
-        isMandatory: true
-        customLabel: ''
-        type: text
-        typeOption: {}
-        isVisible: false
-      - id: 60724
-        label: 이름
-        substitution: name
-        defaultValue: ''
-        isMandatory: false
-        customLabel: ''
-        type: text
-        typeOption: {}
-        isVisible: false
+        - id: 60723
+          label: "이메일 주소"
+          substitution: "email"
+          defaultValue: ""
+          isMandatory: true
+          customLabel: ""
+          type: "text"
+          typeOption: {}
+          isVisible: false
+        - id: 60724
+          label: "이름"
+          substitution: "name"
+          defaultValue: ""
+          isMandatory: false
+          customLabel: ""
+          type: "text"
+          typeOption: {}
+          isVisible: false
     GetSubscriberVarsResponse:
       type: object
       properties:
@@ -1583,24 +1585,24 @@ components:
     CreateSubscriberVarRequest:
       type: object
       required:
-      - label
-      - substitution
-      - defaultValue
-      - isMandatory
-      - type
+        - label
+        - substitution
+        - defaultValue
+        - isMandatory
+        - type
       properties:
         label:
           type: string
           description: 사용자 정의 필드를 구분하기 위한 이름
-          example: Address
+          example: "Address"
         substitution:
           type: string
           description: 메일머지 치환자를 입력하거나 구독자 정보를 API로 전송할 때 사용하는 값
-          example: addr
+          example: "addr"
         defaultValue:
           type: string
           description: 메일머지 치환자를 구독자 정보로 치환할 때, 저장된 값이 없을 때 사용하는 값
-          example: ''
+          example: ""
         isMandatory:
           type: boolean
           description: 필수 값 여부
@@ -1608,11 +1610,11 @@ components:
         type:
           type: string
           description: 사용자 정의 필드 유형(예. 텍스트, 드롭다운)
-          example: text
+          example: "text"
     CreatedCopiedEmailResponse:
       type: object
       required:
-      - id
+        - id
       properties:
         id:
           type: integer
@@ -1621,35 +1623,37 @@ components:
     AddSenderRequest:
       type: object
       required:
-      - email
+        - email
       properties:
         email:
           type: string
           description: 발신자 이메일 주소
           format: email
-          example: gildong.go@stibee.com
+          example: "gildong.go@stibee.com"
     AddSenderResponse:
       type: object
       required:
-      - authorized
+        - authorized
       properties:
         authorized:
           type: boolean
-          description: "추가하는 발신자 이메일의 인증 여부. \nfalse이면 발신자 이메일 주소로 인증 이메일이 발송됨. \n\
-            true이면 발송되지 않고 바로 추가됨.\n"
+          description: |
+            추가하는 발신자 이메일의 인증 여부. 
+            false이면 발신자 이메일 주소로 인증 이메일이 발송됨. 
+            true이면 발송되지 않고 바로 추가됨.
           example: false
     AddSenderErrorResponse:
       type: object
       required:
-      - code
-      - message
+        - code
+        - message
       properties:
         code:
           type: string
-          enum:
-          - stberror.Errors.List.NotPermittedSenderDomain
+          enum: 
+            - stberror.Errors.List.NotPermittedSenderDomain
           description: 에러 코드
-          example: stberror.Errors.List.NotPermittedSenderDomain
+          example: "stberror.Errors.List.NotPermittedSenderDomain"
         httpStatusCode:
           type: integer
           description: 상태 코드
@@ -1657,12 +1661,12 @@ components:
         message:
           type: string
           description: 에러 메시지
-          example: 발신자 이메일 주소로 사용할 수 없는 도메인으로 추가를 시도함. (gmail.com, naver.com 등)
+          example: "발신자 이메일 주소로 사용할 수 없는 도메인으로 추가를 시도함. (gmail.com, naver.com 등)"
     Subscriber:
       type: object
       required:
-      - $status
-      - email
+        - email # '$status'는 Subscriber 스키마의 속성이 아닌 AddSubscriberRequest의 속성인 것으로 보임, 원본 유지
+        - status # 원본에는 email, status가 AddSubscriberRequest.subscriber에 있었고, BatchSubscriberRequest.subscribers[].status에 있었습니다. 일관성을 위해 BatchSubscriberRequest의 정의를 따름
       properties:
         email:
           type: string
@@ -1671,25 +1675,20 @@ components:
           example: gildong.go@stibee.com
         status:
           type: string
-          enum:
-          - subscribed
-          - unsubscribed
-          description: '구독자 상태
-
+          enum: [subscribed, unsubscribed]
+          description: |
+            구독자 상태
             * subscribed: 구독 중
-
             * unsubscribed: 수신거부
-
-            '
         fields:
           type: object
           description: 주소록에 생성된 사용자 정의 필드별 값 (주소록에 생성되어있는 필드만 값을 입력할 수 있음)
           example:
-            name: 고길동
+            name: "고길동"
     BatchSubscriberRequest:
       type: object
       required:
-      - subscribers
+        - subscribers
       properties:
         subscribers:
           type: array
@@ -1700,8 +1699,7 @@ components:
         updateEnabled:
           type: boolean
           default: false
-          description: 구독자가 이미 존재할 경우 fields 값들의 업데이트 여부. false이면 업데이트하지 않음. true이면
-            새로 요청한 값으로 업데이트함.
+          description: "구독자가 이미 존재할 경우 fields 값들의 업데이트 여부. false이면 업데이트하지 않음. true이면 새로 요청한 값으로 업데이트함."
     BatchSubscriberResponse:
       type: object
       properties:
@@ -1710,91 +1708,85 @@ components:
           items:
             type: string
           description: 추가 성공한 이메일 주소 목록
-          example:
-          - gildong.go@stibee.com
+          example: ["gildong.go@stibee.com"]
         updatedSubscribers:
           type: array
           items:
             type: string
-          description: '(update가 true인 경우) 업데이트 성공
-
+          description: |
+            (update가 true인 경우) 업데이트 성공
             주소록에 이미 추가된 구독자임. 이메일 주소와 구독 상태 외의 다른 정보를 업데이트함
-
-            '
-          example:
-          - dooly@stibee.com
+          example: ["dooly@stibee.com"]
         failAlreadyExists:
           type: array
           items:
             type: string
-          description: '(update가 false인 경우) 추가 실패
-
+          description: |
+            (update가 false인 경우) 추가 실패
             주소록에 이미 추가된 구독자임
-
-            '
           nullable: true
         failNoEmails:
           type: array
           items:
             type: string
-          description: 추가 실패 - 이메일 주소 필드에 값이 없음
+          description: "추가 실패 - 이메일 주소 필드에 값이 없음"
           nullable: true
         failInvalidEmails:
           type: array
           items:
             type: string
-          description: 추가 실패 - 이메일 주소 형식이 잘못됨
+          description: "추가 실패 - 이메일 주소 형식이 잘못됨"
           nullable: true
         failDuplicatedEmails:
           type: array
           items:
             type: string
-          description: 추가 실패 - 요청 내 중복된 이메일 주소가 있음
+          description: "추가 실패 - 요청 내 중복된 이메일 주소가 있음"
           nullable: true
         failInvalidFields:
           type: array
           items:
             type: string
-          description: 추가 실패 - 사용자 정의 필드가 잘못됨
+          description: "추가 실패 - 사용자 정의 필드가 잘못됨"
           nullable: true
         failInvalidSubscriberStatus:
           type: array
           items:
             type: string
-          description: 추가 실패 - 구독 상태가 잘못됨
+          description: "추가 실패 - 구독 상태가 잘못됨"
           nullable: true
     BatchSubscriberErrorResponse:
       type: object
       required:
-      - code
-      - message
+        - code
+        - message
       properties:
         code:
           type: string
           enum:
-          - stberror.Errors.Data.TooLongData
-          - stberror.Errors.List.TooManySubscribers
+            - stberror.Errors.Data.TooLongData
+            - stberror.Errors.List.TooManySubscribers
           description: 에러 코드
         message:
           type: string
           description: 에러 메시지 상세
-          example: 한번에 너무 많은 구독자를 요청함. (최대 1,000명)
+          example: "한번에 너무 많은 구독자를 요청함. (최대 1,000명)"
     ListSenderVerificationErrorResponse:
       type: object
       required:
-      - code
-      - message
+        - code
+        - message
       properties:
         code:
           type: string
           enum:
-          - stberror.Errors.List.NotExistEmail
+            - stberror.Errors.List.NotExistEmail
           description: 에러 코드
-          example: stberror.Errors.List.NotExistEmail
+          example: "stberror.Errors.List.NotExistEmail"
         message:
           type: string
           description: 에러 메시지
-          example: 주소록에 추가되어있지 않은 발신자 이메일 주소로 발송을 요청함.
+          example: "주소록에 추가되어있지 않은 발신자 이메일 주소로 발송을 요청함."
     UpdateEmailRequest:
       type: object
       properties:
@@ -1815,32 +1807,32 @@ components:
         subject:
           type: string
           description: 이메일 제목
-          example: Email Subject
+          example: "Email Subject"
         subjectA:
           type: string
           description: A/B 테스트용 A 제목
-          example: Subject A
+          example: "Subject A"
         subjectB:
           type: string
           description: A/B 테스트용 B 제목
-          example: Subject B
+          example: "Subject B"
         senderEmail:
           type: string
           format: email
           description: 발신자 이메일
-          example: gildong.go@stibee.com
+          example: "gildong.go@stibee.com"
         senderName:
           type: string
           description: 발신자 이름
-          example: Sender Name
+          example: "Sender Name"
         senderNameA:
           type: string
           description: A/B 테스트용 A 발신자 이름
-          example: Sender Name A
+          example: "Sender Name A"
         senderNameB:
           type: string
           description: A/B 테스트용 B 발신자 이름
-          example: Sender Name B
+          example: "Sender Name B"
         listId:
           type: integer
           description: 주소록 아이디
@@ -1850,52 +1842,40 @@ components:
           description: 세그먼트 아이디 목록
           items:
             type: integer
-          example:
-          - 1
-          - 2
-          - 3
+          example: [1, 2, 3]
         groupIds:
           type: array
           description: 그룹 아이디 목록
           items:
             type: integer
-          example:
-          - 4
-          - 5
-          - 6
+          example: [4, 5, 6]
       example:
         type: 1
         subType: 2
         abRatio: 60
-        subject: 이메일 제목
-        subjectA: 이메일 제목 A
-        subjectB: 이메일 제목 B
-        senderEmail: gildong.go@stibee.com
-        senderName: 고길동
-        senderNameA: 둘리
-        senderNameB: 희동이
+        subject: "이메일 제목"
+        subjectA: "이메일 제목 A"
+        subjectB: "이메일 제목 B"
+        senderEmail: "gildong.go@stibee.com"
+        senderName: "고길동"
+        senderNameA: "둘리"
+        senderNameB: "희동이"
         listId: 123
-        segmentIds:
-        - 1
-        - 2
-        - 3
-        groupIds:
-        - 4
-        - 5
-        - 6
+        segmentIds: [1, 2, 3]
+        groupIds: [4, 5, 6]
     UpdateEmailErrorResponse:
       type: object
       properties:
         code:
           type: string
           enum:
-          - stberror.Errors.Email.WrongStatus
+            - stberror.Errors.Email.WrongStatus
           description: 에러 코드
-          example: stberror.Errors.Email.WrongStatus
+          example: "stberror.Errors.Email.WrongStatus"
         message:
           type: string
           description: 에러 메시지
-          example: 작성 중 상태(status 0)가 아님.
+          example: "작성 중 상태(status 0)가 아님."
     EmailLogsResponse:
       type: object
       properties:
@@ -1917,14 +1897,12 @@ components:
           items:
             $ref: '#/components/schemas/EmailLogItem'
           example:
-          - id: 1
-            subscriber: gildong.go@stibee.com
-            action: P
-            value: ''
-            value2: '250
-
-              ok'
-            createdTime: '2024-07-23T18:43:08+09:00'
+            - id: 1
+              subscriber: "gildong.go@stibee.com"
+              action: "P"
+              value: ""
+              value2: "250\nok"
+              createdTime: "2024-07-23T18:43:08+09:00"
     EmailLogItem:
       type: object
       properties:
@@ -1936,66 +1914,46 @@ components:
           type: string
           format: email
           description: 구독자 이메일
-          example: gildong.go@stibee.com
+          example: "gildong.go@stibee.com"
         action:
           type: string
-          description: '구독자 활동
-
+          description: |
+            구독자 활동
             - P : 발송 성공
-
             - F : 발송 실패(소프트바운스)
-
             - A : 발송 실패(하드바운스)
-
             - D : 수신 거부
-
             - O : 이메일 오픈
-
             - C : 이메일 본문 내 링크 클릭
-
-            '
-          enum:
-          - P
-          - F
-          - A
-          - D
-          - O
-          - C
-          example: P
+          enum: [P, F, A, D, O, C]
+          example: "P"
         value:
           type: string
-          description: '구독자 활동별 값
-
+          description: |
+            구독자 활동별 값
             - action이 O이면, UserAgent 정보
-
             - action이 C이면, 클릭한 URL
-
-            '
-          example: ''
+          example: ""
         value2:
           type: string
-          description: '구독자 활동별 보조 값
-
+          description: |
+            구독자 활동별 보조 값
             - action이 C이면, UserAgent 정보
-
             - action이 P, F, A이면, 발송 성공/실패 서버 응답값
-
-            '
-          example: '250
-
-            ok'
+          example: "250\nok"
         createdTime:
           type: string
           format: date-time
           description: 구독자 활동 생성 시간
-          example: '2024-07-23T18:43:08+09:00'
+          example: "2024-07-23T18:43:08+09:00"
+          
     CreateEmailRequest:
       type: object
-      required:
-      - subject
-      - senderEmail
-      - senderName
-      - listId
+      required: 
+        - subject
+        - senderEmail
+        - senderName
+        - listId
       properties:
         subject:
           type: string
@@ -2023,14 +1981,14 @@ components:
     AddSubscriberRequest:
       type: object
       required:
-      - subscriber
+        - subscriber
       properties:
         subscriber:
           type: object
           required:
-          - email
-          - status
-          - fields
+            - email
+            - status
+            # - fields # fields는 optional 할 수 있음
           properties:
             email:
               type: string
@@ -2038,37 +1996,31 @@ components:
               description: 구독자 이메일 주소
             status:
               type: string
-              enum:
-              - subscribed
-              - unsubscribed
-              description: '구독자 상태
-
+              enum: [subscribed, unsubscribed]
+              description: |
+                구독자 상태
                 * subscribed: 구독 중
-
                 * unsubscribed: 수신거부
-
-                '
             marketingAllowed:
               type: boolean
               default: false
-              description: 광고성 정보 수신동의 여부
+              description: "광고성 정보 수신동의 여부"
             fields:
               type: object
               description: 주소록에 생성된 사용자 정의 필드별 값 (주소록에 생성되어있는 필드만 값을 입력할 수 있음)
               example:
-                name: 고길동
+                name: "고길동"
                 age: 45
         updateEnabled:
           type: boolean
           default: false
-          description: 구독자가 이미 존재할 경우 fields 값들의 업데이트 여부. false이면 업데이트하지 않음. true이면
-            새로 요청한 값으로 업데이트함.
+          description: 구독자가 이미 존재할 경우 fields 값들의 업데이트 여부. false이면 업데이트하지 않음. true이면 새로 요청한 값으로 업데이트함.
     ErrorResponse:
       type: object
-      description: ''
+      description: ""
       required:
-      - code
-      - httpStatusCode
+        - code
+        - httpStatusCode
       properties:
         code:
           type: string
@@ -2085,7 +2037,7 @@ components:
           description: 주소록 아이디
         owner:
           type: string
-          format: uuid
+          format: uuid # 실제로는 이메일 형식이지만, 스키마에는 uuid로 되어 있어 유지합니다.
           description: 주소록 소유자 아이디
         name:
           type: string
@@ -2111,11 +2063,11 @@ components:
     UpdateListRequest:
       type: object
       required:
-      - name
-      - senderName
-      - companyName
-      - companyContact
-      - companyAddress
+        - name
+        - senderName
+        - companyName
+        - companyContact
+        - companyAddress
       properties:
         name:
           type: string
@@ -2143,13 +2095,13 @@ components:
     SendDoubleOptinRequest:
       type: object
       required:
-      - subscriber
+        - subscriber
       properties:
         subscriber:
           type: object
           required:
-          - email
-          - fields
+            - email
+            # - fields # fields는 optional 할 수 있음
           properties:
             email:
               type: string
@@ -2159,7 +2111,7 @@ components:
               type: object
               description: 주소록에 생성된 사용자 정의 필드별 값 (주소록에 생성되어있는 필드만 값을 입력할 수 있음)
               example:
-                name: 고길동
+                name: "고길동"
                 age: 45
     GetSubscribersResponse:
       type: object
@@ -2176,27 +2128,27 @@ components:
           description: 사용자 정의 필드 값
           additionalProperties: true
           example:
-            $ad_agreed: ''
-            age: '43'
-            name: 고길동
+            $ad_agreed: ""
+            age: "43"
+            name: "고길동"
         createdTime:
           type: string
           description: 구독일
-          example: 2024-11-12 17:09:13 +0900 KST
+          example: "2024-11-12 17:09:13 +0900 KST"
         modifiedTime:
           type: string
           description: 수정일
-          example: 2024-11-17 20:01:11 +0900 KST
+          example: "2024-11-17 20:01:11 +0900 KST"
     GetSubscriberCountResponse:
       type: object
       required:
-      - total
+        - total
       properties:
         total:
           type: integer
           description: 전체 구독자 수
           example: 1234
-    UpdateSubscriberResponse:
+    UpdateSubscriberResponse: # 이 스키마는 실제로는 Batch 응답과 유사하지만, 여기서는 사용되지 않는 것 같아 그대로 둡니다.
       type: object
       properties:
         createdSubscribers:
@@ -2248,45 +2200,43 @@ components:
     UpdateSubscriberRequest:
       type: object
       required:
-      - fields
+        - fields
       properties:
         fields:
           type: object
           description: 주소록에 생성된 사용자 정의 필드별 값 (주소록에 생성되어있는 필드만 값을 입력할 수 있음)
           example:
-            name: 고길동
+            name: "고길동"
     AssignGroupRequest:
       type: object
       required:
-      - subscriber
+        - subscriber
       properties:
         subscriber:
           type: string
           format: email
           description: 구독자 이메일
-          example: gildong.go@stibee.com
+          example: "gildong.go@stibee.com"
     ReleaseGroupRequest:
       type: object
       required:
-      - subscriber
+        - subscriber
       properties:
         subscriber:
           type: string
           format: email
           description: 구독자 이메일
-          example: gildong.go@stibee.com
+          example: "gildong.go@stibee.com"
     DeleteSubscribersRequest:
       type: object
       required:
-      - subscribers
+        - subscribers
       properties:
         subscribers:
           type: array
-          description: '삭제할 구독자 이메일 목록
-
+          description: |
+            삭제할 구독자 이메일 목록
             * 한번에 최대 요청할 수 있는 개수는 100명
-
-            '
           items:
             type: string
             format: email
@@ -2298,24 +2248,24 @@ components:
           type: string
           format: email
           description: 발신자 이메일 주소
-          example: gildong.go@stibee.com
+          example: "gildong.go@stibee.com"
         authorized:
           type: boolean
-          description: 발신자 이메일의 인증 여부. false 이면 “email”로 수신된 인증메일을 통해 발신자 인증을 수행해야한다.
+          description: "발신자 이메일의 인증 여부. false 이면 “email”로 수신된 인증메일을 통해 발신자 인증을 수행해야한다."
           example: false
     CreateGroupRequest:
       type: object
       required:
-      - name
+        - name
       properties:
         name:
           type: string
           description: 그룹 이름
-          example: 그룹 이름
+          example: "그룹 이름"
     CreateGroupResponse:
       type: object
       required:
-      - id
+        - id
       properties:
         id:
           type: integer
@@ -2336,14 +2286,13 @@ components:
             type: string
             format: date-time
             description: 생성 일시
-            example: '2024-11-17T22:20:35+09:00'
+            example: "2024-11-17T22:20:35+09:00"
     UpdateGroupRequest:
       type: object
       required:
-      - name
+        - name
       properties:
         name:
           type: string
           description: 그룹 이름
-          example: 그룹 이름
-
+          example: "그룹 이름"
