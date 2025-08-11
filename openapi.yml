@@ -407,6 +407,12 @@ paths:
           description: 이메일 아이디
           schema:
             type: integer
+        - name: abTest
+          in: query
+          required: false
+          description: A/B 테스트 콘텐츠의 경우, A 또는 B로 요청
+          schema:
+            type: string
       responses:
         '200':
           description: 이메일 콘텐츠
