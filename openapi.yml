@@ -407,12 +407,6 @@ paths:
           description: 이메일 아이디
           schema:
             type: integer
-        - name: abTest
-          in: query
-          required: false
-          description: A/B 테스트 콘텐츠의 경우, A 또는 B로 요청
-          schema:
-            type: string
       responses:
         '200':
           description: 이메일 콘텐츠
@@ -485,6 +479,19 @@ paths:
               schema:
                 type: string
                 example: "ok"
+        '400':
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                WrongStatus:
+                  description: "편집할 수 없는 상태"
+                  value:
+                    code: "stberror.Errors.Email.WrongStatus"
+                    httpStatusCode: 400
+                    message: "이메일 상태를 확인 하세요."
   /emails/{id}/send:
     post:
       tags:
@@ -1206,6 +1213,15 @@ paths:
           description: 주소록 아이디
           schema:
             type: integer
+        - name: statuses
+          in: query
+          required: false
+          description: |
+            조회할 구독자 상태 목록
+            * 여러 상태를 조회할 경우 콤마로 구분
+          schema:
+            type: string
+            example: "subscribed,unsubscribed,archived,ready"
       responses:
         '200':
           description: 성공적으로 조회됨
