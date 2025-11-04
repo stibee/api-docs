@@ -92,7 +92,7 @@ tags:
     description: "엔터프라이즈 요금제에서 사용할 수 있는 API입니다."
     externalDocs:
       description: Find out more
-      url: http://swagger.io
+      url: https://swagger.io
 paths:
   /emails:
     post:
