@@ -92,7 +92,7 @@ tags:
     description: "엔터프라이즈 요금제에서 사용할 수 있는 API입니다."
     externalDocs:
       description: Find out more
-      url: https://swagger.io
+      url: http://swagger.io
 paths:
   /emails:
     post:
@@ -753,6 +753,44 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetListsResponse'
+  /lists/{id}/copy:
+    post:
+      tags:
+        - 주소록
+      summary: 주소록 복사
+      description: 특정 주소록을 복사하여 새로운 주소록을 생성합니다
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 복사할 주소록 아이디
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 주소록이 성공적으로 복사됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CopyListResponse'
+        '400':
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                PermissionDenied:
+                  value:
+                    code: "stberror.Errors.Authorization.PermissionDenied"
+                    httpStatusCode: 400
+                    message: "허용되지 않은 요청입니다."
+                  description: "일반적으로 소유자가 아닌 경우"
+                InvalidRequest:
+                  value:
+                    code: "stberror.Errors.Data.InvalidRequest"
+                    httpStatusCode: 400
+                    message: "잘못된 요청입니다."
   /lists/{id}:
     get:
       summary: 주소록 정보 조회
@@ -1652,6 +1690,13 @@ components:
         id:
           type: integer
           description: "주소록 아이디"
+          example: 1234
+    CopyListResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "복사된 주소록 아이디"
           example: 1234
     GetListsResponse:
       type: object
