@@ -494,7 +494,7 @@ paths:
     post:
       tags:
         - "이메일"
-      summary: 발송
+      summary: 이메일 발송
       description: 이메일을 발송합니다
       parameters:
         - name: id
@@ -583,7 +583,7 @@ paths:
     post:
       tags:
         - "이메일"
-      summary: 발송 예약
+      summary: 이메일 발송 예약
       description: |
         이메일을 예약합니다. 
         예약 시, 발송 시간을 YYYYMMDDhhmmss 형식으로 지정해야 하며, 대한민국 표준시(UTC+9)를 따릅니다.
@@ -690,7 +690,7 @@ paths:
     post:
       tags:
         - "이메일"
-      summary: 발송 예약 취소
+      summary: 이메일 발송 예약 취소
       description: 예약된 이메일 발송을 취소합니다
       parameters:
         - name: id
