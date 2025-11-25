@@ -78,8 +78,6 @@ tags:
     description: "프로, 엔터프라이즈 요금제에서 사용할 수 있는 API입니다."
   - name: "이메일 - 태그"
     description: "프로, 엔터프라이즈 요금제에서 사용할 수 있는 API입니다."
-  - name: "이메일 - 발송"
-    description: "프로, 엔터프라이즈 요금제에서 사용할 수 있는 API입니다."
   - name: "주소록"
     description: "엔터프라이즈 요금제에서 사용할 수 있는 API입니다."
   - name: "주소록 - 구독자"
@@ -495,7 +493,7 @@ paths:
   /emails/{id}/send:
     post:
       tags:
-        - "이메일 - 발송"
+        - "이메일"
       summary: 발송
       description: 이메일을 발송합니다
       parameters:
@@ -584,7 +582,7 @@ paths:
   /emails/{id}/reserve:
     post:
       tags:
-        - "이메일 - 발송"
+        - "이메일"
       summary: 발송 예약
       description: |
         이메일을 예약합니다. 
@@ -691,7 +689,7 @@ paths:
   /emails/{id}/cancel-reserve:
     post:
       tags:
-        - "이메일 - 발송"
+        - "이메일"
       summary: 발송 예약 취소
       description: 예약된 이메일 발송을 취소합니다
       parameters:
