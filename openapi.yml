@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: 스티비 API
   description: |-
-    ## 소개
+    ### 소개
     이 문서는 스티비에서 제공하는 API의 요청 및 응답 방식에 대한 내용을 설명합니다.<br/>
 
     ### 권한
@@ -19,8 +19,8 @@ info:
     ### API 요청 속도 제한
     | API                   | 속도 제한  |
     |--------------------------------|------------------------|
-    | <a href="/tag/주소록---구독자/POST/lists/id/subscribers/batch">구독자 대량 추가</a>         | 최대 10회/분          |
-    | <a href="/tag/주소록---구독자/GET/lists/id/subscribers">구독자 목록 조회</a>               | 최대 100회/분         |
+    | <a href="/tag/주소록---구독자/post/lists/id/subscribers/batch">구독자 대량 추가</a>         | 최대 10회/분          |
+    | <a href="/tag/주소록---구독자/get/lists/id/subscribers">구독자 목록 조회</a>               | 최대 100회/분         |
     | 그 외 모든 API | 최대 1000회/분        |
 
     ### Base URL
