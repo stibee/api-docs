@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   title: 스티비 API
-  description:
-    ### 소개
+  description: |-
+    
     이 문서는 스티비에서 제공하는 API의 요청 및 응답 방식에 대한 내용을 설명합니다.<br/>
 
     ### 권한
