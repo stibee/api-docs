@@ -124,19 +124,31 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
-                NotEmailTypeNormal:
-                  value:
-                    code: "stberror.Errors.Email.NotEmailTypeNomal"
-                    httpStatusCode: 400
-                    message: "일반메일 타입이 아닙니다."
                 PermissionDenied:
+                  description: "listId, segmentIds, groupIds의 소유자가 아니거나 사용할 수 없는 발신자 이메일인 경우"
                   value:
-                    code: "stberror.Errors.Authorization.PermissionDenied"
+                    code: "Errors.Authorization.PermissionDenied"
                     httpStatusCode: 400
-                    message: "listId, segmentIds, groupIds 의 owner가 아닌경우, 사용할 수 없는 발신자 이메일"
-                  description: "일반적으로 소유자가 아닌 경우"
+                    message: "허용되지 않은 요청입니다."
     get:
       summary: 이메일 목록 조회
       operationId: getEmails
@@ -177,6 +189,17 @@ paths:
             type: integer
             format: int
             default: 20
+        - name: sortOrder
+          in: query
+          required: false
+          description: |
+            정렬 방향
+            * desc: 내림차순
+            * asc: 오름차순
+          schema:
+            type: string
+            enum: [desc, asc]
+            default: desc
       responses:
         '200':
           description: "200 OK"
@@ -215,6 +238,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetEmailResponse'
     put:
+      tags:
+        - 이메일
+      summary: 이메일 정보 수정
       operationId: updateEmail
       x-badges:
         - name: "프로"
@@ -225,9 +251,6 @@ paths:
           position: before
       description: |
         작성 중 상태인 이메일의 정보(이메일 제목, 발신자 이름, 세그먼트, 그룹 등)를 수정할 수 있습니다.
-      tags:
-        - 이메일
-      summary: 이메일 정보 수정
       parameters:
         - name: id
           in: path
@@ -254,24 +277,38 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.Data.InvalidRequest
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
                 PermissionDenied:
+                  description: "listId, segmentIds, groupIds의 소유자가 아니거나 사용할 수 없는 발신자 이메일인 경우"
                   value:
-                    code: "stberror.Errors.Authorization.PermissionDenied"
+                    code: "Errors.Authorization.PermissionDenied"
                     httpStatusCode: 400
-                    message: "소유자가 아닙니다, listId, segmentIds, groupIds 의 owner가 아닌경우, 사용할 수 없는 발신자 이메일"
-                  description: "일반적으로 소유자가 아닌 경우"
-                NotEmailTypeNormal:
-                  value:
-                    code: "stberror.Errors.Email.NotEmailTypeNomal"
-                    httpStatusCode: 400
-                    message: "일반메일 타입이 아닙니다."
+                    message: "허용되지 않은 요청입니다."
                 InvalidRequest:
+                  description: "작성 중 상태가 아닌 이메일을 수정하려는 경우"
                   value:
-                    code: "stberror.Errors.Data.InvalidRequest"
+                    code: "Errors.Data.InvalidRequest"
                     httpStatusCode: 400
-                    message: "작성 중 상태가 아닙니다"
+                    message: "잘못된 요청입니다."
     delete:
       summary: 이메일 삭제
       operationId: deleteEmail
@@ -302,6 +339,9 @@ paths:
                 example: "ok"
   /emails/{id}/logs:
     get:
+      tags:
+        - 이메일
+      summary: 이메일 상세 통계 조회
       operationId: getEmailLogs
       x-badges:
         - name: "프로"
@@ -312,9 +352,6 @@ paths:
           position: before
       description: |
         특정 이메일의 상세 통계 정보를 조회합니다
-      tags:
-        - 이메일
-      summary: 이메일 상세 통계 조회
       parameters:
         - name: id
           in: path
@@ -347,6 +384,9 @@ paths:
                 $ref: '#/components/schemas/EmailLogsResponse'
   /emails/{id}/copy:
     post:
+      tags:
+        - 이메일
+      summary: 이메일 복사
       operationId: copyEmail
       x-badges:
         - name: "프로"
@@ -357,9 +397,6 @@ paths:
           position: before
       description: |
         특정 이메일을 복사하여 새로운 이메일을 생성합니다
-      tags:
-        - 이메일
-      summary: 이메일 복사
       parameters:
         - name: id
           in: path
@@ -376,6 +413,9 @@ paths:
                 $ref: '#/components/schemas/CreatedCopiedEmailResponse'
   /emails/{id}/tags/release:
     post:
+      tags:
+        - "이메일 - 태그"
+      summary: 태그 해제
       operationId: releaseEmailTags
       x-badges:
         - name: "프로"
@@ -386,9 +426,6 @@ paths:
           position: before
       description: |
         특정 이메일에서 지정된 태그들을 해제합니다
-      tags:
-        - "이메일 - 태그"
-      summary: 태그 해제
       parameters:
         - name: id
           in: path
@@ -454,21 +491,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.Data.InvalidRequest
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
                 PermissionDenied:
+                  description: "소유자가 아닌 경우"
                   value:
-                    code: "stberror.Errors.Authorization.PermissionDenied"
+                    code: "Errors.Authorization.PermissionDenied"
                     httpStatusCode: 400
                     message: "허용되지 않은 요청입니다."
-                  description: "일반적으로 소유자가 아닌 경우"
                 InvalidRequest:
+                  description: "잘못된 tagIds, 존재하지 않거나 요청된 tagIds 수와 DB의 수가 다른 경우"
                   value:
-                    code: "stberror.Errors.Data.InvalidRequest"
+                    code: "Errors.Data.InvalidRequest"
                     httpStatusCode: 400
-                    message: "잘못된 tagIds, 존재하지 않거나 요청된 tagIds 수와 DB의 수가 다른 경우"
+                    message: "잘못된 요청입니다."
   /emails/{id}/content:
     get:
+      tags:
+        - "이메일 - 콘텐츠"
+      summary: 콘텐츠 조회
       operationId: getEmailContent
       x-badges:
         - name: "프로"
@@ -479,9 +538,6 @@ paths:
           position: before
       description: |
         특정 이메일의 HTML 콘텐츠를 조회합니다
-      tags:
-        - "이메일 - 콘텐츠"
-      summary: 콘텐츠 조회
       parameters:
         - name: id
           in: path
@@ -509,24 +565,45 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.Data.InvalidRequest
+                      - Errors.Editor.NoHTMLExist
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
                 PermissionDenied:
+                  description: "소유자가 아닌 경우"
                   value:
-                    code: "stberror.Errors.Authorization.PermissionDenied"
+                    code: "Errors.Authorization.PermissionDenied"
                     httpStatusCode: 400
                     message: "허용되지 않은 요청입니다."
-                  description: "일반적으로 소유자가 아닌 경우"
                 InvalidRequest:
+                  description: "잘못된 abTest 값, 'A' 또는 'B' 여야 함"
                   value:
-                    code: "stberror.Errors.Data.InvalidRequest"
+                    code: "Errors.Data.InvalidRequest"
                     httpStatusCode: 400
-                    message: "잘못된 abTest 값, 'A' 또는 'B' 여야 함"
+                    message: "잘못된 요청입니다."
                 NoHTMLExist:
+                  description: "HTML 파일이 존재하지 않는 경우"
                   value:
-                    code: "stberror.Errors.Editor.NoHTMLExist"
+                    code: "Errors.Editor.NoHTMLExist"
                     httpStatusCode: 400
-                    message: "HTML 파일이 존재하지 않음"
+                    message: "HTML 파일이 존재하지 않습니다."
     post:
       summary: 콘텐츠 수정
       operationId: updateEmailContent
@@ -579,16 +656,36 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Email.WrongStatus
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
                 WrongStatus:
-                  description: "편집할 수 없는 상태"
+                  description: "작성 중 상태가 아닌 이메일의 콘텐츠를 수정하려는 경우"
                   value:
-                    code: "stberror.Errors.Email.WrongStatus"
+                    code: "Errors.Email.WrongStatus"
                     httpStatusCode: 400
                     message: "이메일 상태를 확인 하세요."
   /emails/{id}/send:
     post:
+      tags:
+        - "이메일"
+      summary: 이메일 발송
       operationId: sendEmail
       x-badges:
         - name: "프로"
@@ -599,9 +696,6 @@ paths:
           position: before
       description: |
         이메일을 발송합니다
-      tags:
-        - "이메일"
-      summary: 이메일 발송
       parameters:
         - name: id
           in: path
@@ -622,71 +716,113 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.Email.WrongStatus
+                      - Errors.List.ExceededSubscribers
+                      - Errors.Email.Spamer
+                      - Errors.Email.EmptySubscriber
+                      - Errors.Service.NeedProPlan
+                      - Errors.List.NoEmailActionSegmentAuthority
+                      - Errors.List.TooManyGroups
+                      - Errors.List.ExceededSubscriberVarLimit
+                      - Errors.List.SegmentExceededLimit
+                      - Errors.Email.ExceededAutomailCountLimit
+                      - Errors.Email.IncompleteEmail
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
                 PermissionDenied:
+                  description: "소유자가 아닌 경우"
                   value:
-                    code: "stberror.Errors.Authorization.PermissionDenied"
+                    code: "Errors.Authorization.PermissionDenied"
                     httpStatusCode: 400
                     message: "허용되지 않은 요청입니다."
-                  description: "일반적으로 소유자가 아닌 경우"
                 WrongStatus:
+                  description: "발송할 수 없는 이메일 상태인 경우"
                   value:
-                    code: "stberror.Errors.Email.WrongStatus"
+                    code: "Errors.Email.WrongStatus"
                     httpStatusCode: 400
                     message: "이메일 상태를 확인 하세요."
                 ExceededSubscribers:
+                  description: "구독자 수가 요금제 제한을 초과한 경우"
                   value:
-                    code: "stberror.Errors.List.ExceededSubscribers"
+                    code: "Errors.List.ExceededSubscribers"
                     httpStatusCode: 400
                     message: "구독자가 초과 하였습니다."
                 Spamer:
+                  description: "스패머로 판정된 경우"
                   value:
-                    code: "stberror.Errors.Email.Spamer"
+                    code: "Errors.Email.Spamer"
                     httpStatusCode: 400
                     message: "스패머"
                 EmptySubscriber:
+                  description: "발송 대상 구독자가 없는 경우"
                   value:
-                    code: "stberror.Errors.Email.EmptySubscriber"
+                    code: "Errors.Email.EmptySubscriber"
                     httpStatusCode: 400
                     message: "구독자가 0명입니다."
                 NeedProPlan:
+                  description: "프로 요금제가 필요한 기능을 사용하려는 경우"
                   value:
-                    code: "stberror.Errors.Service.NeedProPlan"
+                    code: "Errors.Service.NeedProPlan"
                     httpStatusCode: 400
                     message: "프로 요금제 이상부터 사용할 수 있습니다."
                 NoEmailActionSegmentAuthority:
+                  description: "구독자 활동 조건 세그먼트를 사용하려면 프로 요금제가 필요한 경우"
                   value:
-                    code: "stberror.Errors.Service.NoEmailActionSegmentAuthority"
+                    code: "Errors.List.NoEmailActionSegmentAuthority"
                     httpStatusCode: 400
-                    message: "프로 요금제 필요"
+                    message: "구독자 활동 조건 세그먼트는 프로 요금제에서 사용할 수 있습니다."
                 TooManyGroups:
+                  description: "그룹 수 제한을 초과한 경우"
                   value:
-                    code: "stberror.Errors.List.TooManyGroups"
+                    code: "Errors.List.TooManyGroups"
                     httpStatusCode: 400
                     message: "그룹은 최대 {maxCount}개 까지만 만들 수 있습니다."
                 ExceededSubscriberVarLimit:
+                  description: "사용자 정의 필드 수 제한을 초과한 경우"
                   value:
-                    code: "stberror.Errors.List.ExceededSubscriberVarLimit"
+                    code: "Errors.List.ExceededSubscriberVarLimit"
                     httpStatusCode: 400
                     message: "사용자 정의 필드는 최대 {maxCount}개 까지만 만들 수 있습니다."
                 SegmentExceededLimit:
+                  description: "세그먼트 수 제한을 초과한 경우"
                   value:
-                    code: "stberror.Errors.List.SegmentExceededLimit"
+                    code: "Errors.List.SegmentExceededLimit"
                     httpStatusCode: 400
                     message: "세그먼트는 최대 {maxCount}개 까지만 만들 수 있습니다."
                 ExceededAutomailCountLimit:
+                  description: "자동이메일 실행 수 제한을 초과한 경우"
                   value:
-                    code: "stberror.Errors.Email.ExceededAutomailCountLimit"
+                    code: "Errors.Email.ExceededAutomailCountLimit"
                     httpStatusCode: 400
                     message: "자동이메일은 최대 {maxCount}개까지만 실행할 수 있습니다."
                 IncompleteEmail:
+                  description: "이메일이 아직 완성되지 않은 경우"
                   value:
-                    code: "stberror.Errors.Email.IncompleteEmail"
+                    code: "Errors.Email.IncompleteEmail"
                     httpStatusCode: 400
                     message: "이메일이 완성되지 않았습니다."
   /emails/{id}/reserve:
     post:
+      tags:
+        - "이메일"
+      summary: 이메일 발송 예약
       operationId: reserveEmail
       x-badges:
         - name: "프로"
@@ -699,9 +835,6 @@ paths:
         이메일을 예약합니다. 
         예약 시, 발송 시간을 YYYYMMDDhhmmss 형식으로 지정해야 하며, 대한민국 표준시(UTC+9)를 따릅니다.
         예시: 2025년 5월 1일 11시 30분 00초 → 20250501113000
-      tags:
-        - "이메일"
-      summary: 이메일 발송 예약
       parameters:
         - name: id
           in: path
@@ -732,76 +865,120 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.Data.InvalidRequest
+                      - Errors.Email.WrongStatus
+                      - Errors.List.ExceededSubscribers
+                      - Errors.Email.Spamer
+                      - Errors.Email.EmptySubscriber
+                      - Errors.Service.NeedProPlan
+                      - Errors.List.NoEmailActionSegmentAuthority
+                      - Errors.List.TooManyGroups
+                      - Errors.List.ExceededSubscriberVarLimit
+                      - Errors.List.SegmentExceededLimit
+                      - Errors.Email.ExceededAutomailCountLimit
+                      - Errors.Email.IncompleteEmail
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
                 PermissionDenied:
+                  description: "소유자가 아닌 경우"
                   value:
-                    code: "stberror.Errors.Authorization.PermissionDenied"
+                    code: "Errors.Authorization.PermissionDenied"
                     httpStatusCode: 400
                     message: "허용되지 않은 요청입니다."
-                  description: "일반적으로 소유자가 아닌 경우"
                 InvalidRequest:
+                  description: "잘못된 reserveTime 형식 또는 과거 시간"
                   value:
-                    code: "stberror.Errors.Data.InvalidRequest"
+                    code: "Errors.Data.InvalidRequest"
                     httpStatusCode: 400
-                    message: "잘못된 reserveTime 형식 또는 과거 시간"
+                    message: "잘못된 요청입니다."
                 WrongStatus:
+                  description: "예약할 수 없는 이메일 상태인 경우"
                   value:
-                    code: "stberror.Errors.Email.WrongStatus"
+                    code: "Errors.Email.WrongStatus"
                     httpStatusCode: 400
                     message: "이메일 상태를 확인 하세요."
                 ExceededSubscribers:
+                  description: "구독자 수가 요금제 제한을 초과한 경우"
                   value:
-                    code: "stberror.Errors.List.ExceededSubscribers"
+                    code: "Errors.List.ExceededSubscribers"
                     httpStatusCode: 400
                     message: "구독자가 초과 하였습니다."
                 Spamer:
+                  description: "스패머로 판정된 경우"
                   value:
-                    code: "stberror.Errors.Email.Spamer"
+                    code: "Errors.Email.Spamer"
                     httpStatusCode: 400
                     message: "스패머"
                 EmptySubscriber:
+                  description: "발송 대상 구독자가 없는 경우"
                   value:
-                    code: "stberror.Errors.Email.EmptySubscriber"
+                    code: "Errors.Email.EmptySubscriber"
                     httpStatusCode: 400
                     message: "구독자가 0명입니다."
                 NeedProPlan:
+                  description: "프로 요금제가 필요한 기능을 사용하려는 경우"
                   value:
-                    code: "stberror.Errors.Service.NeedProPlan"
+                    code: "Errors.Service.NeedProPlan"
                     httpStatusCode: 400
                     message: "프로 요금제 이상부터 사용할 수 있습니다."
                 NoEmailActionSegmentAuthority:
+                  description: "구독자 활동 조건 세그먼트를 사용하려면 프로 요금제가 필요한 경우"
                   value:
-                    code: "stberror.Errors.Service.NoEmailActionSegmentAuthority"
+                    code: "Errors.List.NoEmailActionSegmentAuthority"
                     httpStatusCode: 400
-                    message: "프로 요금제 필요"
+                    message: "구독자 활동 조건 세그먼트는 프로 요금제에서 사용할 수 있습니다."
                 TooManyGroups:
+                  description: "그룹 수 제한을 초과한 경우"
                   value:
-                    code: "stberror.Errors.List.TooManyGroups"
+                    code: "Errors.List.TooManyGroups"
                     httpStatusCode: 400
                     message: "그룹은 최대 {maxCount}개 까지만 만들 수 있습니다."
                 ExceededSubscriberVarLimit:
+                  description: "사용자 정의 필드 수 제한을 초과한 경우"
                   value:
-                    code: "stberror.Errors.List.ExceededSubscriberVarLimit"
+                    code: "Errors.List.ExceededSubscriberVarLimit"
                     httpStatusCode: 400
                     message: "사용자 정의 필드는 최대 {maxCount}개 까지만 만들 수 있습니다."
                 SegmentExceededLimit:
+                  description: "세그먼트 수 제한을 초과한 경우"
                   value:
-                    code: "stberror.Errors.List.SegmentExceededLimit"
+                    code: "Errors.List.SegmentExceededLimit"
                     httpStatusCode: 400
                     message: "세그먼트는 최대 {maxCount}개 까지만 만들 수 있습니다."
                 ExceededAutomailCountLimit:
+                  description: "자동이메일 실행 수 제한을 초과한 경우"
                   value:
-                    code: "stberror.Errors.Email.ExceededAutomailCountLimit"
+                    code: "Errors.Email.ExceededAutomailCountLimit"
                     httpStatusCode: 400
                     message: "자동이메일은 최대 {maxCount}개까지만 실행할 수 있습니다."
                 IncompleteEmail:
+                  description: "이메일이 아직 완성되지 않은 경우"
                   value:
-                    code: "stberror.Errors.Email.IncompleteEmail"
+                    code: "Errors.Email.IncompleteEmail"
                     httpStatusCode: 400
                     message: "이메일이 완성되지 않았습니다."
   /emails/{id}/cancel-reserve:
     post:
+      tags:
+        - "이메일"
+      summary: 이메일 발송 예약 취소
       operationId: cancelReserveEmail
       x-badges:
         - name: "프로"
@@ -812,9 +989,6 @@ paths:
           position: before
       description: |
         예약된 이메일 발송을 취소합니다
-      tags:
-        - "이메일"
-      summary: 이메일 발송 예약 취소
       parameters:
         - name: id
           in: path
@@ -832,6 +1006,9 @@ paths:
                 example: "ok"
   /lists:
     post:
+      tags:
+        - 주소록
+      summary: 주소록 생성
       operationId: createList
       x-badges:
         - name: "엔터프라이즈"
@@ -843,9 +1020,6 @@ paths:
 
         - 주소록 생성 시 계정 소유자의 이메일이 기본 발신자로 자동 등록됩니다.
         - `name`, `senderName`, `companyName`, `companyContact`, `companyAddress` 값은 필수입니다.
-      tags:
-        - 주소록
-      summary: 주소록 생성
       requestBody:
         required: true
         content:
@@ -860,6 +1034,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateListResponse'
     get:
+      tags:
+        - 주소록
+      summary: 주소록 목록 조회
       operationId: getLists
       x-badges:
         - name: "엔터프라이즈"
@@ -867,9 +1044,6 @@ paths:
         - name: "1000회/분"
           position: before
       description: 계정에 생성된 주소록 목록을 조회합니다.
-      tags:
-        - 주소록
-      summary: 주소록 목록 조회
       parameters:
         - name: offset
           in: query
@@ -905,6 +1079,9 @@ paths:
                 $ref: '#/components/schemas/GetListsResponse'
   /lists/{id}/copy:
     post:
+      tags:
+        - 주소록
+      summary: 주소록 복사
       operationId: copyList
       x-badges:
         - name: "엔터프라이즈"
@@ -913,9 +1090,6 @@ paths:
           position: before
       description: |
         특정 주소록을 복사하여 새로운 주소록을 생성합니다
-      tags:
-        - 주소록
-      summary: 주소록 복사
       parameters:
         - name: id
           in: path
@@ -935,17 +1109,36 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.Data.InvalidRequest
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
                 PermissionDenied:
+                  description: "소유자가 아닌 경우"
                   value:
-                    code: "stberror.Errors.Authorization.PermissionDenied"
+                    code: "Errors.Authorization.PermissionDenied"
                     httpStatusCode: 400
                     message: "허용되지 않은 요청입니다."
-                  description: "일반적으로 소유자가 아닌 경우"
                 InvalidRequest:
+                  description: "잘못된 요청인 경우"
                   value:
-                    code: "stberror.Errors.Data.InvalidRequest"
+                    code: "Errors.Data.InvalidRequest"
                     httpStatusCode: 400
                     message: "잘못된 요청입니다."
   /lists/{id}:
@@ -1028,6 +1221,9 @@ paths:
                 type: string
                 example: "ok"
     delete:
+      tags:
+        - 주소록
+      summary: 주소록 삭제
       operationId: deleteList
       x-badges:
         - name: "엔터프라이즈"
@@ -1036,9 +1232,6 @@ paths:
           position: before
       description: |
         특정 아이디의 주소록을 삭제합니다
-      tags:
-        - 주소록
-      summary: 주소록 삭제
       parameters:
         - name: id
           in: path
@@ -1055,6 +1248,9 @@ paths:
                 example: "ok"
   /lists/{id}/senders:
     post:
+      tags:
+        - "주소록 - 발신자 이메일 주소"
+      summary: 발신자 이메일 주소 추가
       operationId: addListSender
       x-badges:
         - name: "엔터프라이즈"
@@ -1065,9 +1261,6 @@ paths:
         발신자 이메일 주소를 추가합니다. 
         인증 이메일이 발송되고, 그 이메일에서 인증을 하면 추가됩니다. 
         워크스페이스 단위에서 한번 인증한 이메일 주소는 다른 주소록에 추가할 때 인증 이메일이 발송되지 않고 바로 추가됩니다.
-      tags:
-        - "주소록 - 발신자 이메일 주소"
-      summary: 발신자 이메일 주소 추가
       parameters:
         - name: id
           in: path
@@ -1093,7 +1286,31 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AddSenderErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.List.NotPermittedSenderDomain
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                NotPermittedSenderDomain:
+                  description: "허용되지 않는 발신자 도메인으로 추가를 시도한 경우 (gmail.com, naver.com 등)"
+                  value:
+                    code: "Errors.List.NotPermittedSenderDomain"
+                    httpStatusCode: 400
+                    message: "허용되지 않는 발신자 도메인 입니다."
     get:
       summary: 발신자 이메일 주소 목록 조회
       operationId: getListSenders
@@ -1126,6 +1343,9 @@ paths:
                   authorized: false
   /lists/{id}/senders/{email}/verify:
     post:
+      tags:
+        - "주소록 - 발신자 이메일 주소"
+      summary: 발신자 이메일 주소 인증 이메일 발송 요청
       operationId: verifyListSender
       x-badges:
         - name: "엔터프라이즈"
@@ -1134,9 +1354,6 @@ paths:
           position: before
       description: |
         주소록에 이미 추가된 발신자 이메일 주소에 대해 인증 이메일 발송을 다시 요청할 수 있습니다.
-      tags:
-        - "주소록 - 발신자 이메일 주소"
-      summary: 발신자 이메일 주소 인증 이메일 발송 요청
       parameters:
         - name: id
           in: path
@@ -1164,7 +1381,31 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListSenderVerificationErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.List.NotExistEmail
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                NotExistEmail:
+                  description: "주소록에 추가되어있지 않은 발신자 이메일 주소로 인증을 요청한 경우"
+                  value:
+                    code: "Errors.List.NotExistEmail"
+                    httpStatusCode: 400
+                    message: "존재하지 않는 이메일 주소 입니다."
   /lists/{id}/subscribers:
     post:
       summary: 구독자 추가
@@ -1229,28 +1470,73 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.Data.InvalidRequest
+                      - Errors.List.NoEmail
+                      - Errors.List.InvalidEmail
+                      - Errors.List.AlreadyExistEmail
+                      - Errors.List.InvalidSubscriberVar
+                      - Errors.List.InvalidSubscriberStatus
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
-                InvalidSubscriberVar:
-                  description: "추가 실패 - 사용자 정의 필드가 잘못됨."
+                PermissionDenied:
+                  description: "주소록의 소유자가 아닌 경우"
                   value:
-                    code: "stberror.Errors.List.InvalidSubscriberVar"
+                    code: "Errors.Authorization.PermissionDenied"
                     httpStatusCode: 400
-                AlreadyExistEmail:
-                  description: "(update가 false인 경우) 추가 실패 - 주소록에 이미 추가된 구독자임. "
+                    message: "허용되지 않은 요청입니다."
+                InvalidRequest:
+                  description: "유효하지 않은 주소록 ID인 경우"
                   value:
-                    code: "stberror.Errors.List.AlreadyExistEmail"
+                    code: "Errors.Data.InvalidRequest"
                     httpStatusCode: 400
+                    message: "잘못된 요청입니다."
+                NoEmail:
+                  description: "추가 실패 - 이메일 주소가 비어있음"
+                  value:
+                    code: "Errors.List.NoEmail"
+                    httpStatusCode: 400
+                    message: "이메일 주소를 입력하세요."
                 InvalidEmail:
-                  description: "추가 실패 - 이메일 주소 형식이 잘못됨."
+                  description: "추가 실패 - 이메일 주소 형식이 잘못되었거나 64자를 초과함"
                   value:
-                    code: "stberror.Errors.List.InvalidEmail"
+                    code: "Errors.List.InvalidEmail"
                     httpStatusCode: 400
-                InvalidData:
-                  description: "추가 실패 - 사용자 정의 필드가 잘못됨."
+                    message: "잘못된 이메일 주소입니다."
+                AlreadyExistEmail:
+                  description: "추가 실패 - updateEnabled가 false일 때 이미 존재하는 구독자"
                   value:
-                    code: "stberror.Errors.List.InvalidData"
+                    code: "Errors.List.AlreadyExistEmail"
                     httpStatusCode: 400
+                    message: "이미 존재하는 이메일 입니다."
+                InvalidSubscriberVar:
+                  description: "추가 실패 - 정의되지 않은 사용자 정의 필드"
+                  value:
+                    code: "Errors.List.InvalidSubscriberVar"
+                    httpStatusCode: 400
+                    message: "사용할 수 없는 사용자정의필드 입니다."
+                InvalidSubscriberStatus:
+                  description: "추가 실패 - 유효하지 않은 구독 상태 값"
+                  value:
+                    code: "Errors.List.InvalidSubscriberStatus"
+                    httpStatusCode: 400
+                    message: "잘못된 구독자 상태 입니다."
     get:
       summary: 구독자 목록 조회
       operationId: getSubscribers
@@ -1302,7 +1588,7 @@ paths:
             * 조회된 아이템의 최대 개수는 1000을 넘을 수 없다.
           schema:
             type: integer
-            default: 20
+            default: 100
             maximum: 1000
       responses:
         '200':
@@ -1327,13 +1613,38 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.Data.LimitExceeded
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
-                InvalidSubscriberVar:
-                  description: "한번에 요청할 수 있는 범위를 초과하였음.."
+                PermissionDenied:
+                  description: "주소록의 소유자가 아닌 경우"
                   value:
-                    code: "stberror.Errors.Data.LimitExceeded"
+                    code: "Errors.Authorization.PermissionDenied"
                     httpStatusCode: 400
+                    message: "허용되지 않은 요청입니다."
+                LimitExceeded:
+                  description: "한번에 요청할 수 있는 범위를 초과한 경우"
+                  value:
+                    code: "Errors.Data.LimitExceeded"
+                    httpStatusCode: 400
+                    message: "요청 제한을 초과하였습니다."
     delete:
       summary: 구독자 완전 삭제
       operationId: deleteSubscribers
@@ -1381,18 +1692,38 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.Data.LimitExceeded
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
+                PermissionDenied:
+                  description: "주소록의 소유자가 아닌 경우"
+                  value:
+                    code: "Errors.Authorization.PermissionDenied"
+                    httpStatusCode: 400
+                    message: "허용되지 않은 요청입니다."
                 LimitExceeded:
-                  description: "한번에 너무 많은 구독자를 요청함. (최대 1,000명)"
+                  description: "한번에 삭제할 수 있는 구독자 수 초과 (최대 100명)"
                   value:
-                    code: "stberror.Errors.List.LimitExceeded"
+                    code: "Errors.Data.LimitExceeded"
                     httpStatusCode: 400
-                TooLongData:
-                  description: "한번에 너무 많은 본문을 요청함. (최대 10MB)"
-                  value:
-                    code: "stberror.Errors.List.TooLongData"
-                    httpStatusCode: 400
+                    message: "요청 제한을 초과하였습니다."
   /lists/{id}/subscribers/double-optin:
     post:
       summary: 구독자 추가 - 구독 확인 이메일 발송
@@ -1427,6 +1758,7 @@ paths:
             example:
               subscriber:
                 email: "gildong.go@stibee.com"
+                marketingAllowed: true
                 fields:
                   name: "고길동"
       responses:
@@ -1442,30 +1774,64 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.Data.InvalidRequest
+                      - Errors.List.InvalidSubscriberVar
+                      - Errors.List.AlreadyExistEmail
+                      - Errors.List.InvalidEmail
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
+                PermissionDenied:
+                  description: "주소록의 소유자가 아닌 경우"
+                  value:
+                    code: "Errors.Authorization.PermissionDenied"
+                    httpStatusCode: 400
+                    message: "허용되지 않은 요청입니다."
+                InvalidRequest:
+                  description: "유효하지 않은 주소록 ID인 경우"
+                  value:
+                    code: "Errors.Data.InvalidRequest"
+                    httpStatusCode: 400
+                    message: "잘못된 요청입니다."
                 InvalidSubscriberVar:
-                  description: "추가 실패 - 사용자 정의 필드가 잘못됨."
+                  description: "추가 실패 - 사용자 정의 필드가 잘못됨"
                   value:
-                    code: "stberror.Errors.List.InvalidSubscriberVar"
+                    code: "Errors.List.InvalidSubscriberVar"
                     httpStatusCode: 400
+                    message: "사용할 수 없는 사용자정의필드 입니다."
                 AlreadyExistEmail:
-                  description: "(update가 false인 경우) 추가 실패 - 주소록에 이미 추가된 구독자임. "
+                  description: "주소록에 이미 추가된 구독자인 경우"
                   value:
-                    code: "stberror.Errors.List.AlreadyExistEmail"
+                    code: "Errors.List.AlreadyExistEmail"
                     httpStatusCode: 400
+                    message: "이미 존재하는 이메일 입니다."
                 InvalidEmail:
-                  description: "추가 실패 - 이메일 주소 형식이 잘못됨."
+                  description: "추가 실패 - 이메일 주소 형식이 잘못됨"
                   value:
-                    code: "stberror.Errors.List.InvalidEmail"
+                    code: "Errors.List.InvalidEmail"
                     httpStatusCode: 400
-                InvalidData:
-                  description: "추가 실패 - 사용자 정의 필드가 잘못됨."
-                  value:
-                    code: "stberror.Errors.List.InvalidData"
-                    httpStatusCode: 400
+                    message: "잘못된 이메일 주소입니다."
   /lists/{id}/subscribers/batch:
     post:
+      tags:
+        - "주소록 - 구독자"
+      summary: 구독자 대량 추가
       operationId: batchAddSubscribers
       x-badges:
         - name: "스탠다드"
@@ -1482,9 +1848,6 @@ paths:
         - 한 번에 최대 **1,000명**까지 추가할 수 있습니다.
         - 요청 본문 크기는 최대 **10MB**까지 허용됩니다.
         - 부분 성공이 가능합니다. 응답에서 성공/실패 목록을 확인하세요.
-      tags:
-        - "주소록 - 구독자"
-      summary: 구독자 대량 추가
       parameters:
         - name: id
           in: path
@@ -1510,7 +1873,52 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BatchSubscriberErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.Data.InvalidRequest
+                      - Errors.Data.TooLongData
+                      - Errors.Data.LimitExceeded
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                PermissionDenied:
+                  description: "주소록의 소유자가 아닌 경우"
+                  value:
+                    code: "Errors.Authorization.PermissionDenied"
+                    httpStatusCode: 400
+                    message: "허용되지 않은 요청입니다."
+                InvalidRequest:
+                  description: "유효하지 않은 주소록 ID인 경우"
+                  value:
+                    code: "Errors.Data.InvalidRequest"
+                    httpStatusCode: 400
+                    message: "잘못된 요청입니다."
+                TooLongData:
+                  description: "요청 본문 크기가 10MB를 초과함"
+                  value:
+                    code: "Errors.Data.TooLongData"
+                    httpStatusCode: 400
+                    message: "데이터 길이가 너무 깁니다."
+                LimitExceeded:
+                  description: "한 번에 추가할 수 있는 구독자 수 초과 (최대 1,000명)"
+                  value:
+                    code: "Errors.Data.LimitExceeded"
+                    httpStatusCode: 400
+                    message: "요청 제한을 초과하였습니다."
   /lists/{id}/subscribers/count:
     get:
       summary: 구독자 수 조회
@@ -1600,6 +2008,36 @@ paths:
               schema:
                 type: string
                 example: "ok"
+        '400':
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                PermissionDenied:
+                  description: "주소록의 소유자가 아닌 경우"
+                  value:
+                    code: "Errors.Authorization.PermissionDenied"
+                    httpStatusCode: 400
+                    message: "허용되지 않은 요청입니다."
   /lists/{id}/subscribers/{subscriberEmail}/unsubscribe:
     post:
       summary: 구독자 수신거부
@@ -1644,6 +2082,43 @@ paths:
               schema:
                 type: string
                 example: "ok"
+        '400':
+          description: 실패
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.List.NotExistEmail
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                PermissionDenied:
+                  description: "주소록의 소유자가 아닌 경우"
+                  value:
+                    code: "Errors.Authorization.PermissionDenied"
+                    httpStatusCode: 400
+                    message: "허용되지 않은 요청입니다."
+                NotExistEmail:
+                  description: "구독자가 주소록에 존재하지 않는 경우 (DELETE로 삭제된 구독자 포함)"
+                  value:
+                    code: "Errors.List.NotExistEmail"
+                    httpStatusCode: 400
+                    message: "존재하지 않는 이메일 주소 입니다."
   /lists/{id}/groups/{groupId}/assign:
     post:
       summary: 구독자 그룹 할당
@@ -1696,27 +2171,50 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.List.NotExistEmail
+                      - Errors.List.NoSuchGroup
+                      - Errors.Data.Duplicated
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
                 PermissionDenied:
+                  description: "소유자가 아닌 경우"
                   value:
-                    code: "stberror.Errors.Authorization.PermissionDenied"
+                    code: "Errors.Authorization.PermissionDenied"
                     httpStatusCode: 400
                     message: "허용되지 않은 요청입니다."
-                  description: "일반적으로 소유자가 아닌 경우"
                 NotExistEmail:
+                  description: "주소록에 존재하지 않는 구독자인 경우"
                   value:
-                    code: "stberror.Errors.List.NotExistEmail"
+                    code: "Errors.List.NotExistEmail"
                     httpStatusCode: 400
                     message: "존재하지 않는 이메일 주소 입니다."
                 NoSuchGroup:
+                  description: "존재하지 않는 그룹인 경우"
                   value:
-                    code: "stberror.Errors.List.NoSuchGroup"
+                    code: "Errors.List.NoSuchGroup"
                     httpStatusCode: 400
                     message: "그룹이 존재하지 않습니다."
                 Duplicated:
+                  description: "이미 해당 그룹에 할당된 구독자인 경우"
                   value:
-                    code: "stberror.Errors.Data.Duplicated"
+                    code: "Errors.Data.Duplicated"
                     httpStatusCode: 400
                     message: "중복된 값입니다."
   /lists/{id}/groups/{groupId}/release:
@@ -1765,6 +2263,36 @@ paths:
               schema:
                 type: string
                 example: "ok"
+        '400':
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                PermissionDenied:
+                  description: "주소록의 소유자가 아닌 경우"
+                  value:
+                    code: "Errors.Authorization.PermissionDenied"
+                    httpStatusCode: 400
+                    message: "허용되지 않은 요청입니다."
   /lists/{id}/senders/{email}:
     delete:
       summary: 발신자 이메일 주소 삭제
@@ -1807,19 +2335,38 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Data.InvalidRequest
+                      - Errors.Authorization.PermissionDenied
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
                 InvalidRequest:
+                  description: "기본 발신자를 삭제하려고 시도하거나 잘못된 ID인 경우"
                   value:
-                    code: "stberror.Errors.Data.InvalidRequest"
+                    code: "Errors.Data.InvalidRequest"
                     httpStatusCode: 400
-                    message: "기본 발신자 삭제 시도 또는 잘못된 ID"
+                    message: "잘못된 요청입니다."
                 PermissionDenied:
+                  description: "소유자가 아닌 경우"
                   value:
-                    code: "stberror.Errors.Authorization.PermissionDenied"
+                    code: "Errors.Authorization.PermissionDenied"
                     httpStatusCode: 400
                     message: "허용되지 않은 요청입니다."
-                  description: "일반적으로 소유자가 아닌 경우"
   /lists/{id}/groups:
     post:
       summary: 그룹 생성
@@ -1863,27 +2410,50 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                required:
+                  - code
+                  - httpStatusCode
+                  - message
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - Errors.Authorization.PermissionDenied
+                      - Errors.Data.InvalidRequest
+                      - Errors.List.AlreadyExistGroup
+                      - Errors.List.TooManyGroups
+                    description: 에러 코드
+                  httpStatusCode:
+                    type: integer
+                    description: HTTP 상태 코드
+                    example: 400
+                  message:
+                    type: string
+                    description: 에러 메시지
               examples:
                 PermissionDenied:
+                  description: "소유자가 아닌 경우"
                   value:
-                    code: "stberror.Errors.Authorization.PermissionDenied"
+                    code: "Errors.Authorization.PermissionDenied"
                     httpStatusCode: 400
                     message: "허용되지 않은 요청입니다."
-                  description: "일반적으로 소유자가 아닌 경우"
                 InvalidRequest:
+                  description: "그룹명이 비어있는 경우"
                   value:
-                    code: "stberror.Errors.Data.InvalidRequest"
+                    code: "Errors.Data.InvalidRequest"
                     httpStatusCode: 400
-                    message: "그룹명이 비어있음"
+                    message: "잘못된 요청입니다."
                 AlreadyExistGroup:
+                  description: "같은 이름의 그룹이 이미 존재하는 경우"
                   value:
-                    code: "stberror.Errors.List.AlreadyExistGroup"
+                    code: "Errors.List.AlreadyExistGroup"
                     httpStatusCode: 400
                     message: "그룹이 이미 존재합니다."
                 TooManyGroups:
+                  description: "그룹 수 제한을 초과한 경우"
                   value:
-                    code: "stberror.Errors.List.TooManyGroups"
+                    code: "Errors.List.TooManyGroups"
                     httpStatusCode: 400
                     message: "그룹은 최대 {maxCount}개 까지만 만들 수 있습니다."
     get:
@@ -2018,6 +2588,7 @@ components:
       type: apiKey
       name: AccessToken
       in: header
+      description: Access token for use this api
   parameters:
     SortByParam:
       name: sortBy
@@ -2088,6 +2659,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           description: "주소록 아이디"
           example: 1234
     CopyListResponse:
@@ -2095,6 +2667,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           description: "복사된 주소록 아이디"
           example: 1234
     GetListsResponse:
@@ -2102,12 +2675,9 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           description: 주소록 아이디
           example: 1234
-        owner:
-          type: string
-          description: ""
-          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
         name:
           type: string
           description: 주소록 이름
@@ -2129,7 +2699,7 @@ components:
           type: string
           description: 주소
           example: 서울시 중구 동호로
-        useSubscriberAutoDelete:
+        useAutoDeletion:
           type: boolean
           description: 자동삭제 기능 사용 여부
           example: true
@@ -2162,6 +2732,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           description: 이메일 아이디
           example: 123456
         status:
@@ -2181,110 +2752,57 @@ components:
           example: 3
         listId:
           type: integer
+          format: int64
           description: 주소록 아이디
           example: 123456
-        type:
-          type: integer
-          description: 이메일의 타입
-          example: 1
-        subType:
-          type: integer
-          description: 이메일의 서브 타입
-          example: 0
         subject:
           type: string
           description: 이메일 제목
           example: "이메일 제목"
-        subjectA:
-          type: string
-          description: A/B 테스트의 A 제목
-          example: ""
-        subjectB:
-          type: string
-          description: A/B 테스트의 B 제목
-          example: ""
         permanentLink:
           type: string
           format: uri
           description: 이메일 콘텐츠 링크(웹에서 보기)
           example: "https://stib.ee/2eYF"
-        permanentLinkSecondary:
-          type: string
-          format: uri
-          description: ""
-          example: "https://stib.ee/2eYF"
         segmentIds:
           type: array
-          description: ""
+          description: 세그먼트 아이디 목록
+          nullable: true
           items:
             type: integer
+            format: int64
           example: [1234]
         groupIds:
           type: array
-          description: ""
+          description: 그룹 아이디 목록
+          nullable: true
           items:
             type: integer
-          nullable: true
+            format: int64
           example: null
         sentTime:
           type: string
           format: date-time
           description: 이메일 발송 시간
           example: "2024-07-23T18:43:03+09:00"
-        sentTimeA:
-          type: string
-          format: date-time
-          description: A/B 테스트의 A 발송 시간
-          example: "0001-01-01T00:00:00Z"
-        sentTimeB:
-          type: string
-          format: date-time
-          description: A/B 테스트의 B 발송 시간
-          example: "1990-01-01T00:00:00+09:00"
         senderEmail:
           type: string
           format: email
           description: 발신자 이메일 주소
-          example: "gildong.go@stibee.com"
+          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
         senderName:
           type: string
           description: 발신자 이름
           example: "Gildong"
-        senderNameA:
-          type: string
-          description: A/B 테스트의 A 발신자 이름
-          example: ""
-        senderNameB:
-          type: string
-          description: A/B 테스트의 B 발신자 이름
-          example: ""
         owner:
           type: string
-          format: uuid
-          description: 이메일 소유자 UU아이디
-          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
-        abRatio:
-          type: integer
-          description: A/B 테스트의 비율
-          example: 0
-        isStarred:
-          type: boolean
-          description: 즐겨찾기 여부
-          example: false
-        includeUnsubscribed:
-          type: boolean
-          description: 구독 취소한 사용자 포함 여부
-          example: false
+          description: 이메일 소유자 식별자
+          example: "b23ac735-844d-484b-878a-d8f4719032a2"
         createdTime:
           type: string
           format: date-time
           description: 이메일 생성 시간
           example: "2024-07-19T17:56:06+09:00"
-        modifiedTime:
-          type: string
-          format: date-time
-          description: 이메일 수정 시간
-          example: "2024-07-23T18:43:18+09:00"
     GetSubscribersVarsResponse:
       type: array
       items:
@@ -2313,6 +2831,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           description: 사용자 정의 필드 아이디
         label:
           type: string
@@ -2374,6 +2893,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           description: 복사된 이메일 아이디
           example: 60001
     AddSenderRequest:
@@ -2385,7 +2905,7 @@ components:
           type: string
           description: 발신자 이메일 주소
           format: email
-          example: "gildong.go@stibee.com"
+          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
     AddSenderResponse:
       type: object
       required:
@@ -2407,9 +2927,9 @@ components:
         code:
           type: string
           enum:
-            - stberror.Errors.List.NotPermittedSenderDomain
+            - Errors.List.NotPermittedSenderDomain
           description: 에러 코드
-          example: "stberror.Errors.List.NotPermittedSenderDomain"
+          example: "Errors.List.NotPermittedSenderDomain"
         httpStatusCode:
           type: integer
           description: 상태 코드
@@ -2417,7 +2937,7 @@ components:
         message:
           type: string
           description: 에러 메시지
-          example: "발신자 이메일 주소로 사용할 수 없는 도메인으로 추가를 시도함. (gmail.com, naver.com 등)"
+          example: "허용되지 않는 발신자 도메인 입니다."
     Subscriber:
       type: object
       required:
@@ -2520,13 +3040,13 @@ components:
         code:
           type: string
           enum:
-            - stberror.Errors.Data.TooLongData
-            - stberror.Errors.List.TooManySubscribers
+            - Errors.Data.TooLongData
+            - Errors.Data.LimitExceeded
           description: 에러 코드
         message:
           type: string
           description: 에러 메시지 상세
-          example: "한번에 너무 많은 구독자를 요청함. (최대 1,000명)"
+          example: "요청 제한을 초과하였습니다."
     ListSenderVerificationErrorResponse:
       type: object
       required:
@@ -2536,13 +3056,13 @@ components:
         code:
           type: string
           enum:
-            - stberror.Errors.List.NotExistEmail
+            - Errors.List.NotExistEmail
           description: 에러 코드
-          example: "stberror.Errors.List.NotExistEmail"
+          example: "Errors.List.NotExistEmail"
         message:
           type: string
           description: 에러 메시지
-          example: "주소록에 추가되어있지 않은 발신자 이메일 주소로 발송을 요청함."
+          example: "존재하지 않는 이메일 주소 입니다."
     UpdateEmailRequest:
       type: object
       properties:
@@ -2576,7 +3096,7 @@ components:
           type: string
           format: email
           description: 발신자 이메일
-          example: "gildong.go@stibee.com"
+          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
         senderName:
           type: string
           description: 발신자 이름
@@ -2591,6 +3111,7 @@ components:
           example: "Sender Name B"
         listId:
           type: integer
+          format: int64
           description: 주소록 아이디
           example: 123
         segmentIds:
@@ -2625,13 +3146,13 @@ components:
         code:
           type: string
           enum:
-            - stberror.Errors.Email.WrongStatus
+            - Errors.Email.WrongStatus
           description: 에러 코드
-          example: "stberror.Errors.Email.WrongStatus"
+          example: "Errors.Email.WrongStatus"
         message:
           type: string
           description: 에러 메시지
-          example: "작성 중 상태(status 0)가 아님."
+          example: "이메일 상태를 확인 하세요."
     EmailLogsResponse:
       type: object
       properties:
@@ -2664,13 +3185,14 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           description: 로그 아이디
           example: 1
         subscriber:
           type: string
           format: email
           description: 구독자 이메일
-          example: "gildong.go@stibee.com"
+          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
         action:
           type: string
           description: |
@@ -2723,6 +3245,7 @@ components:
           description: 발신자 이름
         listId:
           type: integer
+          format: int64
           description: 발송 대상 주소록
         segmentIds:
           type: array
@@ -2739,6 +3262,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           description: "이메일 아이디"
           example: 1234
     AddSubscriberRequest:
@@ -2797,12 +3321,11 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           description: 주소록 아이디
         owner:
           type: string
-          format: uuid
-          description: 주소록 소유자 아이디
-          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
+          description: 주소록 소유자 이메일 주소
         name:
           type: string
           description: 주소록 이름
@@ -2865,12 +3388,15 @@ components:
           type: object
           required:
             - email
-            # - fields # fields는 optional 할 수 있음
           properties:
             email:
               type: string
               format: email
               description: 구독자 이메일 주소
+            marketingAllowed:
+              type: boolean
+              default: false
+              description: "광고성 정보 수신동의 여부"
             fields:
               type: object
               description: 주소록에 생성된 사용자 정의 필드별 값 (주소록에 생성되어있는 필드만 값을 입력할 수 있음)
@@ -2895,6 +3421,13 @@ components:
             $ad_agreed: ""
             age: "43"
             name: "고길동"
+        groupIds:
+          type: array
+          description: 구독자가 속한 그룹 아이디 목록
+          items:
+            type: integer
+            format: int64
+          example: [1234, 5678]
         createdTime:
           type: string
           description: 구독일
@@ -2980,7 +3513,7 @@ components:
           type: string
           format: email
           description: 구독자 이메일
-          example: "gildong.go@stibee.com"
+          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
     ReleaseGroupRequest:
       type: object
       required:
@@ -2990,7 +3523,7 @@ components:
           type: string
           format: email
           description: 구독자 이메일
-          example: "gildong.go@stibee.com"
+          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
     DeleteSubscribersRequest:
       type: object
       required:
@@ -3012,7 +3545,7 @@ components:
           type: string
           format: email
           description: 발신자 이메일 주소
-          example: "gildong.go@stibee.com"
+          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
         authorized:
           type: boolean
           description: "발신자 이메일의 인증 여부. false 이면 “email”로 수신된 인증메일을 통해 발신자 인증을 수행해야한다."
@@ -3033,6 +3566,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           description: 그룹 아이디
           example: 1234
     GetGroupResponse:
@@ -3042,6 +3576,7 @@ components:
         properties:
           id:
             type: integer
+            format: int64
             description: 그룹 아이디
           name:
             type: string
