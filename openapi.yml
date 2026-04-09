@@ -36,7 +36,8 @@ info:
     모든 API 요청은 인증을 위해 `AccessToken` 헤더를 필요로 합니다.<br/>
     `AccessToken`은 스티비 서비스의 [워크스페이스 설정] > [API 키] 메뉴에서 생성할 수 있습니다.<br/>
     자세한 내용은 [스티비 도움말 > 주소록 API 사용하기 > API 키 만들기](https://help.stibee.com/api-webhook/api#id-1-api-2)를 참고하세요.<br/>
-    2025년 1월 21일 이후에 생성된 API 키로만 인증할 수 있습니다.
+    2025년 1월 21일 이후에 생성된 API 키로만 인증할 수 있습니다.<br/>
+    `AccessToken`이 없거나 유효하지 않은 경우 `Errors.Authorization.NoToken` (message: "존재하지 않는 토큰 입니다.") 에러가 반환됩니다.
 
     #### 인증 확인    
     `/auth-check`는 발급된 API 키를 사용해 인증이 정상적으로 작동하는지 확인할 수 있는 테스트용 요청입니다.
@@ -85,15 +86,19 @@ tags:
     description: "프로, 엔터프라이즈 요금제에서 사용할 수 있는 API입니다."
   - name: "주소록 - 발신자 이메일 주소"
     description: "엔터프라이즈 요금제에서 사용할 수 있는 API입니다."
-  - name: "주소록 - 사용자 정의 필드"
-    description: "엔터프라이즈 요금제에서 사용할 수 있는 API입니다."
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
 paths:
   /emails:
     post:
       summary: 이메일 생성
+      operationId: createEmail
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: 새 이메일을 생성합니다.
       tags:
         - 이메일
       requestBody:
@@ -134,6 +139,15 @@ paths:
                   description: "일반적으로 소유자가 아닌 경우"
     get:
       summary: 이메일 목록 조회
+      operationId: getEmails
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: 계정에 생성된 이메일 목록을 페이지네이션으로 조회합니다.
       tags:
         - 이메일
       parameters:
@@ -174,6 +188,15 @@ paths:
   /emails/{id}:
     get:
       summary: 이메일 정보 조회
+      operationId: getEmail
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: 특정 아이디의 이메일 정보를 조회합니다.
       tags:
         - 이메일
       parameters:
@@ -192,11 +215,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetEmailResponse'
     put:
+      operationId: updateEmail
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        작성 중 상태인 이메일의 정보(이메일 제목, 발신자 이름, 세그먼트, 그룹 등)를 수정할 수 있습니다.
       tags:
         - 이메일
       summary: 이메일 정보 수정
-      description: |
-        작성 중 상태인 이메일의 정보(이메일 제목, 발신자 이름, 세그먼트, 그룹 등)를 수정할 수 있습니다.
       parameters:
         - name: id
           in: path
@@ -243,6 +274,15 @@ paths:
                     message: "작성 중 상태가 아닙니다"
     delete:
       summary: 이메일 삭제
+      operationId: deleteEmail
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: 특정 아이디의 이메일을 삭제합니다.
       tags:
         - 이메일
       parameters:
@@ -262,10 +302,19 @@ paths:
                 example: "ok"
   /emails/{id}/logs:
     get:
+      operationId: getEmailLogs
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        특정 이메일의 상세 통계 정보를 조회합니다
       tags:
         - 이메일
       summary: 이메일 상세 통계 조회
-      description: 특정 이메일의 상세 통계 정보를 조회합니다
       parameters:
         - name: id
           in: path
@@ -288,7 +337,7 @@ paths:
           schema:
             type: integer
             minimum: 1
-            default: 100
+            default: 20
       responses:
         '200':
           description: 상세 통계 조회 성공
@@ -298,10 +347,19 @@ paths:
                 $ref: '#/components/schemas/EmailLogsResponse'
   /emails/{id}/copy:
     post:
+      operationId: copyEmail
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        특정 이메일을 복사하여 새로운 이메일을 생성합니다
       tags:
         - 이메일
       summary: 이메일 복사
-      description: 특정 이메일을 복사하여 새로운 이메일을 생성합니다
       parameters:
         - name: id
           in: path
@@ -318,10 +376,19 @@ paths:
                 $ref: '#/components/schemas/CreatedCopiedEmailResponse'
   /emails/{id}/tags/release:
     post:
+      operationId: releaseEmailTags
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        특정 이메일에서 지정된 태그들을 해제합니다
       tags:
         - "이메일 - 태그"
       summary: 태그 해제
-      description: 특정 이메일에서 지정된 태그들을 해제합니다
       parameters:
         - name: id
           in: path
@@ -348,6 +415,15 @@ paths:
   /emails/{id}/tags/assign:
     post:
       summary: 태그 할당
+      operationId: assignEmailTags
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: 이메일에 태그를 할당합니다. 태그 아이디 목록을 쿼리 파라미터로 전달합니다.
       tags:
         - "이메일 - 태그"
       parameters:
@@ -393,10 +469,19 @@ paths:
                     message: "잘못된 tagIds, 존재하지 않거나 요청된 tagIds 수와 DB의 수가 다른 경우"
   /emails/{id}/content:
     get:
+      operationId: getEmailContent
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        특정 이메일의 HTML 콘텐츠를 조회합니다
       tags:
         - "이메일 - 콘텐츠"
       summary: 콘텐츠 조회
-      description: 특정 이메일의 HTML 콘텐츠를 조회합니다
       parameters:
         - name: id
           in: path
@@ -444,6 +529,19 @@ paths:
                     message: "HTML 파일이 존재하지 않음"
     post:
       summary: 콘텐츠 수정
+      operationId: updateEmailContent
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        이메일의 HTML 콘텐츠를 수정합니다.
+
+        - 작성 중 상태인 이메일만 콘텐츠를 수정할 수 있습니다.
+        - 요청 본문은 `text/html` 형식입니다.
       tags:
         - "이메일 - 콘텐츠"
       parameters:
@@ -491,10 +589,19 @@ paths:
                     message: "이메일 상태를 확인 하세요."
   /emails/{id}/send:
     post:
+      operationId: sendEmail
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        이메일을 발송합니다
       tags:
         - "이메일"
       summary: 이메일 발송
-      description: 이메일을 발송합니다
       parameters:
         - name: id
           in: path
@@ -580,13 +687,21 @@ paths:
                     message: "이메일이 완성되지 않았습니다."
   /emails/{id}/reserve:
     post:
-      tags:
-        - "이메일"
-      summary: 이메일 발송 예약
+      operationId: reserveEmail
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
       description: |
         이메일을 예약합니다. 
         예약 시, 발송 시간을 YYYYMMDDhhmmss 형식으로 지정해야 하며, 대한민국 표준시(UTC+9)를 따릅니다.
         예시: 2025년 5월 1일 11시 30분 00초 → 20250501113000
+      tags:
+        - "이메일"
+      summary: 이메일 발송 예약
       parameters:
         - name: id
           in: path
@@ -687,10 +802,19 @@ paths:
                     message: "이메일이 완성되지 않았습니다."
   /emails/{id}/cancel-reserve:
     post:
+      operationId: cancelReserveEmail
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        예약된 이메일 발송을 취소합니다
       tags:
         - "이메일"
       summary: 이메일 발송 예약 취소
-      description: 예약된 이메일 발송을 취소합니다
       parameters:
         - name: id
           in: path
@@ -708,6 +832,17 @@ paths:
                 example: "ok"
   /lists:
     post:
+      operationId: createList
+      x-badges:
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        새 주소록을 생성합니다.
+
+        - 주소록 생성 시 계정 소유자의 이메일이 기본 발신자로 자동 등록됩니다.
+        - `name`, `senderName`, `companyName`, `companyContact`, `companyAddress` 값은 필수입니다.
       tags:
         - 주소록
       summary: 주소록 생성
@@ -725,6 +860,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateListResponse'
     get:
+      operationId: getLists
+      x-badges:
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: 계정에 생성된 주소록 목록을 조회합니다.
       tags:
         - 주소록
       summary: 주소록 목록 조회
@@ -742,7 +884,18 @@ paths:
           schema:
             type: integer
             format: int
-            default: 50
+            default: 20
+        - name: sortOrder
+          in: query
+          required: false
+          description: |
+            정렬 방향
+            * desc: 내림차순
+            * asc: 오름차순
+          schema:
+            type: string
+            enum: [desc, asc]
+            default: desc
       responses:
         '200':
           description: "주소록 목록 조회 성공" # 기존 "" 에서 좀 더 명확하게
@@ -752,10 +905,17 @@ paths:
                 $ref: '#/components/schemas/GetListsResponse'
   /lists/{id}/copy:
     post:
+      operationId: copyList
+      x-badges:
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        특정 주소록을 복사하여 새로운 주소록을 생성합니다
       tags:
         - 주소록
       summary: 주소록 복사
-      description: 특정 주소록을 복사하여 새로운 주소록을 생성합니다
       parameters:
         - name: id
           in: path
@@ -791,6 +951,13 @@ paths:
   /lists/{id}:
     get:
       summary: 주소록 정보 조회
+      operationId: getList
+      x-badges:
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: 특정 아이디의 주소록 정보를 조회합니다.
       tags:
         - 주소록
       parameters:
@@ -809,7 +976,7 @@ paths:
                 $ref: '#/components/schemas/GetListResponse'
               example:
                 id: 1234
-                owner: "hello@stibee.com"
+                owner: "abcd1234-ab12-cd34-ef56-abcdef123456"
                 name: "주소록 이름"
                 senderName: "발신자 이름"
                 companyName: "회사명"
@@ -819,6 +986,16 @@ paths:
                 canSendToUnsubscribed: false
     put:
       summary: 주소록 정보 수정
+      operationId: updateList
+      x-badges:
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        특정 아이디의 주소록 정보를 수정합니다.
+
+        - 변경하려는 필드만 요청 본문에 포함하면 됩니다. 빈 문자열이 아닌 필드만 업데이트됩니다.
       tags:
         - 주소록
       parameters:
@@ -851,10 +1028,17 @@ paths:
                 type: string
                 example: "ok"
     delete:
+      operationId: deleteList
+      x-badges:
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        특정 아이디의 주소록을 삭제합니다
       tags:
         - 주소록
       summary: 주소록 삭제
-      description: 특정 아이디의 주소록을 삭제합니다
       parameters:
         - name: id
           in: path
@@ -871,13 +1055,19 @@ paths:
                 example: "ok"
   /lists/{id}/senders:
     post:
-      tags:
-        - "주소록 - 발신자 이메일 주소"
-      summary: 발신자 이메일 주소 추가
+      operationId: addListSender
+      x-badges:
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
       description: |
         발신자 이메일 주소를 추가합니다. 
         인증 이메일이 발송되고, 그 이메일에서 인증을 하면 추가됩니다. 
         워크스페이스 단위에서 한번 인증한 이메일 주소는 다른 주소록에 추가할 때 인증 이메일이 발송되지 않고 바로 추가됩니다.
+      tags:
+        - "주소록 - 발신자 이메일 주소"
+      summary: 발신자 이메일 주소 추가
       parameters:
         - name: id
           in: path
@@ -906,6 +1096,13 @@ paths:
                 $ref: '#/components/schemas/AddSenderErrorResponse'
     get:
       summary: 발신자 이메일 주소 목록 조회
+      operationId: getListSenders
+      x-badges:
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: 주소록에 등록된 발신자 이메일 주소 목록을 조회합니다.
       tags:
         - "주소록 - 발신자 이메일 주소"
       parameters:
@@ -929,11 +1126,17 @@ paths:
                   authorized: false
   /lists/{id}/senders/{email}/verify:
     post:
+      operationId: verifyListSender
+      x-badges:
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        주소록에 이미 추가된 발신자 이메일 주소에 대해 인증 이메일 발송을 다시 요청할 수 있습니다.
       tags:
         - "주소록 - 발신자 이메일 주소"
       summary: 발신자 이메일 주소 인증 이메일 발송 요청
-      description: |
-        주소록에 이미 추가된 발신자 이메일 주소에 대해 인증 이메일 발송을 다시 요청할 수 있습니다.
       parameters:
         - name: id
           in: path
@@ -965,6 +1168,24 @@ paths:
   /lists/{id}/subscribers:
     post:
       summary: 구독자 추가
+      operationId: addSubscriber
+      x-badges:
+        - name: "스탠다드"
+          position: before
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        주소록에 구독자를 추가합니다.
+
+        - 이메일 주소는 최대 **64자**까지 허용됩니다.
+        - `updateEnabled`가 `false`(기본값)이면, 이미 존재하는 구독자를 추가할 때 에러가 발생합니다.
+        - `updateEnabled`가 `true`이면, 이미 존재하는 구독자의 정보를 업데이트합니다.
+
+        > **참고**: 신규 추가 시 `200`, 기존 구독자 업데이트 시 `201`이 반환됩니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1032,6 +1253,21 @@ paths:
                     httpStatusCode: 400
     get:
       summary: 구독자 목록 조회
+      operationId: getSubscribers
+      x-badges:
+        - name: "스탠다드"
+          position: before
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "100회/분"
+          position: before
+      description: |
+        주소록의 구독자 목록을 조회합니다.
+
+        - `statuses` 파라미터로 특정 상태의 구독자만 필터링할 수 있습니다.
+        - 한 번에 조회할 수 있는 최대 개수는 1,000건입니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1066,7 +1302,7 @@ paths:
             * 조회된 아이템의 최대 개수는 1000을 넘을 수 없다.
           schema:
             type: integer
-            default: 100
+            default: 20
             maximum: 1000
       responses:
         '200':
@@ -1100,6 +1336,21 @@ paths:
                     httpStatusCode: 400
     delete:
       summary: 구독자 완전 삭제
+      operationId: deleteSubscribers
+      x-badges:
+        - name: "스탠다드"
+          position: before
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        주소록에서 구독자를 완전히 삭제합니다. 삭제된 구독자 데이터는 복구할 수 없습니다.
+
+        - 한 번에 최대 **100명**까지 삭제할 수 있습니다.
+        - 삭제된 구독자에게는 `unsubscribe` API를 사용할 수 없습니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1145,12 +1396,21 @@ paths:
   /lists/{id}/subscribers/double-optin:
     post:
       summary: 구독자 추가 - 구독 확인 이메일 발송
+      operationId: sendDoubleOptin
+      x-badges:
+        - name: "스탠다드"
+          position: before
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
       tags:
         - "주소록 - 구독자"
       description: |
-        인증 이메일 발송 및 구독자 추가 API는 구독자가 주소록에 존재하지 않는 상태에서 '구독 대기' 상태로 
-        주소록에 추가되며 인증메일이 구독자에게 발송된다. 구독확인 메일을 수신한 구독자가 인증을 마치면 
-        '구독 중' 상태로 전환된다.
+        구독자가 주소록에 존재하지 않는 상태에서 '구독 대기' 상태로 주소록에 추가되며, 인증 이메일이 구독자에게 발송됩니다.
+        구독 확인 메일을 수신한 구독자가 인증을 마치면 '구독 중' 상태로 전환됩니다.
       parameters:
         - name: id
           in: path
@@ -1206,10 +1466,25 @@ paths:
                     httpStatusCode: 400
   /lists/{id}/subscribers/batch:
     post:
+      operationId: batchAddSubscribers
+      x-badges:
+        - name: "스탠다드"
+          position: before
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "10회/분"
+          position: before
+      description: |
+        주소록에 여러 구독자를 한 번에 추가합니다.
+
+        - 한 번에 최대 **1,000명**까지 추가할 수 있습니다.
+        - 요청 본문 크기는 최대 **10MB**까지 허용됩니다.
+        - 부분 성공이 가능합니다. 응답에서 성공/실패 목록을 확인하세요.
       tags:
         - "주소록 - 구독자"
       summary: 구독자 대량 추가
-      description: 주소록에 여러 구독자를 한 번에 추가합니다
       parameters:
         - name: id
           in: path
@@ -1239,6 +1514,20 @@ paths:
   /lists/{id}/subscribers/count:
     get:
       summary: 구독자 수 조회
+      operationId: getSubscriberCount
+      x-badges:
+        - name: "스탠다드"
+          position: before
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        주소록의 구독자 수를 조회합니다.
+
+        - `statuses` 파라미터로 특정 상태의 구독자 수만 조회할 수 있습니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1267,6 +1556,21 @@ paths:
   /lists/{id}/subscribers/{subscriber}:
     put:
       summary: 구독자 정보 수정
+      operationId: updateSubscriber
+      x-badges:
+        - name: "스탠다드"
+          position: before
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        구독자의 사용자 정의 필드 값을 수정합니다.
+
+        - 구독자의 구독 상태(status)는 변경되지 않고 기존 상태가 유지됩니다.
+        - 주소록에 존재하지 않는 구독자에 대한 요청은 에러가 반환됩니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1299,6 +1603,23 @@ paths:
   /lists/{id}/subscribers/{subscriberEmail}/unsubscribe:
     post:
       summary: 구독자 수신거부
+      operationId: unsubscribeSubscriber
+      x-badges:
+        - name: "스탠다드"
+          position: before
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        구독자의 상태를 수신거부(unsubscribed)로 변경합니다. 구독자 데이터는 유지됩니다.
+
+        - 이미 수신거부 상태인 구독자에 대한 호출은 에러 없이 성공합니다.
+        - `DELETE /lists/{id}/subscribers`로 완전 삭제된 구독자에게는 사용할 수 없습니다.
+
+        > **참고**: `DELETE`는 구독자 데이터를 완전히 삭제(복구 불가)하고, `unsubscribe`는 상태만 변경(데이터 유지)합니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1326,6 +1647,21 @@ paths:
   /lists/{id}/groups/{groupId}/assign:
     post:
       summary: 구독자 그룹 할당
+      operationId: assignGroup
+      x-badges:
+        - name: "스탠다드"
+          position: before
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        구독자를 특정 그룹에 할당합니다.
+
+        - 이미 해당 그룹에 할당된 구독자에 대해 다시 호출해도 에러 없이 성공합니다.
+        - 주소록에 존재하지 않는 구독자이거나, 존재하지 않는 그룹이면 에러가 반환됩니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1386,6 +1722,20 @@ paths:
   /lists/{id}/groups/{groupId}/release:
     post:
       summary: 구독자 그룹 해제
+      operationId: releaseGroup
+      x-badges:
+        - name: "스탠다드"
+          position: before
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        구독자를 특정 그룹에서 해제합니다.
+
+        - 할당되지 않은 구독자이거나 존재하지 않는 그룹에 대한 요청도 에러 없이 성공합니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1418,6 +1768,16 @@ paths:
   /lists/{id}/senders/{email}:
     delete:
       summary: 발신자 이메일 주소 삭제
+      operationId: deleteListSender
+      x-badges:
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        주소록에 등록된 발신자 이메일 주소를 삭제합니다.
+
+        - 기본 발신자는 삭제할 수 없습니다.
       tags:
         - "주소록 - 발신자 이메일 주소"
       parameters:
@@ -1463,6 +1823,19 @@ paths:
   /lists/{id}/groups:
     post:
       summary: 그룹 생성
+      operationId: createGroup
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        주소록에 새 그룹을 생성합니다.
+
+        - 같은 이름의 그룹이 이미 존재하면 에러가 반환됩니다.
+        - 요금제에 따라 생성 가능한 그룹 수에 제한이 있습니다.
       tags:
         - "주소록 - 그룹"
       parameters:
@@ -1515,6 +1888,15 @@ paths:
                     message: "그룹은 최대 {maxCount}개 까지만 만들 수 있습니다."
     get:
       summary: 그룹 목록 조회
+      operationId: getGroups
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: 주소록에 생성된 그룹 목록을 페이지네이션으로 조회합니다.
       tags:
         - "주소록 - 그룹"
       parameters:
@@ -1539,9 +1921,9 @@ paths:
           schema:
             type: integer
             minimum: 1
-            default: 10
+            default: 20
         - $ref: '#/components/parameters/SortByParam'
-        - $ref: '#/components/parameters/OrderByParam'
+        - $ref: '#/components/parameters/SortOrderParam'
       responses:
         '200':
           description: 그룹 목록 조회 성공
@@ -1552,6 +1934,15 @@ paths:
   /lists/{id}/groups/{groupId}:
     put:
       summary: 그룹 정보 수정
+      operationId: updateGroup
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: 그룹의 이름을 수정합니다.
       tags:
         - "주소록 - 그룹"
       parameters:
@@ -1583,6 +1974,18 @@ paths:
                 example: "ok"
     delete:
       summary: 그룹 삭제
+      operationId: deleteGroup
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        그룹을 삭제합니다.
+
+        - 그룹에 할당된 구독자의 그룹 매핑 정보도 함께 삭제됩니다.
       tags:
         - "주소록 - 그룹"
       parameters:
@@ -1615,7 +2018,6 @@ components:
       type: apiKey
       name: AccessToken
       in: header
-      description: Access token for use this api
   parameters:
     SortByParam:
       name: sortBy
@@ -1629,8 +2031,8 @@ components:
         type: string
         enum: [id, name]
         default: id
-    OrderByParam:
-      name: orderBy
+    SortOrderParam:
+      name: sortOrder
       in: query
       required: false
       description: |
@@ -1705,11 +2107,11 @@ components:
         owner:
           type: string
           description: ""
-          example: "hello@stibee.com"
+          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
         name:
           type: string
           description: 주소록 이름
-          example: 1234
+          example: "내 주소록"
         senderName:
           type: string
           description: 기본 발신자 이름
@@ -1858,9 +2260,9 @@ components:
           example: ""
         owner:
           type: string
-          format: uuid # 실제로는 이메일 형식이지만, 스키마에는 uuid로 되어 있어 유지합니다.
+          format: uuid
           description: 이메일 소유자 UU아이디
-          example: "gildong.go@stibee.com"
+          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
         abRatio:
           type: integer
           description: A/B 테스트의 비율
@@ -2398,8 +2800,9 @@ components:
           description: 주소록 아이디
         owner:
           type: string
-          format: uuid # 실제로는 이메일 형식이지만, 스키마에는 uuid로 되어 있어 유지합니다.
+          format: uuid
           description: 주소록 소유자 아이디
+          example: "abcd1234-ab12-cd34-ef56-abcdef123456"
         name:
           type: string
           description: 주소록 이름
