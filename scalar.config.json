@@ -1,32 +1,63 @@
 {
-    "subdomain": "developers",
-    "siteMeta": {
-      "favicon": "https://resource.stibee.com/assets/api/favicon.png",
-      "title": "스티비 API",
-      "description":"스티비에서 제공하는 API에 대한 요청 및 응답 방법을 확인할 수 있는 문서입니다.",
-      "ogImage": "https://resource.stibee.com/assets/api/og_image.jpeg",
-      "ogTitle": "스티비 API",
-      "ogDescription": "스티비에서 제공하는 API에 대한 요청 및 응답 방법을 확인할 수 있는 문서입니다."
-    },
+  "scalar": "2.0.0",
+  "$schema": "https://cdn.scalar.com/schema/scalar-config-next.json",
+  "publishOnMerge": true,
+  "insertPageTitles": true,
+  "info": {
+    "title": "스티비 API",
+    "description": "스티비에서 제공하는 API에 대한 요청 및 응답 방법을 확인할 수 있는 문서입니다."
+  },
+  "siteConfig": {
     "customDomain": "developers.stibee.com",
-    "guides": [],
-    "references": [    
-      {
-        "name": "스티비 API",
-        "path": "openapi.yml"
-      }
-    ],
-    "defaultOpenAllTags": true,
-    "theme": "default",
-    "publishOnMerge": true,
-    "siteConfig": {
-      "logo": {
-        "darkMode": "https://resource.stibee.com/assets/api/logo_dark.png",
-        "lightMode": "https://resource.stibee.com/assets/api/logo_light.png"
-      },
-      "footer": "",
-      "cssString": ".header-item-link {opacity:0;} .header-item-link:hover {cursor: default;}"
+    "subdomain": "developers",
+    "head": {
+      "title": "스티비 API",
+      "links": [
+        {
+          "rel": "icon",
+          "type": "image/x-icon",
+          "href": "https://resource.stibee.com/assets/api/favicon.png"
+        }
+      ],
+      "meta": [
+        {
+          "name": "description",
+          "content": "스티비에서 제공하는 API에 대한 요청 및 응답 방법을 확인할 수 있는 문서입니다."
+        },
+        {
+          "property": "og:image",
+          "content": "https://resource.stibee.com/assets/api/og_image.jpeg"
+        }
+      ],
+      "styles": [
+        {
+          "path": "theme.css"
+        }
+      ],
+      "scripts": []
+    },
+    "logo": {
+      "darkMode": "https://resource.stibee.com/assets/api/logo_dark.png",
+      "lightMode": "https://resource.stibee.com/assets/api/logo_light.png"
     }
-    
+  },
+  "versions": {
+    "default": {
+      "header": [
+        {
+          "type": "link",
+          "title": "스티비 API",
+          "to": "/스티비-api"
+        }
+      ],
+      "routes": {
+        "/스티비-api": {
+          "title": "스티비 API",
+          "type": "openapi",
+          "filepath": "openapi.yml",
+          "config": {}
+        }
+      }
+    }
   }
-  
+}
