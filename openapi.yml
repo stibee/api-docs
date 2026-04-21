@@ -3,7 +3,7 @@ info:
   title: 스티비 API
   description: |-
     ### 소개
-    이 문서는 스티비 API의 인증 방식, 공통 요청 규칙, 오류 응답 형식과 각 API의 요청 및 응답 구조를 설명합니다.<br/>
+    이 문서는 스티비 API의 인증 방식, 공통 요청 규칙, 오류 응답 형식과 각 API의 요청 및 응답 구조를 설명합니다.
 
     ### 요금제별 권한
     | API              | 스탠다드 | 프로 | 엔터프라이즈 |
@@ -12,9 +12,9 @@ info:
     | 이메일, 그룹        | -      | ✅   | ✅       |
     | 주소록, 발신자 주소   | -      | -   | ✅       |
 
-    - 구독자: 구독자 추가, 수정 등 구독자 관리를 자동화하여 고객 DB와 연동할 수 있습니다.<br/>
-    - 이메일, 그룹: 이메일 발송과 관리를 자동화하여 스티비에 로그인하지 않고도 이메일을 만들고 발송할 수 있습니다.
-    - 주소록, 발신자 주소: 주소록 관리와 발신자 이메일 주소 관리를 자동화하여 스티비에 로그인하지 않고도 주소록을 만들고 발신자 주소를 추가할 수 있습니다.
+    - 구독자: 구독자 추가, 수정 등 구독자 관리를 자동화해 고객 DB와 연동할 수 있습니다.
+    - 이메일, 그룹: 이메일 생성, 편집, 발송, 그룹 관리를 자동화할 수 있습니다.
+    - 주소록, 발신자 주소: 주소록 관리와 발신자 이메일 주소 관리를 자동화할 수 있습니다.
 
     ### 요청 속도 제한
     | API                   | 요청 속도 제한  |
@@ -58,14 +58,14 @@ info:
       "message":"잘못된 요청입니다."
     }
     ```
-    ### 포맷 
+    ### 요청 형식 
     쿼리스트링을 제외한 모든 요청 본문은 `application/json` 형식이며, 인코딩은 `UTF-8`입니다.
   termsOfService: https://policy.stibee.com/terms
   contact:
-    email: dev@stibee.com
+    email: support@stibee.com
   version: 2.0.0
 externalDocs:
-  description: 주소록 웹훅 사용하기
+  description: 웹훅 가이드
   url: https://help.stibee.com/api-webhook/list-webhook
 servers:
   - url:  https://api.stibee.com/v2
