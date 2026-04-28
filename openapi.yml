@@ -3,7 +3,7 @@ info:
   title: 스티비 API
   description: |-
     ### 소개
-    이 문서는 스티비에서 제공하는 API의 요청 및 응답 방식에 대한 내용을 설명합니다.<br/>
+    이 문서는 스티비 API의 인증 방식, 공통 요청 규칙, 오류 응답 형식과 각 API의 요청 및 응답 구조를 설명합니다.
 
     ### 요금제별 권한
     | API              | 스탠다드 | 프로 | 엔터프라이즈 |
@@ -12,9 +12,9 @@ info:
     | 이메일, 그룹        | -      | ✅   | ✅       |
     | 주소록, 발신자 주소   | -      | -   | ✅       |
 
-    - 구독자: 구독자 추가, 수정 등 구독자 관리를 자동화하여 고객 DB와 연동할 수 있습니다.<br/>
-    - 이메일, 그룹: 이메일 발송과 관리를 자동화하여 스티비에 로그인하지 않고도 이메일을 만들고 발송할 수 있습니다.
-    - 주소록, 발신자 주소: 주소록 관리와 발신자 이메일 주소 관리를 자동화하여 스티비에 로그인하지 않고도 주소록을 만들고 발신자 주소를 추가할 수 있습니다.
+    - 구독자: 구독자 추가, 수정 등 구독자 관리를 자동화해 고객 DB와 연동할 수 있습니다.
+    - 이메일, 그룹: 이메일 생성, 편집, 발송, 그룹 관리를 자동화할 수 있습니다.
+    - 주소록, 발신자 주소: 주소록 관리와 발신자 이메일 주소 관리를 자동화할 수 있습니다.
 
     ### 요청 속도 제한
     | API                   | 요청 속도 제한  |
@@ -23,33 +23,34 @@ info:
     | <a href="/스티비-api/tag/주소록---구독자/get/lists/id/subscribers">구독자 목록 조회</a>               | 최대 100회/분         |
     | 그 외 모든 API | 최대 1000회/분        |
 
-    * 요금제별 권한, 요청 속도 제한은 각 페이지의 API 항목 이름 위에 표시되어있습니다.
+    요금제별 권한, 요청 속도 제한은 각 API 항목별 페이지의 제목 위에 표시되어있습니다.
     
     ### Base URL
     모든 API 요청은 다음 Base URL을 기준으로 합니다:  
     `https://api.stibee.com/v2`
 
-    ```http
     이메일 목록 조회 예시
+    ```http
     GET https://api.stibee.com/v2/emails
     ```
 
     ### 인증
-    모든 API 요청은 인증을 위해 `AccessToken` 헤더를 필요로 합니다. `AccessToken`은 스티비 서비스의 [워크스페이스 설정] > [API 키] 메뉴에서 생성할 수 있습니다. 자세한 내용은 [스티비 도움말 > 주소록 API 사용하기 > API 키 만들기](https://help.stibee.com/api-webhook/api#id-1-api-2)를 참고하세요.
-    2025년 1월 21일 이후에 생성된 API 키로만 인증할 수 있습니다. `AccessToken`이 없거나 유효하지 않은 경우 `Errors.Authorization.NoToken` (message: "존재하지 않는 토큰 입니다.") 에러가 반환됩니다.
+    모든 API 요청에는 인증을 위해 `AccessToken` 헤더가 필요합니다. `AccessToken`은 스티비 서비스의 [워크스페이스 설정 > API 키]에서 생성할 수 있습니다. 자세한 내용은 [스티비 도움말 > 주소록 API 사용하기 > API 키 만들기](https://help.stibee.com/api-webhook/api#id-1-api-2)를 참고하세요.
+    
+    2025년 1월 21일 이후에 생성된 API 키로만 인증할 수 있습니다. `AccessToken` 헤더가 없거나 유효하지 않으면 `Errors.Authorization.NoToken` (message: "존재하지 않는 토큰 입니다.") 오류가 반환됩니다.
 
     #### 인증 확인    
-    `/auth-check`는 발급된 API 키를 사용해 인증이 정상적으로 작동하는지 확인할 수 있는 테스트용 요청입니다.
+    `/auth-check`는 발급된 API 키를 사용해 인증이 정상적으로 되는지 확인할 수 있는 테스트용 요청입니다.
     
     ```http
     GET /auth-check
-    AccessToken: QUxMIFlP...IFRPIFVT
+    AccessToken: YOUR_API_KEY
     ```
 
     ### 오류 응답
-    정상적인 상황에서는 `200 OK` 또는 `400 Bad Request`가 반환됩니다.  
-    `5XX` 에러는 시스템 장애로 간주되며, 재시도 등의 처리가 필요합니다.  
-    API 요청 시 실패에 대한 400 코드 오류의 형태는 다음과 같습니다.
+    요청이 성공하면 `200 OK`가 반환됩니다. 요청 값이 잘못되었거나 처리할 수 없는 경우 `400 Bad Request`가 반환됩니다. `5XX` 오류가 반환되면 일시적인 시스템 오류일 수 있습니다. 이 경우 재시도 처리를 권장합니다.
+    
+    오류 응답 형식은 다음과 같습니다.
     ```JSON
     {
       "code":"Errors.Data.InvalidRequest",
@@ -57,14 +58,14 @@ info:
       "message":"잘못된 요청입니다."
     }
     ```
-    ### 포맷 
+    ### 요청 형식 
     쿼리스트링을 제외한 모든 요청 본문은 `application/json` 형식이며, 인코딩은 `UTF-8`입니다.
   termsOfService: https://policy.stibee.com/terms
   contact:
-    email: dev@stibee.com
+    email: support@stibee.com
   version: 2.0.0
 externalDocs:
-  description: 주소록 웹훅 사용하기
+  description: 웹훅 가이드
   url: https://help.stibee.com/api-webhook/list-webhook
 servers:
   - url:  https://api.stibee.com/v2
@@ -85,57 +86,11 @@ tags:
     description: "프로, 엔터프라이즈 요금제에서 사용할 수 있는 API입니다."
   - name: "주소록 - 발신자 이메일 주소"
     description: "엔터프라이즈 요금제에서 사용할 수 있는 API입니다."
+
 paths:
+
   /emails:
-    post:
-      summary: 이메일 생성
-      operationId: createEmail
-      x-badges:
-        - name: "프로"
-          position: before
-        - name: "엔터프라이즈"
-          position: before
-        - name: "1000회/분"
-          position: before
-      description: 새 이메일을 생성합니다.
-      tags:
-        - 이메일
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateEmailRequest'
-            example:
-              subject: "이메일 제목"
-              senderEmail: "gildong.go@stibee.com"
-              senderName: "고길동"
-              listId: 1234
-      responses:
-        '200':
-          description: "이메일 생성 성공" # 기존 "200 OK"에서 좀 더 명확하게
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateEmailResponse'
-        '400':
-          description: 잘못된 요청
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                NotEmailTypeNormal:
-                  value:
-                    code: "stberror.Errors.Email.NotEmailTypeNomal"
-                    httpStatusCode: 400
-                    message: "일반메일 타입이 아닙니다."
-                PermissionDenied:
-                  value:
-                    code: "stberror.Errors.Authorization.PermissionDenied"
-                    httpStatusCode: 400
-                    message: "listId, segmentIds, groupIds 의 owner가 아닌경우, 사용할 수 없는 발신자 이메일"
-                  description: "일반적으로 소유자가 아닌 경우"
+
     get:
       summary: 이메일 목록 조회
       operationId: getEmails
@@ -146,7 +101,7 @@ paths:
           position: before
         - name: "1000회/분"
           position: before
-      description: 계정에 생성된 이메일 목록을 페이지네이션으로 조회합니다.
+      description: 워크스페이스에 생성된 이메일 목록을 조회합니다.
       tags:
         - 이메일
       parameters:
@@ -178,13 +133,66 @@ paths:
             default: 20
       responses:
         '200':
-          description: "200 OK"
+          description: 이메일 목록 조회 성공
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetEmailsResponse'
 
+    post:
+      summary: 일반 이메일 생성
+      operationId: createEmail
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        새로운 일반 이메일을 생성합니다. 
+        - 자동 이메일은 지원하지 않습니다.
+      tags:
+        - 이메일
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmailRequest'
+            example:
+              subject: "이메일 제목"
+              senderEmail: "gildong.go@stibee.com"
+              senderName: "고길동"
+              listId: 1234
+      responses:
+        '200':
+          description: "일반 이메일 생성 성공"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateEmailResponse'
+        '400':
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                NotEmailTypeNormal:
+                  value:
+                    code: "stberror.Errors.Email.NotEmailTypeNomal"
+                    httpStatusCode: 400
+                    message: "일반메일 타입이 아닙니다."
+                PermissionDenied:
+                  value:
+                    code: "stberror.Errors.Authorization.PermissionDenied"
+                    httpStatusCode: 400
+                    message: "listId, segmentIds, groupIds 의 owner가 아닌경우, 사용할 수 없는 발신자 이메일"
+                  description: "일반적으로 소유자가 아닌 경우"
+
   /emails/{id}:
+  
     get:
       summary: 이메일 정보 조회
       operationId: getEmail
@@ -195,7 +203,8 @@ paths:
           position: before
         - name: "1000회/분"
           position: before
-      description: 특정 아이디의 이메일 정보를 조회합니다.
+      description: |
+        이메일의 정보(이메일 제목, 발신자 이름, 발송 대상 주소록 등)를 조회합니다.
       tags:
         - 이메일
       parameters:
@@ -208,11 +217,12 @@ paths:
             format: int
       responses:
         '200':
-          description: ""
+          description: 성공
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetEmailResponse'
+
     put:
       operationId: updateEmail
       x-badges:
@@ -223,10 +233,12 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        작성 중 상태인 이메일의 정보(이메일 제목, 발신자 이름, 세그먼트, 그룹 등)를 수정할 수 있습니다.
+        일반 이메일의 정보(이메일 제목, 발신자 이름, 발송 대상 주소록 등)를 수정합니다. 
+        - 작성 중 상태인 일반 이메일의 정보만 수정할 수 있습니다.
+        - 자동 이메일은 지원하지 않습니다.
       tags:
         - 이메일
-      summary: 이메일 정보 수정
+      summary: 일반 이메일 정보 수정
       parameters:
         - name: id
           in: path
@@ -242,7 +254,7 @@ paths:
               $ref: '#/components/schemas/UpdateEmailRequest'
       responses:
         '200':
-          description: 이메일이 성공적으로 수정됨
+          description: 일반 이메일 정보 수정 성공
           content:
             text/plain:
               schema:
@@ -270,9 +282,10 @@ paths:
                   value:
                     code: "stberror.Errors.Data.InvalidRequest"
                     httpStatusCode: 400
-                    message: "작성 중 상태가 아닙니다"
+                    message: "작성 중 상태가 아닙니다."
+
     delete:
-      summary: 이메일 삭제
+      summary: 일반 이메일 삭제
       operationId: deleteEmail
       x-badges:
         - name: "프로"
@@ -281,7 +294,9 @@ paths:
           position: before
         - name: "1000회/분"
           position: before
-      description: 특정 아이디의 이메일을 삭제합니다.
+      description: |
+        일반 이메일을 삭제합니다.
+        - 자동 이메일은 지원하지 않습니다.
       tags:
         - 이메일
       parameters:
@@ -293,13 +308,15 @@ paths:
             type: integer
       responses:
         '200':
-          description: 성공적으로 삭제됨
+          description: 일반 이메일 삭제 성공
           content:
             text/plain:
               schema:
                 type: string
                 example: "ok"
+
   /emails/{id}/logs:
+
     get:
       operationId: getEmailLogs
       x-badges:
@@ -310,7 +327,7 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        특정 이메일의 상세 통계 정보를 조회합니다
+        이메일의 상세 통계(발송 성공한 구독자 목록, 오픈한 구독자 목록 등)를 조회합니다.
       tags:
         - 이메일
       summary: 이메일 상세 통계 조회
@@ -339,12 +356,14 @@ paths:
             default: 20
       responses:
         '200':
-          description: 상세 통계 조회 성공
+          description: 이메일 상세 통계 조회 성공
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmailLogsResponse'
+
   /emails/{id}/copy:
+
     post:
       operationId: copyEmail
       x-badges:
@@ -355,7 +374,8 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        특정 이메일을 복사하여 새로운 이메일을 생성합니다
+        일반 이메일을 복사해 새로운 일반 이메일을 생성합니다.
+        - 자동 이메일은 지원하지 않습니다.
       tags:
         - 이메일
       summary: 이메일 복사
@@ -368,50 +388,14 @@ paths:
             type: integer
       responses:
         '200':
-          description: 이메일이 성공적으로 복사됨
+          description: 이메일 복사 성공
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreatedCopiedEmailResponse'
-  /emails/{id}/tags/release:
-    post:
-      operationId: releaseEmailTags
-      x-badges:
-        - name: "프로"
-          position: before
-        - name: "엔터프라이즈"
-          position: before
-        - name: "1000회/분"
-          position: before
-      description: |
-        특정 이메일에서 지정된 태그들을 해제합니다
-      tags:
-        - "이메일 - 태그"
-      summary: 태그 해제
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: 이메일 아이디
-          schema:
-            type: integer
-        - name: tagIds
-          in: query
-          required: true
-          description: 태그 아이디 목록 (콤마로 구분)
-          schema:
-            type: string
-            pattern: '^\d+(,\d+)*$'
-            example: "1,2"
-      responses:
-        '200':
-          description: 성공적으로 태그가 해제됨
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: "ok"
+
   /emails/{id}/tags/assign:
+
     post:
       summary: 태그 할당
       operationId: assignEmailTags
@@ -422,7 +406,8 @@ paths:
           position: before
         - name: "1000회/분"
           position: before
-      description: 이메일에 태그를 할당합니다. 태그 아이디 목록을 쿼리 파라미터로 전달합니다.
+      description: |
+        이메일에 태그를 할당합니다. 태그 아이디를 쿼리 파라미터로 전달합니다.
       tags:
         - "이메일 - 태그"
       parameters:
@@ -435,14 +420,13 @@ paths:
         - name: tagIds
           in: query
           required: true
-          description: 태그 아이디 목록 (콤마로 구분)
+          description: 할당할 태그 아이디(쉼표로 구분)
           schema:
             type: string
           example: "1,2"
-
       responses:
         '200':
-          description: 성공적으로 처리됨
+          description: 태그 할당 성공
           content:
             text/plain:
               schema:
@@ -466,7 +450,49 @@ paths:
                     code: "stberror.Errors.Data.InvalidRequest"
                     httpStatusCode: 400
                     message: "잘못된 tagIds, 존재하지 않거나 요청된 tagIds 수와 DB의 수가 다른 경우"
+
+  /emails/{id}/tags/release:
+
+    post:
+      operationId: releaseEmailTags
+      x-badges:
+        - name: "프로"
+          position: before
+        - name: "엔터프라이즈"
+          position: before
+        - name: "1000회/분"
+          position: before
+      description: |
+        이메일에 할당된 태그를 해제합니다.
+      tags:
+        - "이메일 - 태그"
+      summary: 태그 해제
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 이메일 아이디
+          schema:
+            type: integer
+        - name: tagIds
+          in: query
+          required: true
+          description: 태그 아이디(쉼표로 구분)
+          schema:
+            type: string
+            pattern: '^\d+(,\d+)*$'
+            example: "1,2"
+      responses:
+        '200':
+          description: 태그 해제 성공
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "ok"
+
   /emails/{id}/content:
+
     get:
       operationId: getEmailContent
       x-badges:
@@ -477,7 +503,7 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        특정 이메일의 HTML 콘텐츠를 조회합니다
+        이메일의 콘텐츠(본문 내용)을 조회합니다.
       tags:
         - "이메일 - 콘텐츠"
       summary: 콘텐츠 조회
@@ -490,7 +516,7 @@ paths:
             type: integer
       responses:
         '200':
-          description: 이메일 콘텐츠
+          description: 이메일 콘텐츠 조회 성공
           content:
             text/html:
               schema:
@@ -526,6 +552,7 @@ paths:
                     code: "stberror.Errors.Editor.NoHTMLExist"
                     httpStatusCode: 400
                     message: "HTML 파일이 존재하지 않음"
+
     post:
       summary: 콘텐츠 수정
       operationId: updateEmailContent
@@ -537,10 +564,9 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        이메일의 HTML 콘텐츠를 수정합니다.
-
-        - 작성 중 상태인 이메일만 콘텐츠를 수정할 수 있습니다.
-        - 요청 본문은 `text/html` 형식입니다.
+        일반 이메일의 콘텐츠(본문 내용)를 수정합니다.
+        - 작성 중 상태인 일반 이메일만 콘텐츠를 수정할 수 있습니다. 자동 이메일은 지원하지 않습니다.
+        - 요청 본문은 `text/html` 형식이어야 합니다.
       tags:
         - "이메일 - 콘텐츠"
       parameters:
@@ -556,7 +582,7 @@ paths:
           text/html:
             schema:
               type: string
-              description: 이메일 HTML 콘텐츠
+              description: 이메일 콘텐츠(HTML)
             example: |
               <html>
                 <head>
@@ -567,7 +593,7 @@ paths:
               </html>
       responses:
         '200':
-          description: 성공적으로 처리됨
+          description: 이메일 콘텐츠 수정 성공
           content:
             text/plain:
               schema:
@@ -586,7 +612,9 @@ paths:
                     code: "stberror.Errors.Email.WrongStatus"
                     httpStatusCode: 400
                     message: "이메일 상태를 확인 하세요."
+
   /emails/{id}/send:
+
     post:
       operationId: sendEmail
       x-badges:
@@ -597,10 +625,11 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        이메일을 발송합니다
+        일반 이메일을 발송합니다.
+        - 자동 이메일은 지원하지 않습니다.
       tags:
         - "이메일"
-      summary: 이메일 발송
+      summary: 일반 이메일 발송
       parameters:
         - name: id
           in: path
@@ -610,7 +639,7 @@ paths:
             type: integer
       responses:
         '200':
-          description: 이메일이 성공적으로 발송됨
+          description: 일반 이메일 발송 성공
           content:
             text/plain:
               schema:
@@ -695,12 +724,11 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        이메일을 예약합니다. 
-        예약 시, 발송 시간을 YYYYMMDDhhmmss 형식으로 지정해야 하며, 대한민국 표준시(UTC+9)를 따릅니다.
-        예시: 2025년 5월 1일 11시 30분 00초 → 20250501113000
+        일반 이메일을 발송 예약합니다. 
+        - 자동 이메일은 지원하지 않습니다.
       tags:
         - "이메일"
-      summary: 이메일 발송 예약
+      summary: 일반 이메일 발송 예약
       parameters:
         - name: id
           in: path
@@ -712,15 +740,14 @@ paths:
           in: query
           required: true
           description: |
-            예약 발송 시간 (YYYYMMDDhhmmss 형식)
-            대한민국 표준시(UTC+9) 기준
+            발송 시간(YYYYMMDDhhmmss 형식, 대한민국 표준시(UTC+9:00) 기준)
           schema:
             type: string
             pattern: '^\d{14}$'
-            example: "20260101000000"
+            example: "20250501143040"
       responses:
         '200':
-          description: 이메일 발송이 성공적으로 예약됨
+          description: 일반 이메일 발송 예약 성공
           content:
             text/plain:
               schema:
@@ -799,7 +826,9 @@ paths:
                     code: "stberror.Errors.Email.IncompleteEmail"
                     httpStatusCode: 400
                     message: "이메일이 완성되지 않았습니다."
+
   /emails/{id}/cancel-reserve:
+
     post:
       operationId: cancelReserveEmail
       x-badges:
@@ -810,10 +839,11 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        예약된 이메일 발송을 취소합니다
+        예약된 일반 이메일 발송을 취소합니다.
+        - 자동 이메일은 지원하지 않습니다.
       tags:
         - "이메일"
-      summary: 이메일 발송 예약 취소
+      summary: 일반 이메일 발송 예약 취소
       parameters:
         - name: id
           in: path
@@ -823,13 +853,15 @@ paths:
             type: integer
       responses:
         '200':
-          description: 이메일 발송 예약이 성공적으로 취소됨
+          description: 일반 이메일 발송 예약 취소 성공
           content:
             text/plain:
               schema:
                 type: string
                 example: "ok"
+
   /lists:
+
     post:
       operationId: createList
       x-badges:
@@ -838,10 +870,8 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        새 주소록을 생성합니다.
-
-        - 주소록 생성 시 계정 소유자의 이메일이 기본 발신자로 자동 등록됩니다.
-        - `name`, `senderName`, `companyName`, `companyContact`, `companyAddress` 값은 필수입니다.
+        새로운 주소록을 생성합니다.
+        - 주소록 생성 시 워크스페이스 소유자의 이메일 주소가 기본 발신자 이메일 주소로 등록됩니다.
       tags:
         - 주소록
       summary: 주소록 생성
@@ -853,11 +883,12 @@ paths:
               $ref: '#/components/schemas/CreateListRequest'
       responses:
         '200':
-          description: "주소록 생성 성공" # 기존 "" 에서 좀 더 명확하게
+          description: "주소록 생성 성공"
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateListResponse'
+
     get:
       operationId: getLists
       x-badges:
@@ -865,7 +896,7 @@ paths:
           position: before
         - name: "1000회/분"
           position: before
-      description: 계정에 생성된 주소록 목록을 조회합니다.
+      description: 워크스페이스에 생성된 주소록 목록을 조회합니다.
       tags:
         - 주소록
       summary: 주소록 목록 조회
@@ -897,12 +928,14 @@ paths:
             default: desc
       responses:
         '200':
-          description: "주소록 목록 조회 성공" # 기존 "" 에서 좀 더 명확하게
+          description: "주소록 목록 조회 성공"
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetListsResponse'
+
   /lists/{id}/copy:
+
     post:
       operationId: copyList
       x-badges:
@@ -911,7 +944,7 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        특정 주소록을 복사하여 새로운 주소록을 생성합니다
+        주소록을 복사해 새로운 주소록을 생성합니다.
       tags:
         - 주소록
       summary: 주소록 복사
@@ -924,7 +957,7 @@ paths:
             type: integer
       responses:
         '200':
-          description: 주소록이 성공적으로 복사됨
+          description: 주소록 복사 성공
           content:
             application/json:
               schema:
@@ -947,7 +980,9 @@ paths:
                     code: "stberror.Errors.Data.InvalidRequest"
                     httpStatusCode: 400
                     message: "잘못된 요청입니다."
+
   /lists/{id}:
+
     get:
       summary: 주소록 정보 조회
       operationId: getList
@@ -956,7 +991,8 @@ paths:
           position: before
         - name: "1000회/분"
           position: before
-      description: 특정 아이디의 주소록 정보를 조회합니다.
+      description: |
+        주소록의 정보(주소록 이름, 기본 발신자 이메일 주소, 푸터 정보 등)를 조회합니다.
       tags:
         - 주소록
       parameters:
@@ -968,7 +1004,7 @@ paths:
             type: integer
       responses:
         '200':
-          description: 성공적으로 조회됨
+          description: 주소록 정보 조회 성공
           content:
             application/json:
               schema:
@@ -992,9 +1028,9 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        특정 아이디의 주소록 정보를 수정합니다.
-
-        - 변경하려는 필드만 요청 본문에 포함하면 됩니다. 빈 문자열이 아닌 필드만 업데이트됩니다.
+        주소록 정보를 수정합니다.
+        - 변경하고 싶은 필드만 요청 본문에 포함하면 됩니다.
+        - 빈 문자열이 아닌 필드만 수정됩니다.
       tags:
         - 주소록
       parameters:
@@ -1020,12 +1056,13 @@ paths:
               canSendToUnsubscribed: false
       responses:
         '200':
-          description: 성공적으로 수정됨
+          description: 주소록 정보 수정 성공
           content:
             text/plain:
               schema:
                 type: string
                 example: "ok"
+
     delete:
       operationId: deleteList
       x-badges:
@@ -1034,7 +1071,7 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        특정 아이디의 주소록을 삭제합니다
+        주소록을 삭제합니다.
       tags:
         - 주소록
       summary: 주소록 삭제
@@ -1046,12 +1083,13 @@ paths:
             type: integer
       responses:
         '200':
-          description: 성공적으로 삭제됨
+          description: 주소록 삭제 성공
           content:
             text/plain:
               schema:
                 type: string
                 example: "ok"
+
   /lists/{id}/senders:
     post:
       operationId: addListSender
@@ -1061,9 +1099,9 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        발신자 이메일 주소를 추가합니다. 
-        인증 이메일이 발송되고, 그 이메일에서 인증을 하면 추가됩니다. 
-        워크스페이스 단위에서 한번 인증한 이메일 주소는 다른 주소록에 추가할 때 인증 이메일이 발송되지 않고 바로 추가됩니다.
+        주소록에 발신자 이메일 주소를 추가합니다. 
+        - 인증 이메일이 발송됩니다. 인증을 하면 주소록에 발신자 이메일 주소가 추가됩니다. 
+        - 워크스페이스의 다른 주소록에서 이미 인증한 이메일 주소는 인증 이메일이 발송되지 않고 바로 추가됩니다.
       tags:
         - "주소록 - 발신자 이메일 주소"
       summary: 발신자 이메일 주소 추가
@@ -1082,7 +1120,7 @@ paths:
               $ref: '#/components/schemas/AddSenderRequest'
       responses:
         '200':
-          description: 성공적으로 발신자 이메일이 추가됨
+          description: 발신자 이메일 주소 추가 성공
           content:
             application/json:
               schema:
@@ -1093,6 +1131,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AddSenderErrorResponse'
+
     get:
       summary: 발신자 이메일 주소 목록 조회
       operationId: getListSenders
@@ -1101,7 +1140,8 @@ paths:
           position: before
         - name: "1000회/분"
           position: before
-      description: 주소록에 등록된 발신자 이메일 주소 목록을 조회합니다.
+      description: |
+        주소록에 등록된 발신자 이메일 주소를 조회합니다.
       tags:
         - "주소록 - 발신자 이메일 주소"
       parameters:
@@ -1123,7 +1163,9 @@ paths:
               example:
                 - email: "gildong.go@stibee.com"
                   authorized: false
+
   /lists/{id}/senders/{email}/verify:
+
     post:
       operationId: verifyListSender
       x-badges:
@@ -1132,10 +1174,10 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        주소록에 이미 추가된 발신자 이메일 주소에 대해 인증 이메일 발송을 다시 요청할 수 있습니다.
+        주소록에 이미 추가된 발신자 이메일 주소에 대해 인증 이메일을 다시 발송합니다.
       tags:
         - "주소록 - 발신자 이메일 주소"
-      summary: 발신자 이메일 주소 인증 이메일 발송 요청
+      summary: 발신자 이메일 주소 인증 이메일 발송
       parameters:
         - name: id
           in: path
@@ -1152,7 +1194,7 @@ paths:
             format: email
       responses:
         '200':
-          description: 인증 이메일이 성공적으로 발송됨
+          description: 발신자 이메일 주소 인증 이메일 발송 성공
           content:
             text/plain:
               schema:
@@ -1164,7 +1206,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListSenderVerificationErrorResponse'
+
   /lists/{id}/subscribers:
+
     post:
       summary: 구독자 추가
       operationId: addSubscriber
@@ -1179,12 +1223,9 @@ paths:
           position: before
       description: |
         주소록에 구독자를 추가합니다.
-
-        - 이메일 주소는 최대 **64자**까지 허용됩니다.
-        - `updateEnabled`가 `false`(기본값)이면, 이미 존재하는 구독자를 추가할 때 에러가 발생합니다.
-        - `updateEnabled`가 `true`이면, 이미 존재하는 구독자의 정보를 업데이트합니다.
-
-        > **참고**: 신규 추가 시 `200`, 기존 구독자 업데이트 시 `201`이 반환됩니다.
+        - 이메일 주소는 최대 64자까지 입력할 수 있습니다.
+        - `updateEnabled`가 `false`(기본값)이면, 이미 존재하는 구독자를 추가하려고 하면 400 오류 응답이 반환됩니다.
+        - `updateEnabled`가 `true`이면, 이미 존재하는 구독자를 추가하면 기존 정보가 업데이트 되고 201 응답이 반환됩니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1217,14 +1258,14 @@ paths:
                 type: string
                 example: "ok"
         '201':
-          description: 구독자 업데이트 성공
+          description: 구독자 업데이트 성공 (`updateEnabled`가 `true`이고 이미 존재하는 구독자를 추가했을 때)
           content:
             text/plain: # 이 응답은 실제로는 JSON을 반환할 수 있으나, 요청에 따라 text/plain으로 변경
               schema:
                 type: string
                 example: "ok"
         '400':
-          description: 실패
+          description: 잘못된 요청
           content:
             application/json:
               schema:
@@ -1264,9 +1305,8 @@ paths:
           position: before
       description: |
         주소록의 구독자 목록을 조회합니다.
-
-        - `statuses` 파라미터로 특정 상태의 구독자만 필터링할 수 있습니다.
-        - 한 번에 조회할 수 있는 최대 개수는 1,000건입니다.
+        - `statuses` 파라미터로 특정 상태의 구독자만 조회할 수 있습니다.
+        - 한 번에 최대 1,000명의 구독자를 조회할 수 있습니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1280,8 +1320,7 @@ paths:
           in: query
           required: false
           description: |
-            조회할 구독자 상태 목록
-            * 여러 상태를 조회할 경우 콤마로 구분
+            조회할 구독자 상태(쉼표로 구분)
           schema:
             type: string
             example: "subscribed,unsubscribed,archived,ready"
@@ -1305,7 +1344,7 @@ paths:
             maximum: 1000
       responses:
         '200':
-          description: 성공적으로 조회됨
+          description: 구독자 목록 조회 성공
           content:
             application/json:
               schema:
@@ -1322,7 +1361,7 @@ paths:
                   createdTime: "2024-11-12 17:09:13 +0900 KST"
                   modifiedTime: "2024-11-17 20:01:11 +0900 KST"
         '400':
-          description: 실패
+          description: 잘못된 요청
           content:
             application/json:
               schema:
@@ -1333,6 +1372,7 @@ paths:
                   value:
                     code: "stberror.Errors.Data.LimitExceeded"
                     httpStatusCode: 400
+
     delete:
       summary: 구독자 완전 삭제
       operationId: deleteSubscribers
@@ -1346,10 +1386,9 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        주소록에서 구독자를 완전히 삭제합니다. 삭제된 구독자 데이터는 복구할 수 없습니다.
-
-        - 한 번에 최대 **100명**까지 삭제할 수 있습니다.
-        - 삭제된 구독자에게는 `unsubscribe` API를 사용할 수 없습니다.
+        주소록에서 구독자를 완전히 삭제합니다. 삭제된 구독자는 복구할 수 없습니다.
+        - 구독자를 삭제하지 않고 수신거부하려면 <a href="/스티비-api/tag/주소록---구독자/post/lists/id/subscribers/subscriberEmail/unsubscribe">구독자 수신거부</a> 요청을 해야합니다.
+        - 한 번에 최대 100명의 구독자를 삭제할 수 있습니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1376,7 +1415,7 @@ paths:
                 type: string
                 example: "ok"
         '400':
-          description: 실패
+          description: 잘못된 요청
           content:
             application/json:
               schema:
@@ -1392,7 +1431,9 @@ paths:
                   value:
                     code: "stberror.Errors.List.TooLongData"
                     httpStatusCode: 400
+
   /lists/{id}/subscribers/double-optin:
+
     post:
       summary: 구독자 추가 - 구독 확인 이메일 발송
       operationId: sendDoubleOptin
@@ -1408,8 +1449,9 @@ paths:
       tags:
         - "주소록 - 구독자"
       description: |
-        구독자가 주소록에 존재하지 않는 상태에서 '구독 대기' 상태로 주소록에 추가되며, 인증 이메일이 구독자에게 발송됩니다.
-        구독 확인 메일을 수신한 구독자가 인증을 마치면 '구독 중' 상태로 전환됩니다.
+        구독 확인 과정을 거쳐 구독자를 추가합니다.
+        - 구독자가 '구독 대기' 상태로 주소록에 추가되고 구독 확인 이메일이 발송됩니다.
+        - 구독자가 구독 확인을 하면 주소록에서 '구독 중' 상태로 변경됩니다.
       parameters:
         - name: id
           in: path
@@ -1463,7 +1505,9 @@ paths:
                   value:
                     code: "stberror.Errors.List.InvalidData"
                     httpStatusCode: 400
+
   /lists/{id}/subscribers/batch:
+
     post:
       operationId: batchAddSubscribers
       x-badges:
@@ -1477,10 +1521,9 @@ paths:
           position: before
       description: |
         주소록에 여러 구독자를 한 번에 추가합니다.
-
-        - 한 번에 최대 **1,000명**까지 추가할 수 있습니다.
-        - 요청 본문 크기는 최대 **10MB**까지 허용됩니다.
-        - 부분 성공이 가능합니다. 응답에서 성공/실패 목록을 확인하세요.
+        - 한 번에 최대 1,000명의 구독자를 추가할 수 있습니다.
+        - 요청 본문은 최대 10MB까지 허용됩니다.
+        - 일부 구독자는 성공하고 일부는 실패할 수 있습니다. 응답에서 성공, 실패한 구독자 목록을 확인할 수 있습니다.
       tags:
         - "주소록 - 구독자"
       summary: 구독자 대량 추가
@@ -1499,7 +1542,7 @@ paths:
               $ref: '#/components/schemas/BatchSubscriberRequest'
       responses:
         '200':
-          description: 구독자 추가 결과
+          description: 구독자 대량 추가 성공
           content:
             application/json:
               schema:
@@ -1510,6 +1553,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchSubscriberErrorResponse'
+
   /lists/{id}/subscribers/count:
     get:
       summary: 구독자 수 조회
@@ -1525,7 +1569,6 @@ paths:
           position: before
       description: |
         주소록의 구독자 수를 조회합니다.
-
         - `statuses` 파라미터로 특정 상태의 구독자 수만 조회할 수 있습니다.
       tags:
         - "주소록 - 구독자"
@@ -1540,18 +1583,18 @@ paths:
           in: query
           required: false
           description: |
-            조회할 구독자 상태 목록
-            * 여러 상태를 조회할 경우 콤마로 구분
+            조회할 구독자 상태(쉼표로 구분)
           schema:
             type: string
             example: "subscribed,unsubscribed,archived,ready"
       responses:
         '200':
-          description: 성공적으로 조회됨
+          description: 구독자 수 조회 성공
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetSubscriberCountResponse'
+
   /lists/{id}/subscribers/{subscriber}:
     put:
       summary: 구독자 정보 수정
@@ -1567,9 +1610,8 @@ paths:
           position: before
       description: |
         구독자의 사용자 정의 필드 값을 수정합니다.
-
-        - 구독자의 구독 상태(status)는 변경되지 않고 기존 상태가 유지됩니다.
-        - 주소록에 존재하지 않는 구독자에 대한 요청은 에러가 반환됩니다.
+        - 구독자의 상태(status)는 변경되지 않습니다.
+        - 주소록에 존재하지 않는 구독자에 대한 요청은 400 오류 응답이 반환됩니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1593,13 +1635,15 @@ paths:
               $ref: '#/components/schemas/UpdateSubscriberRequest'
       responses:
         '200':
-          description: 성공적으로 수정됨
+          description: 구독자 정보 수정 성공
           content:
             text/plain:
               schema:
                 type: string
                 example: "ok"
+
   /lists/{id}/subscribers/{subscriberEmail}/unsubscribe:
+
     post:
       summary: 구독자 수신거부
       operationId: unsubscribeSubscriber
@@ -1613,12 +1657,10 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        구독자의 상태를 수신거부(unsubscribed)로 변경합니다. 구독자 데이터는 유지됩니다.
-
-        - 이미 수신거부 상태인 구독자에 대한 호출은 에러 없이 성공합니다.
-        - `DELETE /lists/{id}/subscribers`로 완전 삭제된 구독자에게는 사용할 수 없습니다.
-
-        > **참고**: `DELETE`는 구독자 데이터를 완전히 삭제(복구 불가)하고, `unsubscribe`는 상태만 변경(데이터 유지)합니다.
+        구독자를 수신거부합니다.
+        - 구독자가 삭제되지 않고 상태만 수신거부(unsubscribed)로 변경됩니다.
+        - 구독자를 삭제하려면 <a href="/스티비-api/tag/주소록---구독자/delete/lists/id/subscribers">구독자 완전 삭제</a> 요청을 해야합니다.
+        - 이미 수신거부 상태인 구독자에 대한 요청은 200 응답이 반환됩니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1637,12 +1679,13 @@ paths:
             format: email
       responses:
         '200':
-          description: 성공적으로 수신거부 처리됨
+          description: 구독자 수신거부 성공
           content:
             text/plain:
               schema:
                 type: string
                 example: "ok"
+
   /lists/{id}/groups/{groupId}/assign:
     post:
       summary: 구독자 그룹 할당
@@ -1657,10 +1700,9 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        구독자를 특정 그룹에 할당합니다.
-
-        - 이미 해당 그룹에 할당된 구독자에 대해 다시 호출해도 에러 없이 성공합니다.
-        - 주소록에 존재하지 않는 구독자이거나, 존재하지 않는 그룹이면 에러가 반환됩니다.
+        구독자를 그룹에 할당합니다.
+        - 이미 할당된 그룹에 대해 다시 할당을 요청해도 200 응답이 반환됩니다.
+        - 주소록에 존재하지 않는 구독자이거나 존재하지 않는 그룹이면 400 오류 응답이 반환됩니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1684,7 +1726,7 @@ paths:
               $ref: '#/components/schemas/AssignGroupRequest'
       responses:
         '200':
-          description: 그룹 할당 성공
+          description: 구독자 그룹 할당 성공
           content:
             text/plain:
               schema:
@@ -1718,6 +1760,7 @@ paths:
                     code: "stberror.Errors.Data.Duplicated"
                     httpStatusCode: 400
                     message: "중복된 값입니다."
+
   /lists/{id}/groups/{groupId}/release:
     post:
       summary: 구독자 그룹 해제
@@ -1732,9 +1775,8 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        구독자를 특정 그룹에서 해제합니다.
-
-        - 할당되지 않은 구독자이거나 존재하지 않는 그룹에 대한 요청도 에러 없이 성공합니다.
+        구독자에게 할당된 그룹을 해제합니다.
+        - 할당되지 않은 구독자이거나 존재하지 않는 그룹에 대해 요청해도 200 응답이 반환됩니다.
       tags:
         - "주소록 - 구독자"
       parameters:
@@ -1764,6 +1806,7 @@ paths:
               schema:
                 type: string
                 example: "ok"
+
   /lists/{id}/senders/{email}:
     delete:
       summary: 발신자 이메일 주소 삭제
@@ -1775,8 +1818,7 @@ paths:
           position: before
       description: |
         주소록에 등록된 발신자 이메일 주소를 삭제합니다.
-
-        - 기본 발신자는 삭제할 수 없습니다.
+        - 기본 발신자 이메일 주소는 삭제할 수 없습니다.
       tags:
         - "주소록 - 발신자 이메일 주소"
       parameters:
@@ -1819,7 +1861,9 @@ paths:
                     httpStatusCode: 400
                     message: "허용되지 않은 요청입니다."
                   description: "일반적으로 소유자가 아닌 경우"
+
   /lists/{id}/groups:
+
     post:
       summary: 그룹 생성
       operationId: createGroup
@@ -1831,9 +1875,8 @@ paths:
         - name: "1000회/분"
           position: before
       description: |
-        주소록에 새 그룹을 생성합니다.
-
-        - 같은 이름의 그룹이 이미 존재하면 에러가 반환됩니다.
+        주소록에 새로운 그룹을 생성합니다.
+        - 같은 이름의 그룹이 이미 존재하면 400 오류가 반환됩니다.
         - 요금제에 따라 생성 가능한 그룹 수에 제한이 있습니다.
       tags:
         - "주소록 - 그룹"
@@ -1885,6 +1928,7 @@ paths:
                     code: "stberror.Errors.List.TooManyGroups"
                     httpStatusCode: 400
                     message: "그룹은 최대 {maxCount}개 까지만 만들 수 있습니다."
+
     get:
       summary: 그룹 목록 조회
       operationId: getGroups
@@ -1895,7 +1939,8 @@ paths:
           position: before
         - name: "1000회/분"
           position: before
-      description: 주소록에 생성된 그룹 목록을 페이지네이션으로 조회합니다.
+      description: |
+        주소록에 생성된 그룹 목록을 조회합니다.
       tags:
         - "주소록 - 그룹"
       parameters:
@@ -1930,7 +1975,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetGroupResponse'
+
   /lists/{id}/groups/{groupId}:
+
     put:
       summary: 그룹 정보 수정
       operationId: updateGroup
@@ -1941,7 +1988,8 @@ paths:
           position: before
         - name: "1000회/분"
           position: before
-      description: 그룹의 이름을 수정합니다.
+      description: |
+        그룹의 이름을 수정합니다.
       tags:
         - "주소록 - 그룹"
       parameters:
@@ -1971,6 +2019,7 @@ paths:
               schema:
                 type: string
                 example: "ok"
+
     delete:
       summary: 그룹 삭제
       operationId: deleteGroup
@@ -1983,8 +2032,7 @@ paths:
           position: before
       description: |
         그룹을 삭제합니다.
-
-        - 그룹에 할당된 구독자의 그룹 매핑 정보도 함께 삭제됩니다.
+        - 그룹에 할당된 구독자는 삭제되지 않고, 삭제하는 그룹에서만 할당이 해제됩니다.
       tags:
         - "주소록 - 그룹"
       parameters:
@@ -2407,7 +2455,7 @@ components:
           type: string
           enum:
             - stberror.Errors.List.NotPermittedSenderDomain
-          description: 에러 코드
+          description: 오류 코드
           example: "stberror.Errors.List.NotPermittedSenderDomain"
         httpStatusCode:
           type: integer
@@ -2521,7 +2569,7 @@ components:
           enum:
             - stberror.Errors.Data.TooLongData
             - stberror.Errors.List.TooManySubscribers
-          description: 에러 코드
+          description: 오류 코드
         message:
           type: string
           description: 에러 메시지 상세
@@ -2536,7 +2584,7 @@ components:
           type: string
           enum:
             - stberror.Errors.List.NotExistEmail
-          description: 에러 코드
+          description: 오류 코드
           example: "stberror.Errors.List.NotExistEmail"
         message:
           type: string
@@ -2625,7 +2673,7 @@ components:
           type: string
           enum:
             - stberror.Errors.Email.WrongStatus
-          description: 에러 코드
+          description: 오류 코드
           example: "stberror.Errors.Email.WrongStatus"
         message:
           type: string
@@ -2786,7 +2834,7 @@ components:
       properties:
         code:
           type: string
-          description: 에러 코드
+          description: 오류 코드
         httpStatusCode:
           type: integer
           description: HTTP 상태 코드
