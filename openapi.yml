@@ -1422,7 +1422,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
               examples:
                 LimitExceeded:
-                  description: "한번에 너무 많은 구독자를 요청함. (최대 1,000명)"
+                  description: "한번에 너무 많은 구독자를 요청함. (최대 100명)"
                   value:
                     code: "stberror.Errors.List.LimitExceeded"
                     httpStatusCode: 400
