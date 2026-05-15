@@ -123,6 +123,7 @@ paths:
           schema:
             type: integer
             format: int
+            minimum: 0
             default: 0
         - name: limit
           in: query
@@ -130,6 +131,8 @@ paths:
           schema:
             type: integer
             format: int
+            minimum: 1
+            maximum: 100
             default: 20
       responses:
         '200':
@@ -138,6 +141,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetEmailsResponse'
+        '400':
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                InvalidRequestNotNumber:
+                  value:
+                    code: "stberror.Errors.Data.InvalidRequest"
+                    httpStatusCode: 400
+                    message: "offset이 숫자가 아닙니다."
+                  description: "offset 또는 limit이 숫자가 아닌 경우"
+                InvalidRequestNegativeOffset:
+                  value:
+                    code: "stberror.Errors.Data.InvalidRequest"
+                    httpStatusCode: 400
+                    message: "offset이 0 이상이어야 합니다."
+                InvalidRequestInvalidLimit:
+                  value:
+                    code: "stberror.Errors.Data.InvalidRequest"
+                    httpStatusCode: 400
+                    message: "limit이 1 이상이어야 합니다."
+                LimitExceeded:
+                  value:
+                    code: "stberror.Errors.Data.LimitExceeded"
+                    httpStatusCode: 400
+                    message: "이메일 목록 조회는 한 번에 최대 100건까지입니다."
 
     post:
       summary: 일반 이메일 생성
@@ -353,6 +384,7 @@ paths:
           schema:
             type: integer
             minimum: 1
+            maximum: 1000
             default: 20
       responses:
         '200':
@@ -361,6 +393,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmailLogsResponse'
+        '400':
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                InvalidRequestNotNumber:
+                  value:
+                    code: "stberror.Errors.Data.InvalidRequest"
+                    httpStatusCode: 400
+                    message: "offset이 숫자가 아닙니다."
+                  description: "offset 또는 limit이 숫자가 아닌 경우"
+                InvalidRequestNegativeOffset:
+                  value:
+                    code: "stberror.Errors.Data.InvalidRequest"
+                    httpStatusCode: 400
+                    message: "offset이 0 이상이어야 합니다."
+                InvalidRequestInvalidLimit:
+                  value:
+                    code: "stberror.Errors.Data.InvalidRequest"
+                    httpStatusCode: 400
+                    message: "limit이 1 이상이어야 합니다."
+                LimitExceeded:
+                  value:
+                    code: "stberror.Errors.Data.LimitExceeded"
+                    httpStatusCode: 400
+                    message: "이메일 로그 조회는 한 번에 최대 1000건까지입니다."
 
   /emails/{id}/copy:
 
